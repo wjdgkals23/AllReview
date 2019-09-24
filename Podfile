@@ -6,8 +6,10 @@ target 'AllReview' do
   use_frameworks!
 
   # Pods for AllReview
-    pod 'RxSwift', '~> 5'
-    pod 'RxCocoa', '~> 5'
-    pod 'RxBlocking', '~> 5'
-    pod 'RxTest', '~> 5'
+pod 'RxSwift', '~> 5'
+pod 'RxCocoa', '~> 5'
+pod 'Firebase/Analytics', '6.6.0'
+pod 'Firebase/Auth'
+pod 'FBSDKLoginKit'
+
 end
