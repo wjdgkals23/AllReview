@@ -92,6 +92,7 @@ PODS:
   - RxSwift (5.0.0)
 
 DEPENDENCIES:
+  - FBSDKCoreKit (from `https://github.com/facebook/facebook-objc-sdk.git`, branch `master`)
   - FBSDKLoginKit
   - Firebase/Analytics (= 6.6.0)
   - Firebase/Auth
@@ -100,7 +101,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   https://github.com/cocoapods/specs.git:
-    - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
     - FirebaseAnalytics
@@ -120,8 +120,18 @@ SPEC REPOS:
     - RxRelay
     - RxSwift
 
+EXTERNAL SOURCES:
+  FBSDKCoreKit:
+    :branch: master
+    :git: https://github.com/facebook/facebook-objc-sdk.git
+
+CHECKOUT OPTIONS:
+  FBSDKCoreKit:
+    :commit: d3ed4b996e09f72f065d97d5f22def75b384595d
+    :git: https://github.com/facebook/facebook-objc-sdk.git
+
 SPEC CHECKSUMS:
-  FBSDKCoreKit: d6655a343868d4bb5c29a60859bab07c3be14a0b
+  FBSDKCoreKit: 7c7a9e8676c537446cb28f172b47f7644cbf930e
   FBSDKLoginKit: c5a623de88a6b0cda35b35582921f6cec2efcc36
   Firebase: a2b5951f30ff38fd3b3bdae9c7d340f940fd3c51
   FirebaseAnalytics: 48414ae5cbf6976d8a2f7177e0466540e5ab33ce
@@ -141,6 +151,6 @@ SPEC CHECKSUMS:
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
 
-PODFILE CHECKSUM: 76d5173c1f933610a029bd17a93cdd07c215ba70
+PODFILE CHECKSUM: d125fc1c30edbf08e978e1bbcc757f3fab41a996
 
 COCOAPODS: 1.6.1

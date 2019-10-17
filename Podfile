@@ -10,6 +10,7 @@ pod 'RxSwift', '~> 5'
 pod 'RxCocoa', '~> 5'
 pod 'Firebase/Analytics', '6.6.0'
 pod 'Firebase/Auth'
+pod 'FBSDKCoreKit', :git => 'https://github.com/facebook/facebook-objc-sdk.git', :branch => 'master'
 pod 'FBSDKLoginKit'
 
 end

@@ -9,25 +9,40 @@
 import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
+import Firebase
 
 class ViewController: UIViewController {
-
+    
+//    private let readPermissions: [ReadPermission] = [ .publicProfile, .email, .userFriends, .custom("user_posts") ]
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if((AccessToken.current) != nil) {
-            print("access Already")
-        }
-        let loginbutton = FBLoginButton()
-        loginbutton.center = self.view.center
-        loginbutton.permissions = ["public_profile", "email"]
-    
-        self.view.addSubview(loginbutton)
-        
     }
-
-    @IBAction func checkLoginId(_ sender: Any) {
-        print(AccessToken.current?.userID)
+    
+    @IBAction func fbLoginButtonTapped(_ sender: Any) {
+        facebookLogin()
+    }
+    
+    func facebookLogin() {
+        let fbLoginManager:LoginManager = LoginManager()
+        fbLoginManager.logIn(permissions: ["email"], from: self) { (result, err) in
+            if let err = err {
+                print(err.localizedDescription)
+            } else if result?.isCancelled == true{
+                print("cancelled")
+            } else {
+                if(AccessToken.current != nil) {
+                    GraphRequest(graphPath: "me", parameters: ["fields": "name,email,first_name"]).start { (conn, result, err) in
+                        if let err = err {
+                            print(err.localizedDescription)
+                        } else {
+                            let credential = FacebookAuthProvider.credential(withAccessToken: AccessToken.current!.tokenString)
+//                            credential.
+                        }
+                    }
+                }
+            }
+        }
     }
     
 }
