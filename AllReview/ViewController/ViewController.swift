@@ -10,39 +10,40 @@ import UIKit
 import FBSDKCoreKit
 import FBSDKLoginKit
 import Firebase
+import RxSwift
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, LoginButtonDelegate {
     
-//    private let readPermissions: [ReadPermission] = [ .publicProfile, .email, .userFriends, .custom("user_posts") ]
+//    private
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let loginButton = FBLoginButton()
+        
+        loginButton.delegate = self
+        loginButton.permissions = ["email","user_gender"]
+        
+        loginButton.center = self.view.center
+        self.view.addSubview(loginButton)
+        
+//        if(AccessToken.current.self != nil) {
+//            print("Already Log")
+//            loginButton.isEnabled = false
+//        }
+            
     }
     
-    @IBAction func fbLoginButtonTapped(_ sender: Any) {
-        facebookLogin()
-    }
-    
-    func facebookLogin() {
-        let fbLoginManager:LoginManager = LoginManager()
-        fbLoginManager.logIn(permissions: ["email"], from: self) { (result, err) in
-            if let err = err {
-                print(err.localizedDescription)
-            } else if result?.isCancelled == true{
-                print("cancelled")
-            } else {
-                if(AccessToken.current != nil) {
-                    GraphRequest(graphPath: "me", parameters: ["fields": "name,email,first_name"]).start { (conn, result, err) in
-                        if let err = err {
-                            print(err.localizedDescription)
-                        } else {
-                            let credential = FacebookAuthProvider.credential(withAccessToken: AccessToken.current!.tokenString)
-//                            credential.
-                        }
-                    }
-                }
-            }
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let result = result else {
+            print(error!.localizedDescription)
+            return
         }
+        print(result.grantedPermissions)
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        print("LogOut")
+        AccessToken.current = nil
     }
     
 }
