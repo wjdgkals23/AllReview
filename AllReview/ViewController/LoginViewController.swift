@@ -1,5 +1,5 @@
 //
-//  LoginViewController.swift
+//  ViewController.swift
 //  AllReview
 //
 //  Created by 정하민 on 24/09/2019.
@@ -7,23 +7,39 @@
 //
 
 import UIKit
+import FBSDKCoreKit
+import FBSDKLoginKit
+import Firebase
+import RxSwift
 
-class LoginViewController: UIViewController {
-
+class LoginViewController: UIViewController, LoginButtonDelegate {
+    
+//    private
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        let loginButton = FBLoginButton()
+        
+        loginButton.delegate = self
+        loginButton.permissions = ["email","user_gender"]
+        
+        loginButton.center = self.view.center
+        self.view.addSubview(loginButton)
+            
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let result = result else {
+            print(error!.localizedDescription)
+            return
+        }
+        print(result.grantedPermissions)
     }
-    */
-
+    
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        print("LogOut")
+        AccessToken.current = nil
+    }
+    
 }
+
