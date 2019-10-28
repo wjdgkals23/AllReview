@@ -16,7 +16,7 @@ enum OneLineReviewError: Error {
 
 struct OneLineReview { // 기본 url 셋팅
     static let scheme = "https"
-    static let host = "www.teamiracle.be"
+    static let host = "www.teammiracle.be"
     
     static let memberRegisterPath = "/member/add"
     static let memberLoginPath = "/member/login"
