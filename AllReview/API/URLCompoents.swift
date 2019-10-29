@@ -20,6 +20,7 @@ enum OneLineReview: String {
     case register = "/member/add"
     case mainRankView = "/page/boxOfficePage"
     case mainMainView = "/page/mainIndexPage"
+    case mainMyView = "/page/myPage"
 }
 
 class OneLineReviewURL { // 기본 url 셋팅

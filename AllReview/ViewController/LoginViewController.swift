@@ -12,6 +12,7 @@ import FBSDKLoginKit
 import Firebase
 import RxSwift
 
+// facebook login logic 옮기기
 class LoginViewController: UIViewController, LoginButtonDelegate {
     
     private var router: LoginRouter!
@@ -58,6 +59,7 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
     }
     
     func setupBinding() {
+        
         self.viewModel.didSignIn
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] in

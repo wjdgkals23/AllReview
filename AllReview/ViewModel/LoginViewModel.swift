@@ -9,6 +9,12 @@
 import Foundation
 import RxSwift
 
+enum SocialType:String {
+    case face
+    case google
+    case kakao
+}
+
 class LoginViewModel {
     
     private let request = OneLineReviewAPI.sharedInstance
@@ -37,6 +43,10 @@ class LoginViewModel {
         }, onError: { [weak self] err in
             self?.didFailSignIn.onNext(err)
         }).disposed(by: disposeBag)
+    }
+    
+    func socialRegister() {
+        
     }
 
 }

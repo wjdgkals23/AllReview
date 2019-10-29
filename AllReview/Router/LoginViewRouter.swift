@@ -26,7 +26,8 @@ class LoginRouter: DefaultRouter {
 //        guard let src = source as? LoginViewController else { return }
         switch to {
         case LoginRoute.login.rawValue:
-            let vc = MainViewController()
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: "MainViewController")
             navigationController.pushViewController(vc, animated: true)
         case LoginRoute.signUp.rawValue:
             print("signUp")
