@@ -12,53 +12,28 @@ import RxCocoa
 
 //URLSession
 
-typealias api = OneLineReview
 typealias err = OneLineReviewError
 
 class OneLineReviewAPI {
     
     static let sharedInstance = OneLineReviewAPI()
 
-    private var com: URLComponents?
     private var disaposable = DisposeBag()
     
-    let decoder = JSONDecoder()
+    private let decoder = JSONDecoder()
+    private let urlMaker = OneLineReviewURL()
     
     init() {
-        self.com = URLComponents()
-        self.com?.scheme = api.scheme
-        self.com?.host = api.host
-        
         decoder.keyDecodingStrategy = .convertFromSnakeCase
         decoder.dateDecodingStrategy = .secondsSince1970
     }
     
-    func rxMakeLoginURLComponents(_ userData: [String:String]) -> Observable<URLRequest> {
-        return Observable.create { observer in
-            self.com?.path = api.memberLoginPath
-            if let url = self.com?.url {
-                var request = URLRequest(url: url)
-                request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-                request.httpMethod = "POST"
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)
-                    request.httpBody = jsonData
-                    observer.on(.next(request))
-                } catch {
-                    let error = err.makeurl(description: "TEST URL PARSE FROM URLCOMPONENTS ERR")
-                    observer.on(.error(error))
-                }
-            }
-            return Disposables.create()
-        }
-    }
-
-    func rxTestLogin(userData: [String:String]) -> Observable<Any?> {
-        self.rxMakeLoginURLComponents(userData).flatMap { urlRequest -> Observable<Any?> in
+    func rxTestLogin(userData: [String:String]) -> Observable<userLoginSession> {
+        self.urlMaker.rxMakeLoginURLComponents(OneLineReview.login, userData).flatMap { urlRequest -> Observable<userLoginSession> in
             let dataTask = URLSession.shared.rx.response(request: urlRequest)
             return dataTask
                 .debug("testLoginRequest")
-                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<Any?> in
+                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<userLoginSession> in
                     if 200 ..< 300 ~= response.statusCode {
                         do {
                             let userSessionData = try self.decoder.decode(userLoginSession.self, from: data)

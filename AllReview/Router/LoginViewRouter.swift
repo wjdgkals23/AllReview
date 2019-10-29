@@ -7,24 +7,45 @@
 //
 
 import Foundation
+import UIKit
 
-protocol LoginRouter {
-    func perform(_ segue: LoginSegue, from source: LoginViewController)
+enum LoginRoute: String {
+    case login
+    case signUp
 }
 
-class DefaultLoginRouter: LoginRouter {
+class LoginRouter: DefaultRouter {
     
-    func perform(_ segue: LoginSegue, from source: LoginViewController) {
-        switch segue {
-        case .login:
-            print("login")
-        case .forgotPassword:
-            print("forgetPassword")
-        case .signUp:
+    private let navigationController: UINavigationController
+    
+    init(navigation: UINavigationController) {
+        self.navigationController = navigation
+    }
+    
+    func naviPush(_ to: String, _ data: Dictionary<String,String>) {
+//        guard let src = source as? LoginViewController else { return }
+        switch to {
+        case LoginRoute.login.rawValue:
+            let vc = MainViewController()
+            navigationController.pushViewController(vc, animated: true)
+        case LoginRoute.signUp.rawValue:
             print("signUp")
         default:
             print("default")
         }
+    }
+    
+    func naviPop(_ act: String) {
+        print("LoginView NaviPop after this \(act)")
+    }
+    
+    func viewPresent(_ to: String, _ data: Dictionary<String,String>) {
+//        guard let src = source as? LoginViewController else { return }
+        print("LoginView Present to \(to)")
+    }
+    
+    func viewDismiss(_ act: String) {
+        print("LoginView Dismiss to \(act)")
     }
     
 }

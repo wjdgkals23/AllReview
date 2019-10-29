@@ -16,6 +16,8 @@
 		F465137723668C33004CFBFC /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F465137623668C33004CFBFC /* GoogleService-Info.plist */; };
 		F465137A2366B736004CFBFC /* userSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46513792366B736004CFBFC /* userSession.swift */; };
 		F465137D2366C73A004CFBFC /* LoginViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465137C2366C73A004CFBFC /* LoginViewRouter.swift */; };
+		F46513832367BBBA004CFBFC /* DefaultRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46513822367BBBA004CFBFC /* DefaultRouter.swift */; };
+		F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46513842367EEFD004CFBFC /* MainViewController.swift */; };
 		F4D5049023399295003495AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5048F23399295003495AB /* AppDelegate.swift */; };
 		F4D5049223399295003495AB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5049123399295003495AB /* LoginViewController.swift */; };
 		F4D5049523399295003495AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049323399295003495AB /* Main.storyboard */; };
@@ -49,6 +51,8 @@
 		F465137623668C33004CFBFC /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F46513792366B736004CFBFC /* userSession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = userSession.swift; sourceTree = "<group>"; };
 		F465137C2366C73A004CFBFC /* LoginViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewRouter.swift; sourceTree = "<group>"; };
+		F46513822367BBBA004CFBFC /* DefaultRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultRouter.swift; sourceTree = "<group>"; };
+		F46513842367EEFD004CFBFC /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		F4D5048C23399295003495AB /* AllReview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AllReview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5048F23399295003495AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5049123399295003495AB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -131,6 +135,7 @@
 			isa = PBXGroup;
 			children = (
 				F465137C2366C73A004CFBFC /* LoginViewRouter.swift */,
+				F46513822367BBBA004CFBFC /* DefaultRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -185,6 +190,7 @@
 			isa = PBXGroup;
 			children = (
 				F4D5049123399295003495AB /* LoginViewController.swift */,
+				F46513842367EEFD004CFBFC /* MainViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -396,10 +402,12 @@
 				F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */,
 				90474CFD23658DCF00C48C4A /* URLCompoents.swift in Sources */,
 				F4D5049223399295003495AB /* LoginViewController.swift in Sources */,
+				F46513832367BBBA004CFBFC /* DefaultRouter.swift in Sources */,
 				90474D012365CDD000C48C4A /* Response.swift in Sources */,
 				F465137D2366C73A004CFBFC /* LoginViewRouter.swift in Sources */,
 				F465137A2366B736004CFBFC /* userSession.swift in Sources */,
 				F4D5049023399295003495AB /* AppDelegate.swift in Sources */,
+				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -9,14 +9,34 @@
 import Foundation
 import RxSwift
 
-enum LoginNavigationStackAction {
-    case set(viewModels: [Any], animated: Bool)
-    case push(viewModels: [Any], animated: Bool)
-    case pop(animated: Bool)
-}
-
 class LoginViewModel {
-    // inputs
-    let navigationStackActions = BehaviorSubject<LoginNavigationStackAction>(value: .set(viewModels: [], animated: false))
-//    let
+    
+    private let request = OneLineReviewAPI.sharedInstance
+    private let disposeBag = DisposeBag()
+    private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
+    private var urlMaker = OneLineReviewURL()
+    
+    let didSignIn = PublishSubject<Void>()
+    let didFailSignIn = PublishSubject<Error>()
+    
+    func testLoginTapped() {
+        let data = [
+            "memberId": "5d25b1a9b692d8fa466e8a75",
+            "memberEmail": "shjo@naver.com",
+            "platformCode": "EM",
+            "deviceCheckId": "macos-yond",
+            "password": "alfkzmf1!"
+        ]
+
+        self.urlMaker.rxMakeLoginURLComponents(.login, data).flatMap { [weak self] (request) -> Observable<userLoginSession> in
+            return (self?.request.rxTestLogin(userData: data).observeOn(self!.backgroundScheduler))!
+        }.subscribe(onNext: { [weak self] resData in
+            print("Nexst")
+            UserLoginSession.sharedInstance.setLoginData(data: resData)
+            self?.didSignIn.onNext(())
+        }, onError: { [weak self] err in
+            self?.didFailSignIn.onNext(err)
+        }).disposed(by: disposeBag)
+    }
+
 }

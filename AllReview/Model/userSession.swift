@@ -7,16 +7,19 @@
 //
 
 import Foundation
+import RxSwift
 
 class UserLoginSession {
 
-    private var loginData: userLoginSession?
+    private var loginData: Observable<userLoginSession>?
     
     static let sharedInstance = UserLoginSession()
     
-    private init() {}
+    public func setLoginData(data: userLoginSession) {
+        loginData = Observable.just(data)
+    }
     
-    public func settingLoginData(data: userLoginSession) {
-        loginData = data
+    public func getLoginData() -> Observable<userLoginSession>? {
+        return loginData
     }
 }

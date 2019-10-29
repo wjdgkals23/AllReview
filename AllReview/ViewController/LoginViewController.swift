@@ -14,18 +14,31 @@ import RxSwift
 
 class LoginViewController: UIViewController, LoginButtonDelegate {
     
-    private let request = OneLineReviewAPI.sharedInstance
-    let disposeBag = DisposeBag()
-    let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
+    private var router: LoginRouter!
+    private var viewModel: LoginViewModel!
     
-    var viewModel: LoginViewModel!
-//    var router: Router!
+    private let disposeBag = DisposeBag()
+//    var router: Router! 화면 전환 객체
+//    뷰에 보여질 데이터와 비즈니스 로직 포함 객체
     
     @IBOutlet var testLogin: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            viewModel = LoginViewModel()
+            router = LoginRouter(navigation: navigationController)
+            setupView()
+            setupBinding()
+            navigationController.setNavigationBarHidden(true, animated: false)
+        }
+        else {
+            print("View Load Fail")
+        }
+    }
+    
+    func setupView() {
         let loginButton = FBLoginButton()
         
         loginButton.delegate = self
@@ -42,32 +55,27 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
         let topConstraint = NSLayoutConstraint(item: loginButton, attribute: .top,
             relatedBy: .equal, toItem: self.testLogin, attribute: .bottom, multiplier: 1, constant: 10)
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
-        
-//        viewModel.navigationStackActions.subscribe(onNext: { [weak self] navigationStackAction in
-//            switch navigationStackAction {
-//            case .set(let viewModels, let animated):
-//                let viewControllers = viewModels.flatMap{ viewController(for) }
-//            }
-//        })
-            
     }
     
+    func setupBinding() {
+        self.viewModel.didSignIn
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] in
+                self?.router.naviPush("login", ["":""])
+            }).disposed(by: self.disposeBag)
+        
+        self.viewModel.didFailSignIn
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { [weak self] err in
+            if let error = err as? OneLineReviewError {
+                print(error.localizedDescription)
+            }
+        }).disposed(by: self.disposeBag)
+    }
+    
+    
     @IBAction func testLogin(_ sender: Any) {
-        let data = [
-            "memberId": "5d25b1a9b692d8fa466e8a75",
-            "memberEmail": "shjo@naver.com",
-            "platformCode": "EM",
-            "deviceCheckId": "macos-yond",
-            "password": "alfkzmf1!"
-        ]
-
-        request.rxTestLogin(userData: data)
-            .observeOn(backgroundScheduler)
-            .subscribeOn(MainScheduler.instance)
-            .subscribe(onNext: { resData in
-            }, onError: { err in
-                print(err)
-            }).disposed(by: disposeBag)
+        viewModel.testLoginTapped()
     }
     
     func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
