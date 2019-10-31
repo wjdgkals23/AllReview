@@ -64,7 +64,6 @@
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Feg-7b-XaU">
                                 <rect key="frame" x="0.0" y="50" width="375" height="537"/>
-                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="dxm-Tf-OJp" userLabel="BottomView">
                                 <rect key="frame" x="0.0" y="587" width="375" height="80"/>
@@ -126,6 +125,8 @@
                     <connections>
                         <outlet property="bottomView" destination="dxm-Tf-OJp" id="0Rt-Ny-WRN"/>
                         <outlet property="headerView" destination="nmc-os-h7x" id="GGP-Y8-krx"/>
+                        <outlet property="mainViewButton" destination="MEu-L2-7C8" id="7f5-7o-Tmd"/>
+                        <outlet property="myViewButton" destination="kCc-2e-ySc" id="VBg-Kc-A5z"/>
                         <outlet property="rankViewButton" destination="HQZ-Pb-wpe" id="ZHX-Ox-oyg"/>
                         <outlet property="webContainer" destination="Feg-7b-XaU" id="kPA-fM-Mci"/>
                     </connections>
