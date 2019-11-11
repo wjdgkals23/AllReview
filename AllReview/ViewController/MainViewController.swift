@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 import WebKit
+import RxWebKit
 import RxSwift
 import RxCocoa
 
@@ -18,6 +19,8 @@ class MainViewController: UIViewController, WKUIDelegate {
     private var userLoginSession = UserLoginSession.sharedInstance
     private var disposeBag = DisposeBag()
     
+    private var viewModel: MainViewModel!
+    
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
     private var webMyView: WKWebView!
@@ -25,22 +28,19 @@ class MainViewController: UIViewController, WKUIDelegate {
     private var webViewList: Array<WKWebView>!
     
     @IBOutlet var headerView: UIView!
-    @IBOutlet var bottomView: UIView!
+    @IBOutlet var bottomView: UIStackView!
     
     @IBOutlet var webContainer: UIView!
     
-    @IBOutlet var mainViewButton: UIView!
-    @IBOutlet var rankViewButton: UIView!
-    @IBOutlet var myViewButton: UIView!
-    //    lazy var webView: WKWebView = {
-//        let wv = WKWebView()
-//        wv.uiDelegate = self
-//        wv.translatesAutoresizingMaskIntoConstraints = false
-//        return wv
-//    }()
+    @IBOutlet var mainViewButton: UIButton!
+    @IBOutlet var rankViewButton: UIButton!
+    @IBOutlet var tempViewButton: UIButton!
+    @IBOutlet var myViewButton: UIButton!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        print("viewDidLoad")
+        
+        viewModel = MainViewModel()
         
         let webConfigure = WKWebViewConfiguration()
         
@@ -49,7 +49,6 @@ class MainViewController: UIViewController, WKUIDelegate {
         webRankView = WKWebView(frame: cgRect, configuration: webConfigure)
         webMyView = WKWebView(frame: cgRect, configuration: webConfigure)
 
-        
         webViewList = Array<WKWebView>()
         
         webViewList.append(webMyView)
@@ -62,17 +61,7 @@ class MainViewController: UIViewController, WKUIDelegate {
         
         webViewAddWebContainer()
         
-        let tap = UITapGestureRecognizer(target: self, action: #selector(rankButtonTapped(_:)))
-        let tap2 = UITapGestureRecognizer(target: self, action: #selector(rankButtonTapped(_:)))
-        let tap3 = UITapGestureRecognizer(target: self, action: #selector(rankButtonTapped(_:)))
-        let tap4 = UITapGestureRecognizer(target: self, action: #selector(rankButtonTapped(_:)))
-        
-        mainViewButton.isUserInteractionEnabled = true
-        mainViewButton.addGestureRecognizer(tap)
-        rankViewButton.isUserInteractionEnabled = true
-        rankViewButton.addGestureRecognizer(tap2)
-        myViewButton.isUserInteractionEnabled = true
-        myViewButton.addGestureRecognizer(tap3)
+        buttonTapBind();
         
         userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<[URLRequest]> in
             let userData = ["memberId":data.data._id]
@@ -99,6 +88,44 @@ class MainViewController: UIViewController, WKUIDelegate {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+    }
+
+    func buttonTapBind() {
+        
+        mainViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
+            return self.buttonflatMap(webView: self.webMainView)
+        }.subscribe(onNext: { [weak self] item in
+            self?.webMainView.isHidden = item[0];
+            self?.webMyView.isHidden = item[1]
+            self?.webRankView.isHidden = item[1];
+            }).disposed(by: disposeBag)
+        
+        rankViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
+            return self.buttonflatMap(webView: self.webRankView)
+        }.subscribe(onNext: { [weak self] item in
+            self?.webRankView.isHidden = item[0];
+            self?.webMyView.isHidden = item[1]
+            self?.webMainView.isHidden = item[1];
+        }).disposed(by: disposeBag)
+        
+        myViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
+            return self.buttonflatMap(webView: self.webMyView)
+        }.subscribe(onNext: { [weak self] item in
+            self?.webMyView.isHidden = item[0];
+            self?.webMainView.isHidden = item[1]
+            self?.webRankView.isHidden = item[1];
+        }).disposed(by: disposeBag)
+    }
+    
+    func buttonflatMap(webView: WKWebView) -> Observable<[Bool]> {
+        return Observable.create { (obs) -> Disposable in
+            if (!webView.isHidden) {
+                obs.on(.next([webView.isHidden, !webView.isHidden]))
+            } else {
+                obs.on(.next([!webView.isHidden, webView.isHidden]))
+            }
+            return Disposables.create()
+        }
     }
     
     func webViewAddWebContainer() {

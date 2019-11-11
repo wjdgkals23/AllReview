@@ -1,9 +1,9 @@
 PODS:
-  - FBSDKCoreKit (5.8.0):
-    - FBSDKCoreKit/Basics (= 5.8.0)
-    - FBSDKCoreKit/Core (= 5.8.0)
-  - FBSDKCoreKit/Basics (5.8.0)
-  - FBSDKCoreKit/Core (5.8.0):
+  - FBSDKCoreKit (5.10.0):
+    - FBSDKCoreKit/Basics (= 5.10.0)
+    - FBSDKCoreKit/Core (= 5.10.0)
+  - FBSDKCoreKit/Basics (5.10.0)
+  - FBSDKCoreKit/Core (5.10.0):
     - FBSDKCoreKit/Basics
   - FBSDKLoginKit (5.8.0):
     - FBSDKLoginKit/Login (= 5.8.0)
@@ -91,17 +91,22 @@ PODS:
   - RxRelay (5.0.0):
     - RxSwift (~> 5)
   - RxSwift (5.0.0)
+  - RxWebKit (1.0.0):
+    - RxCocoa (~> 5.0)
+    - RxSwift (~> 5.0)
 
 DEPENDENCIES:
-  - FBSDKCoreKit (from `https://github.com/facebook/facebook-objc-sdk.git`, branch `master`)
+  - FBSDKCoreKit
   - FBSDKLoginKit
   - Firebase/Analytics (= 6.6.0)
   - Firebase/Auth
   - RxCocoa (~> 5)
   - RxSwift (~> 5)
+  - RxWebKit
 
 SPEC REPOS:
   trunk:
+    - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
     - FirebaseAnalytics
@@ -120,19 +125,10 @@ SPEC REPOS:
     - RxCocoa
     - RxRelay
     - RxSwift
-
-EXTERNAL SOURCES:
-  FBSDKCoreKit:
-    :branch: master
-    :git: https://github.com/facebook/facebook-objc-sdk.git
-
-CHECKOUT OPTIONS:
-  FBSDKCoreKit:
-    :commit: 29599aa9f2067fe5fd6b3cea081aab5a549d9492
-    :git: https://github.com/facebook/facebook-objc-sdk.git
+    - RxWebKit
 
 SPEC CHECKSUMS:
-  FBSDKCoreKit: 366b21317757c66e37dd678870e8ead11b07f5cf
+  FBSDKCoreKit: f9bae468a078f20c05c73450825ccd54cfafbbb7
   FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
   Firebase: a2b5951f30ff38fd3b3bdae9c7d340f940fd3c51
   FirebaseAnalytics: 48414ae5cbf6976d8a2f7177e0466540e5ab33ce
@@ -151,7 +147,8 @@ SPEC CHECKSUMS:
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  RxWebKit: 9ff7ea0780a093450defc7ff13e218678ebe6e4a
 
-PODFILE CHECKSUM: d2cd7cab91fd6a716f88dcf63359ebde40f9f10d
+PODFILE CHECKSUM: c9d78dc64f38322d0c9b82f33377e5a8e931be03
 
 COCOAPODS: 1.8.4

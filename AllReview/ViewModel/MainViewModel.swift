@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 class MainViewModel {
     
@@ -16,31 +17,25 @@ class MainViewModel {
     private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     private var urlMaker = OneLineReviewURL()
     
-    let didSignIn = PublishSubject<Void>()
-    let didFailSignIn = PublishSubject<Error>()
+    let mainViewButtonTapped:BehaviorSubject<Bool>
+    let rankViewButtonTapped:BehaviorSubject<Bool>
+    let myViewButtonTapped:BehaviorSubject<Bool>
     
-    func testLoginTapped() {
-        let data = [
-            "memberId": "5d25b1a9b692d8fa466e8a75",
-            "memberEmail": "shjo@naver.com",
-            "platformCode": "EM",
-            "deviceCheckId": "macos-yond",
-            "password": "alfkzmf1!"
-        ]
-
-        self.urlMaker.rxMakeLoginURLComponents(.login, data).flatMap { [weak self] (request) -> Observable<userLoginSession> in
-            return (self?.request.rxTestLogin(userData: data).observeOn(self!.backgroundScheduler))!
-        }.subscribe(onNext: { [weak self] resData in
-            print("Nexst")
-            UserLoginSession.sharedInstance.setLoginData(data: resData)
-            self?.didSignIn.onNext(())
-        }, onError: { [weak self] err in
-            self?.didFailSignIn.onNext(err)
-        }).disposed(by: disposeBag)
-    }
+    let mainViewButtonDriver:Driver<Bool>
+    let rankViewButtonDriver:Driver<Bool>
+    let myViewButtonDriver:Driver<Bool>
     
-    func socialRegister() {
+    let webMainURL = PublishSubject<URLRequest>()
+    
+    init() {
+        mainViewButtonTapped = BehaviorSubject(value: false)
+        rankViewButtonTapped = BehaviorSubject(value: false)
+        myViewButtonTapped = BehaviorSubject(value: false)
         
+        mainViewButtonDriver = mainViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: false)
+        rankViewButtonDriver = rankViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: false)
+        myViewButtonDriver = myViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: false)
     }
-
+    
+    
 }

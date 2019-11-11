@@ -8,9 +8,10 @@ target 'AllReview' do
   # Pods for AllReview
 pod 'RxSwift', '~> 5'
 pod 'RxCocoa', '~> 5'
+pod 'RxWebKit'
 pod 'Firebase/Analytics', '6.6.0'
 pod 'Firebase/Auth'
-pod 'FBSDKCoreKit', :git => 'https://github.com/facebook/facebook-objc-sdk.git', :branch => 'master'
+pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'
     target 'AllReviewTests' do
 	pod 'Firebase/Analytics', '6.6.0'
