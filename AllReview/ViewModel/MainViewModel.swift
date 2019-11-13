@@ -15,26 +15,26 @@ class MainViewModel {
     private let request = OneLineReviewAPI.sharedInstance
     private let disposeBag = DisposeBag()
     private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    private var urlMaker = OneLineReviewURL()
+    public var urlMaker = OneLineReviewURL()
     
-    let mainViewButtonTapped:BehaviorSubject<Bool>
-    let rankViewButtonTapped:BehaviorSubject<Bool>
-    let myViewButtonTapped:BehaviorSubject<Bool>
+    let mainViewButtonTapped:BehaviorSubject<URLRequest>
+    let rankViewButtonTapped:BehaviorSubject<URLRequest>
+    let myViewButtonTapped:BehaviorSubject<URLRequest>
     
-    let mainViewButtonDriver:Driver<Bool>
-    let rankViewButtonDriver:Driver<Bool>
-    let myViewButtonDriver:Driver<Bool>
+    let mainViewButtonDriver:Driver<URLRequest>
+    let rankViewButtonDriver:Driver<URLRequest>
+    let myViewButtonDriver:Driver<URLRequest>
     
     let webMainURL = PublishSubject<URLRequest>()
     
     init() {
-        mainViewButtonTapped = BehaviorSubject(value: false)
-        rankViewButtonTapped = BehaviorSubject(value: false)
-        myViewButtonTapped = BehaviorSubject(value: false)
+        mainViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        rankViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        myViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         
-        mainViewButtonDriver = mainViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: false)
-        rankViewButtonDriver = rankViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: false)
-        myViewButtonDriver = myViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: false)
+        mainViewButtonDriver = mainViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        rankViewButtonDriver = rankViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        myViewButtonDriver = myViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     }
     
     

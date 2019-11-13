@@ -13,9 +13,8 @@ import RxWebKit
 import RxSwift
 import RxCocoa
 
-class MainViewController: UIViewController, WKUIDelegate {
+class MainViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     
-    private var urlMaker = OneLineReviewURL()
     private var userLoginSession = UserLoginSession.sharedInstance
     private var disposeBag = DisposeBag()
     
@@ -42,46 +41,29 @@ class MainViewController: UIViewController, WKUIDelegate {
         
         viewModel = MainViewModel()
         
-        let webConfigure = WKWebViewConfiguration()
+        let webMainViewWebConfigure = WKWebViewConfiguration()
+        let webRankViewWebConfigure = WKWebViewConfiguration()
+        let webMyViewWebConfigure = WKWebViewConfiguration()
         
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - self.bottomView.bounds.height-self.headerView.bounds.height)
-        webMainView = WKWebView(frame: cgRect, configuration: webConfigure)
-        webRankView = WKWebView(frame: cgRect, configuration: webConfigure)
-        webMyView = WKWebView(frame: cgRect, configuration: webConfigure)
-
+        webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
+        webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
+        webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
+        
         webViewList = Array<WKWebView>()
         
         webViewList.append(webMyView)
         webViewList.append(webRankView)
         webViewList.append(webMainView)
-
+        
         self.webMainView.uiDelegate = self
+        self.webMainView.navigationDelegate = self
         self.webRankView.uiDelegate = self
         self.webMyView.uiDelegate = self
         
         webViewAddWebContainer()
-        
         buttonTapBind();
-        
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<[URLRequest]> in
-            let userData = ["memberId":data.data._id]
-            let ob1 = (self?.urlMaker.rxMakeLoginURLComponents(.mainMainView, userData))!
-            let ob2 = (self?.urlMaker.rxMakeLoginURLComponents(.mainRankView, userData))!
-            let ob3 = (self?.urlMaker.rxMakeLoginURLComponents(.mainMyView, userData))!
-            return Observable.combineLatest(ob1,ob2,ob3) { (a,b,c) -> [URLRequest] in
-                var array = Array<URLRequest>()
-                array.append(a)
-                array.append(b)
-                array.append(c)
-                return array
-            }
-        }).subscribe(onNext: { [weak self] requests in
-            self?.webMainView.load(requests[0])
-            self?.webRankView.load(requests[1])
-            self?.webRankView.isHidden = true
-            self?.webMyView.load(requests[2])
-            self?.webMyView.isHidden = true
-        }).disposed(by: disposeBag)
+        initWebView();
 
     }
     
@@ -89,8 +71,19 @@ class MainViewController: UIViewController, WKUIDelegate {
         super.viewWillAppear(animated)
         
     }
-
-    func buttonTapBind() {
+    
+    private func webViewAddWebContainer() {
+        for item in self.webViewList {
+            self.webContainer.addSubview(item)
+            item.translatesAutoresizingMaskIntoConstraints = true
+            item.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
+            item.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
+            item.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
+            item.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
+        }
+    }
+    
+    private func buttonTapBind() {
         
         mainViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webMainView)
@@ -98,7 +91,7 @@ class MainViewController: UIViewController, WKUIDelegate {
             self?.webMainView.isHidden = item[0];
             self?.webMyView.isHidden = item[1]
             self?.webRankView.isHidden = item[1];
-            }).disposed(by: disposeBag)
+        }).disposed(by: disposeBag)
         
         rankViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webRankView)
@@ -115,9 +108,45 @@ class MainViewController: UIViewController, WKUIDelegate {
             self?.webMainView.isHidden = item[1]
             self?.webRankView.isHidden = item[1];
         }).disposed(by: disposeBag)
+        
     }
     
-    func buttonflatMap(webView: WKWebView) -> Observable<[Bool]> {
+    private func initWebView() {
+        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
+            let userData = ["memberId":data.data._id]
+            let req = (self?.viewModel.urlMaker.rxMakeLoginURLComponents(.mainMainView, userData))!
+            return req
+        }).bind(to: viewModel.mainViewButtonTapped)
+            .disposed(by: disposeBag)
+        
+        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
+            let userData = ["memberId":data.data._id]
+            let req = (self?.viewModel.urlMaker.rxMakeLoginURLComponents(.mainRankView, userData))!
+            return req
+        }).bind(to: viewModel.rankViewButtonTapped)
+            .disposed(by: disposeBag)
+        
+        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
+            let userData = ["memberId":data.data._id]
+            let req = (self?.viewModel.urlMaker.rxMakeLoginURLComponents(.mainMyView, userData))!
+            return req
+        }).bind(to: viewModel.myViewButtonTapped)
+            .disposed(by: disposeBag)
+        
+        viewModel.mainViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+            self.webMainView.load(request)
+        }).disposed(by: disposeBag)
+        
+        viewModel.rankViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+            self.webRankView.load(request)
+        }).disposed(by: disposeBag)
+        
+        viewModel.myViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+            self.webMyView.load(request)
+        }).disposed(by: disposeBag)
+    }
+    
+    private func buttonflatMap(webView: WKWebView) -> Observable<[Bool]> {
         return Observable.create { (obs) -> Disposable in
             if (!webView.isHidden) {
                 obs.on(.next([webView.isHidden, !webView.isHidden]))
@@ -128,28 +157,14 @@ class MainViewController: UIViewController, WKUIDelegate {
         }
     }
     
-    func webViewAddWebContainer() {
-        for item in self.webViewList {
-            self.webContainer.addSubview(item)
-            item.translatesAutoresizingMaskIntoConstraints = true
-            item.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
-            item.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
-            item.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
-            item.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url?.absoluteString
+        if((url?.contains("https://www.teammiracle.be"))!) {
+            decisionHandler(.allow)
         }
-    }
-    
-    @objc func rankButtonTapped(_ sender: UITapGestureRecognizer) {
-        self.webMyView.isHidden = true
-        self.webRankView.isHidden = true
-        self.webMainView.isHidden = true
-        
-        if(sender.view == self.mainViewButton) {
-            self.webMainView.isHidden = false
-        } else if (sender.view == self.rankViewButton) {
-            self.webRankView.isHidden = false
-        } else if (sender.view == self.myViewButton) {
-            self.webMyView.isHidden = false
+        if((url?.contains("app://"))!) {
+            print(url)
+            decisionHandler(.allow)
         }
     }
 }
