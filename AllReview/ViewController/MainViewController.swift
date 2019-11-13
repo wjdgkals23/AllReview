@@ -158,13 +158,39 @@ class MainViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
     }
     
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let url = navigationAction.request.url?.absoluteString
+        let request = navigationAction.request
+        let url = request.url?.absoluteString
+        
         if((url?.contains("https://www.teammiracle.be"))!) {
             decisionHandler(.allow)
+            return
         }
-        if((url?.contains("app://"))!) {
-            print(url)
+        else if((url?.contains("app://contentDetail"))!) {
+            let index = url?.firstIndex(of: "?") ?? url?.endIndex
+//            print(url?[index!+1...])
+            let queryDict = url?[..<index!]
             decisionHandler(.allow)
+            return
+        } else {
+            decisionHandler(.cancel)
+            return
         }
+    }
+    
+//    func webViewAppCallParsing(_ url: String) -> String {
+//
+//    }
+//
+//    func webViewURLParsing(_ url: String) -> String {
+//
+//    }
+}
+
+extension String {
+    func parseQueryString() -> [String:String] {
+        let returnDict = Dictionary<String,String>()
+        let tempArray = self.split(separator: "&")
+        print(tempArray)
+        return returnDict
     }
 }
