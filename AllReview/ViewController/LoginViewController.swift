@@ -55,6 +55,7 @@ class LoginViewController: UIViewController {
         relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -10)
         let topConstraint = NSLayoutConstraint(item: loginButton, attribute: .top,
             relatedBy: .equal, toItem: self.testLogin, attribute: .bottom, multiplier: 1, constant: 10)
+        
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
     }
     
