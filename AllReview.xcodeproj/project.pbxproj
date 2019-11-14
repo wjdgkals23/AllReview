@@ -27,6 +27,8 @@
 		F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D504A82339A1D9003495AB /* LoginViewModel.swift */; };
 		F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D637237CE25100A869A0 /* StringExtension.swift */; };
 		F4F0D63A237CF04400A869A0 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */; };
+		F4F0D63C237D213300A869A0 /* AddNewReviewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D63B237D213200A869A0 /* AddNewReviewController.swift */; };
+		F4F0D63E237D252C00A869A0 /* MainViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D63D237D252C00A869A0 /* MainViewRouter.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -68,6 +70,8 @@
 		F4D504A82339A1D9003495AB /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F4F0D637237CE25100A869A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
+		F4F0D63B237D213200A869A0 /* AddNewReviewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewReviewController.swift; sourceTree = "<group>"; };
+		F4F0D63D237D252C00A869A0 /* MainViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewRouter.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -142,6 +146,7 @@
 			children = (
 				F465137C2366C73A004CFBFC /* LoginViewRouter.swift */,
 				F46513822367BBBA004CFBFC /* DefaultRouter.swift */,
+				F4F0D63D237D252C00A869A0 /* MainViewRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -174,7 +179,7 @@
 				90474CFB23658DC200C48C4A /* API */,
 				F465137B2366C723004CFBFC /* Router */,
 				F4D504A3233994ED003495AB /* ViewModel */,
-				F4D504A2233994E4003495AB /* ViewController */,
+				F4D504A2233994E4003495AB /* View */,
 				F4D504A1233994D5003495AB /* StoryBoard */,
 				F4D5048F23399295003495AB /* AppDelegate.swift */,
 				F4D5049623399296003495AB /* Assets.xcassets */,
@@ -193,13 +198,14 @@
 			path = StoryBoard;
 			sourceTree = "<group>";
 		};
-		F4D504A2233994E4003495AB /* ViewController */ = {
+		F4D504A2233994E4003495AB /* View */ = {
 			isa = PBXGroup;
 			children = (
 				F4D5049123399295003495AB /* LoginViewController.swift */,
 				F46513842367EEFD004CFBFC /* MainViewController.swift */,
+				F4F0D63B237D213200A869A0 /* AddNewReviewController.swift */,
 			);
-			path = ViewController;
+			path = View;
 			sourceTree = "<group>";
 		};
 		F4D504A3233994ED003495AB /* ViewModel */ = {
@@ -415,6 +421,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4F0D63C237D213300A869A0 /* AddNewReviewController.swift in Sources */,
 				90474CFF2365CC8500C48C4A /* RxRequests.swift in Sources */,
 				F4F0D63A237CF04400A869A0 /* UIDeviceExtension.swift in Sources */,
 				F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */,
@@ -424,6 +431,7 @@
 				90474D012365CDD000C48C4A /* Response.swift in Sources */,
 				F465137D2366C73A004CFBFC /* LoginViewRouter.swift in Sources */,
 				F465137A2366B736004CFBFC /* userSession.swift in Sources */,
+				F4F0D63E237D252C00A869A0 /* MainViewRouter.swift in Sources */,
 				F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */,
 				F4D5049023399295003495AB /* AppDelegate.swift in Sources */,
 				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,

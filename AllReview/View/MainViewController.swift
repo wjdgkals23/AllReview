@@ -18,6 +18,7 @@ class MainViewController: UIViewController {
     private var disposeBag = DisposeBag()
     
     private var viewModel: MainViewModel!
+    private var router: MainRouter!
     
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
@@ -41,26 +42,34 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = MainViewModel()
         
-        if(UIDevice.modelName == "Simulator iPhone 8") {
-            print("HERE")
-            bottomViewHeightConstraint.constant = 70
-            bottomView.updateConstraints()
-//            print(bottomView.constraints)
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            viewModel = MainViewModel()
+            router = MainRouter(navigation: navigationController)
+            
+            if(UIDevice.modelName == "Simulator iPhone 8") {
+                print("HERE")
+                bottomViewHeightConstraint.constant = 70
+                bottomView.updateConstraints()
+                //            print(bottomView.constraints)
+            }
+            
+            if(UIDevice.modelName == "iPhone 11 Pro") {
+                print("HERE")
+                headerViewHeightConstraint.constant = 90
+                bottomView.updateConstraints()
+                //            print(bottomView.constraints)
+            }
+            
+            webViewAddWebContainer()
+            buttonTapBind();
+            initWebView();
+            
+            //            navigationController.setNavigationBarHidden(true, animated: false)
         }
-        
-        if(UIDevice.modelName == "iPhone 11 Pro") {
-            print("HERE")
-            headerViewHeightConstraint.constant = 80
-            bottomView.updateConstraints()
-        //            print(bottomView.constraints)
+        else {
+            print("View Load Fail")
         }
-        
-        webViewAddWebContainer()
-        buttonTapBind();
-        initWebView();
-
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -151,5 +160,8 @@ class MainViewController: UIViewController {
             self.webMyView.load(request)
         }).disposed(by: disposeBag)
     }
-
+    
+    @IBAction func addNewReviewButtonTapped(_ sender: Any) {
+        self.router.viewPresent("", ["":""])
+    }
 }

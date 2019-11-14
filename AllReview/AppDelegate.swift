@@ -23,6 +23,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
 
+    
     func application(_ application: UIApplication, open url: URL, sourceApplication: String?, annotation: Any) -> Bool {
         let handled = ApplicationDelegate.shared.application(application, open: url, sourceApplication: sourceApplication, annotation: annotation)
         return handled
