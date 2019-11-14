@@ -39,7 +39,6 @@ class LoginViewModel: NSObject, LoginButtonDelegate {
         self.urlMaker.rxMakeLoginURLComponents(.login, data).flatMap { [weak self] (request) -> Observable<userLoginSession> in
             return (self?.request.rxTestLogin(userData: data).observeOn(self!.backgroundScheduler))!
         }.subscribe(onNext: { [weak self] resData in
-            print("Nexst")
             UserLoginSession.sharedInstance.setLoginData(data: resData)
             self?.didSignIn.onNext(())
             }, onError: { [weak self] err in

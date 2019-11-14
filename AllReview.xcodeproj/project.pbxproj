@@ -26,6 +26,7 @@
 		F4D5049A23399296003495AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049823399296003495AB /* LaunchScreen.storyboard */; };
 		F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D504A82339A1D9003495AB /* LoginViewModel.swift */; };
 		F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D637237CE25100A869A0 /* StringExtension.swift */; };
+		F4F0D63A237CF04400A869A0 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -66,6 +67,7 @@
 		F4D5049B23399296003495AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D504A82339A1D9003495AB /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		F4F0D637237CE25100A869A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
+		F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -213,6 +215,7 @@
 			isa = PBXGroup;
 			children = (
 				F4F0D637237CE25100A869A0 /* StringExtension.swift */,
+				F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -413,6 +416,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				90474CFF2365CC8500C48C4A /* RxRequests.swift in Sources */,
+				F4F0D63A237CF04400A869A0 /* UIDeviceExtension.swift in Sources */,
 				F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */,
 				90474CFD23658DCF00C48C4A /* URLCompoents.swift in Sources */,
 				F4D5049223399295003495AB /* LoginViewController.swift in Sources */,
@@ -623,7 +627,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K7V5K2ZCCN;
 				INFOPLIST_FILE = AllReview/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -643,7 +647,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = K7V5K2ZCCN;
 				INFOPLIST_FILE = AllReview/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

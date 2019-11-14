@@ -35,10 +35,27 @@ class MainViewController: UIViewController {
     @IBOutlet var tempViewButton: UIButton!
     @IBOutlet var myViewButton: UIButton!
     
+    @IBOutlet var bottomViewHeightConstraint: NSLayoutConstraint!
+    @IBOutlet var headerViewHeightConstraint: NSLayoutConstraint!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         viewModel = MainViewModel()
+        
+        if(UIDevice.modelName == "Simulator iPhone 8") {
+            print("HERE")
+            bottomViewHeightConstraint.constant = 70
+            bottomView.updateConstraints()
+//            print(bottomView.constraints)
+        }
+        
+        if(UIDevice.modelName == "iPhone 11 Pro") {
+            print("HERE")
+            headerViewHeightConstraint.constant = 80
+            bottomView.updateConstraints()
+        //            print(bottomView.constraints)
+        }
         
         webViewAddWebContainer()
         buttonTapBind();

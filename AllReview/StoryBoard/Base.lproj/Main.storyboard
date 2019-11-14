@@ -56,35 +56,35 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="nmc-os-h7x" userLabel="HeaderView">
-                                <rect key="frame" x="0.0" y="0.0" width="375" height="50"/>
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="70"/>
                                 <color key="backgroundColor" systemColor="systemBrownColor" red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="50" id="JCS-w1-hH5"/>
+                                    <constraint firstAttribute="height" constant="70" id="JCS-w1-hH5"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Feg-7b-XaU">
-                                <rect key="frame" x="0.0" y="50" width="375" height="547"/>
+                                <rect key="frame" x="0.0" y="70" width="375" height="517"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lqh-Yb-bzz">
-                                <rect key="frame" x="0.0" y="597" width="375" height="70"/>
+                                <rect key="frame" x="0.0" y="587" width="375" height="80"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="z9q-42-eBB">
-                                        <rect key="frame" x="0.0" y="0.0" width="94" height="70"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="94" height="80"/>
                                         <color key="backgroundColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehe-rV-ShY">
-                                        <rect key="frame" x="94" y="0.0" width="93.5" height="70"/>
+                                        <rect key="frame" x="94" y="0.0" width="93.5" height="80"/>
                                         <color key="backgroundColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbL-FT-FN9">
-                                        <rect key="frame" x="187.5" y="0.0" width="94" height="70"/>
+                                        <rect key="frame" x="187.5" y="0.0" width="94" height="80"/>
                                         <color key="backgroundColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNk-JG-Zyw">
-                                        <rect key="frame" x="281.5" y="0.0" width="93.5" height="70"/>
+                                        <rect key="frame" x="281.5" y="0.0" width="93.5" height="80"/>
                                         <color key="backgroundColor" systemColor="systemGrayColor" red="0.5568627451" green="0.5568627451" blue="0.57647058819999997" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <state key="normal" title="Button"/>
                                     </button>
@@ -94,7 +94,7 @@
                                     <constraint firstItem="bbL-FT-FN9" firstAttribute="top" secondItem="lqh-Yb-bzz" secondAttribute="top" id="EwR-NR-mFF"/>
                                     <constraint firstItem="WNk-JG-Zyw" firstAttribute="top" secondItem="lqh-Yb-bzz" secondAttribute="top" id="G0d-BO-DDM"/>
                                     <constraint firstItem="ehe-rV-ShY" firstAttribute="top" secondItem="lqh-Yb-bzz" secondAttribute="top" id="JG1-HP-Sij"/>
-                                    <constraint firstAttribute="height" constant="70" id="Sml-ZN-i3A"/>
+                                    <constraint firstAttribute="height" constant="80" id="Sml-ZN-i3A"/>
                                     <constraint firstAttribute="bottom" secondItem="WNk-JG-Zyw" secondAttribute="bottom" id="V6w-9i-cV7"/>
                                     <constraint firstAttribute="bottom" secondItem="ehe-rV-ShY" secondAttribute="bottom" id="nwr-Ll-NOs"/>
                                     <constraint firstAttribute="bottom" secondItem="z9q-42-eBB" secondAttribute="bottom" id="p2V-Wg-FcZ"/>
@@ -111,15 +111,17 @@
                             <constraint firstItem="lqh-Yb-bzz" firstAttribute="top" secondItem="Feg-7b-XaU" secondAttribute="bottom" id="dLT-hJ-sbc"/>
                             <constraint firstItem="M9S-qD-lZE" firstAttribute="trailing" secondItem="lqh-Yb-bzz" secondAttribute="trailing" id="egQ-tg-TeM"/>
                             <constraint firstItem="M9S-qD-lZE" firstAttribute="trailing" secondItem="Feg-7b-XaU" secondAttribute="trailing" id="ggK-fY-TCa"/>
-                            <constraint firstItem="nmc-os-h7x" firstAttribute="top" secondItem="M9S-qD-lZE" secondAttribute="top" id="q4d-oM-ceD"/>
-                            <constraint firstItem="lqh-Yb-bzz" firstAttribute="bottom" secondItem="M9S-qD-lZE" secondAttribute="bottom" id="t1Y-zA-4Y5"/>
+                            <constraint firstItem="nmc-os-h7x" firstAttribute="top" secondItem="EH8-ar-QLs" secondAttribute="top" id="q4d-oM-ceD"/>
+                            <constraint firstItem="lqh-Yb-bzz" firstAttribute="bottom" secondItem="EH8-ar-QLs" secondAttribute="bottom" id="t1Y-zA-4Y5"/>
                             <constraint firstItem="lqh-Yb-bzz" firstAttribute="leading" secondItem="M9S-qD-lZE" secondAttribute="leading" id="w9j-Ho-Mgd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="M9S-qD-lZE"/>
                     </view>
                     <connections>
                         <outlet property="bottomView" destination="lqh-Yb-bzz" id="u8Q-Wr-kB4"/>
+                        <outlet property="bottomViewHeightConstraint" destination="Sml-ZN-i3A" id="cPh-ll-N4I"/>
                         <outlet property="headerView" destination="nmc-os-h7x" id="GGP-Y8-krx"/>
+                        <outlet property="headerViewHeightConstraint" destination="JCS-w1-hH5" id="aq4-Fk-Yp2"/>
                         <outlet property="mainViewButton" destination="z9q-42-eBB" id="vZq-OW-9pN"/>
                         <outlet property="myViewButton" destination="WNk-JG-Zyw" id="cne-ir-XSU"/>
                         <outlet property="rankViewButton" destination="ehe-rV-ShY" id="j9N-6J-Yhx"/>
