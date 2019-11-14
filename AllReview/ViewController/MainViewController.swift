@@ -40,26 +40,6 @@ class MainViewController: UIViewController {
         
         viewModel = MainViewModel()
         
-        let webMainViewWebConfigure = WKWebViewConfiguration()
-        let webRankViewWebConfigure = WKWebViewConfiguration()
-        let webMyViewWebConfigure = WKWebViewConfiguration()
-        
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - self.bottomView.bounds.height-self.headerView.bounds.height)
-        webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
-        webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
-        webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
-        
-        webViewList = Array<WKWebView>()
-        
-        webViewList.append(webMyView)
-        webViewList.append(webRankView)
-        webViewList.append(webMainView)
-        
-        self.webMainView.uiDelegate = self.viewModel
-        self.webMainView.navigationDelegate = self.viewModel
-        self.webRankView.uiDelegate = self.viewModel
-        self.webMyView.uiDelegate = self.viewModel
-        
         webViewAddWebContainer()
         buttonTapBind();
         initWebView();
@@ -72,6 +52,23 @@ class MainViewController: UIViewController {
     }
     
     private func webViewAddWebContainer() {
+        
+        let webMainViewWebConfigure = WKWebViewConfiguration()
+        let webRankViewWebConfigure = WKWebViewConfiguration()
+        let webMyViewWebConfigure = WKWebViewConfiguration()
+        
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - self.bottomView.bounds.height-self.headerView.bounds.height)
+        webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
+        webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
+        webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
+        
+        webViewList = [webMyView,webRankView,webMainView]
+        
+        self.webMainView.uiDelegate = self.viewModel
+        self.webMainView.navigationDelegate = self.viewModel
+        self.webRankView.uiDelegate = self.viewModel
+        self.webMyView.uiDelegate = self.viewModel
+        
         for item in self.webViewList {
             self.webContainer.addSubview(item)
             item.translatesAutoresizingMaskIntoConstraints = true
