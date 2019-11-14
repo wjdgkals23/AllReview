@@ -25,6 +25,7 @@
 		F4D5049723399296003495AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049623399296003495AB /* Assets.xcassets */; };
 		F4D5049A23399296003495AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049823399296003495AB /* LaunchScreen.storyboard */; };
 		F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D504A82339A1D9003495AB /* LoginViewModel.swift */; };
+		F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D637237CE25100A869A0 /* StringExtension.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -64,6 +65,7 @@
 		F4D5049923399296003495AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4D5049B23399296003495AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D504A82339A1D9003495AB /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
+		F4F0D637237CE25100A869A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -165,6 +167,7 @@
 		F4D5048E23399295003495AB /* AllReview */ = {
 			isa = PBXGroup;
 			children = (
+				F4F0D636237CE24200A869A0 /* Extension */,
 				F46513782366B727004CFBFC /* Model */,
 				90474CFB23658DC200C48C4A /* API */,
 				F465137B2366C723004CFBFC /* Router */,
@@ -204,6 +207,14 @@
 				F4651392236AD4BB004CFBFC /* MainViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		F4F0D636237CE24200A869A0 /* Extension */ = {
+			isa = PBXGroup;
+			children = (
+				F4F0D637237CE25100A869A0 /* StringExtension.swift */,
+			);
+			path = Extension;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -409,6 +420,7 @@
 				90474D012365CDD000C48C4A /* Response.swift in Sources */,
 				F465137D2366C73A004CFBFC /* LoginViewRouter.swift in Sources */,
 				F465137A2366B736004CFBFC /* userSession.swift in Sources */,
+				F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */,
 				F4D5049023399295003495AB /* AppDelegate.swift in Sources */,
 				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,
 				F4651393236AD4BB004CFBFC /* MainViewModel.swift in Sources */,

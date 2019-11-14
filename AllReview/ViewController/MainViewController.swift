@@ -13,9 +13,8 @@ import RxWebKit
 import RxSwift
 import RxCocoa
 
-class MainViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
+class MainViewController: UIViewController {
     
-    private var userLoginSession = UserLoginSession.sharedInstance
     private var disposeBag = DisposeBag()
     
     private var viewModel: MainViewModel!
@@ -56,10 +55,10 @@ class MainViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         webViewList.append(webRankView)
         webViewList.append(webMainView)
         
-        self.webMainView.uiDelegate = self
-        self.webMainView.navigationDelegate = self
-        self.webRankView.uiDelegate = self
-        self.webMyView.uiDelegate = self
+        self.webMainView.uiDelegate = self.viewModel
+        self.webMainView.navigationDelegate = self.viewModel
+        self.webRankView.uiDelegate = self.viewModel
+        self.webMyView.uiDelegate = self.viewModel
         
         webViewAddWebContainer()
         buttonTapBind();
@@ -111,41 +110,6 @@ class MainViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         
     }
     
-    private func initWebView() {
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
-            let userData = ["memberId":data.data._id]
-            let req = (self?.viewModel.urlMaker.rxMakeLoginURLComponents(.mainMainView, userData))!
-            return req
-        }).bind(to: viewModel.mainViewButtonTapped)
-            .disposed(by: disposeBag)
-        
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
-            let userData = ["memberId":data.data._id]
-            let req = (self?.viewModel.urlMaker.rxMakeLoginURLComponents(.mainRankView, userData))!
-            return req
-        }).bind(to: viewModel.rankViewButtonTapped)
-            .disposed(by: disposeBag)
-        
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
-            let userData = ["memberId":data.data._id]
-            let req = (self?.viewModel.urlMaker.rxMakeLoginURLComponents(.mainMyView, userData))!
-            return req
-        }).bind(to: viewModel.myViewButtonTapped)
-            .disposed(by: disposeBag)
-        
-        viewModel.mainViewButtonDriver.asObservable().subscribe(onNext: { (request) in
-            self.webMainView.load(request)
-        }).disposed(by: disposeBag)
-        
-        viewModel.rankViewButtonDriver.asObservable().subscribe(onNext: { (request) in
-            self.webRankView.load(request)
-        }).disposed(by: disposeBag)
-        
-        viewModel.myViewButtonDriver.asObservable().subscribe(onNext: { (request) in
-            self.webMyView.load(request)
-        }).disposed(by: disposeBag)
-    }
-    
     private func buttonflatMap(webView: WKWebView) -> Observable<[Bool]> {
         return Observable.create { (obs) -> Disposable in
             if (!webView.isHidden) {
@@ -157,40 +121,21 @@ class MainViewController: UIViewController, WKUIDelegate, WKNavigationDelegate {
         }
     }
     
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let request = navigationAction.request
-        let url = request.url?.absoluteString
+    private func initWebView() {
         
-        if((url?.contains("https://www.teammiracle.be"))!) {
-            decisionHandler(.allow)
-            return
-        }
-        else if((url?.contains("app://contentDetail"))!) {
-            let index = url?.firstIndex(of: "?") ?? url?.endIndex
-//            print(url?[index!+1...])
-            let queryDict = url?[..<index!]
-            decisionHandler(.allow)
-            return
-        } else {
-            decisionHandler(.cancel)
-            return
-        }
+        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewButtonTapped)
+        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewButtonTapped)
+        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewButtonTapped)
+        
+        viewModel.mainViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+            self.webMainView.load(request)
+        }).disposed(by: disposeBag)
+        viewModel.rankViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+            self.webRankView.load(request)
+        }).disposed(by: disposeBag)
+        viewModel.myViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+            self.webMyView.load(request)
+        }).disposed(by: disposeBag)
     }
-    
-//    func webViewAppCallParsing(_ url: String) -> String {
-//
-//    }
-//
-//    func webViewURLParsing(_ url: String) -> String {
-//
-//    }
-}
 
-extension String {
-    func parseQueryString() -> [String:String] {
-        let returnDict = Dictionary<String,String>()
-        let tempArray = self.split(separator: "&")
-        print(tempArray)
-        return returnDict
-    }
 }

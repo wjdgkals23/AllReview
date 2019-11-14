@@ -8,6 +8,8 @@
 
 import Foundation
 import RxSwift
+import FBSDKCoreKit
+import FBSDKLoginKit
 
 enum SocialType:String {
     case face
@@ -15,7 +17,7 @@ enum SocialType:String {
     case kakao
 }
 
-class LoginViewModel {
+class LoginViewModel: NSObject, LoginButtonDelegate {
     
     private let request = OneLineReviewAPI.sharedInstance
     private let disposeBag = DisposeBag()
@@ -33,20 +35,32 @@ class LoginViewModel {
             "deviceCheckId": "macos-yond",
             "password": "alfkzmf1!"
         ]
-
+        
         self.urlMaker.rxMakeLoginURLComponents(.login, data).flatMap { [weak self] (request) -> Observable<userLoginSession> in
             return (self?.request.rxTestLogin(userData: data).observeOn(self!.backgroundScheduler))!
         }.subscribe(onNext: { [weak self] resData in
             print("Nexst")
             UserLoginSession.sharedInstance.setLoginData(data: resData)
             self?.didSignIn.onNext(())
-        }, onError: { [weak self] err in
-            self?.didFailSignIn.onNext(err)
+            }, onError: { [weak self] err in
+                self?.didFailSignIn.onNext(err)
         }).disposed(by: disposeBag)
     }
     
     func socialRegister() {
         
     }
-
+    
+    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+        guard let result = result else {
+            print(error!.localizedDescription)
+            return
+        }
+        print(result.grantedPermissions)
+    }
+    
+    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
+        print("LogOut")
+        AccessToken.current = nil
+    }
 }

@@ -21,6 +21,7 @@ enum OneLineReview: String {
     case mainRankView = "/page/boxOfficePage"
     case mainMainView = "/page/mainIndexPage"
     case mainMyView = "/page/myPage"
+    case contentDetailView = "/mainList/showContentDetail"
 }
 
 class OneLineReviewURL { // 기본 url 셋팅

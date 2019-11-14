@@ -13,7 +13,7 @@ import Firebase
 import RxSwift
 
 // facebook login logic 옮기기
-class LoginViewController: UIViewController, LoginButtonDelegate {
+class LoginViewController: UIViewController {
     
     private var router: LoginRouter!
     private var viewModel: LoginViewModel!
@@ -42,7 +42,7 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
     func setupView() {
         let loginButton = FBLoginButton()
         
-        loginButton.delegate = self
+        loginButton.delegate = self.viewModel
         loginButton.permissions = ["email","user_gender"]
         
         self.view.addSubview(loginButton)
@@ -79,19 +79,6 @@ class LoginViewController: UIViewController, LoginButtonDelegate {
     
     @IBAction func testLogin(_ sender: Any) {
         viewModel.testLoginTapped()
-    }
-    
-    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        guard let result = result else {
-            print(error!.localizedDescription)
-            return
-        }
-        print(result.grantedPermissions)
-    }
-    
-    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        print("LogOut")
-        AccessToken.current = nil
     }
     
 }
