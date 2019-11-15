@@ -69,7 +69,7 @@ class LoginViewController: UIViewController {
         
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] err in
+            .subscribe(onNext: { err in
             if let error = err as? OneLineReviewError {
                 print(error.localizedDescription)
             }

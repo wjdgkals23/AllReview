@@ -164,4 +164,17 @@ class MainViewController: UIViewController {
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {
         self.router.viewPresent("", ["":""])
     }
+    
+    @IBAction func openSearchViewButtonTapped(_ sender: Any) {
+        self.router.viewPresent("add", ["":""])
+    }
+    
+    @IBAction func backButtonTapped(_ sender: Any) {
+        if(self.webMainView.canGoBack) {
+            self.webMainView.goBack()
+            self.webMainView.reload()
+        } else {
+            print("뒤로갈거 없는디?ㅎㅎ")
+        }
+    }
 }

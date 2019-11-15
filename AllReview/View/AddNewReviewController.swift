@@ -19,7 +19,7 @@ class AddNewReviewController: UIViewController {
 
     @IBAction func cancelButtonTapped(_ sender: Any) {
         if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.popViewController(animated: true)
+            navigationController.popViewController(animated: false)
         }
         else {
             print("View Load Fail")

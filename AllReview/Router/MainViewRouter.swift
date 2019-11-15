@@ -26,9 +26,15 @@ class MainRouter: DefaultRouter {
         }
         
         func viewPresent(_ to: String, _ data: Dictionary<String,String>) {
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "AddNewReviewController")
-            self.navigationController.pushViewController(vc, animated: true)
+            if(to == "add") {
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
+                self.navigationController.pushViewController(vc, animated: false)
+            } else {
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "AddNewReviewController")
+                self.navigationController.pushViewController(vc, animated: false)
+            }
             print("LoginView Present to \(to)")
         }
         
