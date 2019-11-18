@@ -22,6 +22,8 @@
 		F4D4D82E237E366800905117 /* AddNewReviewViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D82D237E366800905117 /* AddNewReviewViewModel.swift */; };
 		F4D4D830237E36A700905117 /* SearchMovieViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D82F237E36A700905117 /* SearchMovieViewController.swift */; };
 		F4D4D832237E36BB00905117 /* SearchMovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D831237E36BB00905117 /* SearchMovieViewModel.swift */; };
+		F4D4D8342382216900905117 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D4D8332382216900905117 /* SignUp.storyboard */; };
+		F4D4D8362382217C00905117 /* ReviewAdd.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D4D8352382217C00905117 /* ReviewAdd.storyboard */; };
 		F4D5049023399295003495AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5048F23399295003495AB /* AppDelegate.swift */; };
 		F4D5049223399295003495AB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5049123399295003495AB /* LoginViewController.swift */; };
 		F4D5049523399295003495AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049323399295003495AB /* Main.storyboard */; };
@@ -66,6 +68,8 @@
 		F4D4D82D237E366800905117 /* AddNewReviewViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddNewReviewViewModel.swift; sourceTree = "<group>"; };
 		F4D4D82F237E36A700905117 /* SearchMovieViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewController.swift; sourceTree = "<group>"; };
 		F4D4D831237E36BB00905117 /* SearchMovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewModel.swift; sourceTree = "<group>"; };
+		F4D4D8332382216900905117 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
+		F4D4D8352382217C00905117 /* ReviewAdd.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewAdd.storyboard; sourceTree = "<group>"; };
 		F4D5048C23399295003495AB /* AllReview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AllReview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5048F23399295003495AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5049123399295003495AB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -200,6 +204,8 @@
 			isa = PBXGroup;
 			children = (
 				F4D5049323399295003495AB /* Main.storyboard */,
+				F4D4D8332382216900905117 /* SignUp.storyboard */,
+				F4D4D8352382217C00905117 /* ReviewAdd.storyboard */,
 			);
 			path = StoryBoard;
 			sourceTree = "<group>";
@@ -327,10 +333,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F4D4D8362382217C00905117 /* ReviewAdd.storyboard in Resources */,
 				F4D5049A23399296003495AB /* LaunchScreen.storyboard in Resources */,
 				F465137723668C33004CFBFC /* GoogleService-Info.plist in Resources */,
 				F4D5049723399296003495AB /* Assets.xcassets in Resources */,
 				F4D5049523399295003495AB /* Main.storyboard in Resources */,
+				F4D4D8342382216900905117 /* SignUp.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

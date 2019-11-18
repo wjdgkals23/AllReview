@@ -146,19 +146,28 @@ class MainViewController: UIViewController {
     
     private func initWebView() {
         
-        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewButtonTapped)
-        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewButtonTapped)
-        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewButtonTapped)
+        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
+        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
+        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
         
-        viewModel.mainViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webMainView.load(request)
+        }, onError: { (err) in
+            print("Err \(err)")
         }).disposed(by: disposeBag)
-        viewModel.rankViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+        
+        self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webRankView.load(request)
+        }, onError: { (err) in
+            print("Err \(err)")
         }).disposed(by: disposeBag)
-        viewModel.myViewButtonDriver.asObservable().subscribe(onNext: { (request) in
+        
+        self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webMyView.load(request)
+        }, onError: { (err) in
+            print("Err \(err)")
         }).disposed(by: disposeBag)
+
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {

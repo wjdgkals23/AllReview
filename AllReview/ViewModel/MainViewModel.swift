@@ -20,29 +20,21 @@ class MainViewModel: NSObject, WKUIDelegate, WKNavigationDelegate {
     private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     public var urlMaker = OneLineReviewURL()
     
-    let mainViewButtonTapped:BehaviorSubject<URLRequest>
-    let rankViewButtonTapped:BehaviorSubject<URLRequest>
-    let myViewButtonTapped:BehaviorSubject<URLRequest>
-    
-    let mainViewButtonDriver:Driver<URLRequest>
-    let rankViewButtonDriver:Driver<URLRequest>
-    let myViewButtonDriver:Driver<URLRequest>
+    let mainViewRequestSubject:BehaviorSubject<URLRequest>
+    let rankViewRequestSubject:BehaviorSubject<URLRequest>
+    let myViewRequestSubject:BehaviorSubject<URLRequest>
     
     override init() {
-        mainViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        rankViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        myViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        
-        mainViewButtonDriver = mainViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        rankViewButtonDriver = rankViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        myViewButtonDriver = myViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        mainViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        rankViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        myViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest>) {
         userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
             let userData = ["memberId":data.data._id]
-            let req = (self?.urlMaker.rxMakeLoginURLComponents(urlTarget, userData))!
+            let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
             return req
         }).bind(to: subject)
             .disposed(by: disposeBag)
@@ -61,7 +53,7 @@ class MainViewModel: NSObject, WKUIDelegate, WKNavigationDelegate {
             let index = url?.firstIndex(of: "?") ?? url?.endIndex
             let temp = String((url?[index!...])!)
             let queryDict = temp.parseQueryString()
-            self.urlMaker.rxMakeLoginURLComponents(.contentDetailView, queryDict).bind(to: mainViewButtonTapped).disposed(by: disposeBag)
+            self.urlMaker.rxMakeURLRequestObservable(.contentDetailView, queryDict).bind(to: mainViewRequestSubject).disposed(by: disposeBag)
             return
         } else {
             decisionHandler(.cancel)

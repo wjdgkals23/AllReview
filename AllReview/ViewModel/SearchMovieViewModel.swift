@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate {
+class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
     
     private var userLoginSession = UserLoginSession.sharedInstance
     private let request = OneLineReviewAPI.sharedInstance
@@ -23,30 +23,19 @@ class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate {
     var searchBarSubject:BehaviorSubject<Bool>!
     var searchButtonEnabledDriver:Driver<Bool>!
     
-    let didSearchIn = PublishSubject<URLRequest>()
-    let didFailSearchIn = PublishSubject<Error>()
-    
-    let mainViewButtonTapped:BehaviorSubject<URLRequest>
-    let mainViewButtonDriver:Driver<URLRequest>
+    var searchResultSubject:BehaviorSubject<URLRequest>!
     
     override init() {
         super.init()
-        
-        mainViewButtonTapped = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        mainViewButtonDriver = mainViewButtonTapped.distinctUntilChanged().asDriver(onErrorJustReturn: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        searchResultSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         
         searchBarSubject = BehaviorSubject(value: false)
         searchButtonEnabledDriver = searchBarSubject.distinctUntilChanged().asDriver(onErrorJustReturn: false)
     }
     
-//    public func
-    
-    public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest>) {
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
-            let userData = ["memberId":data.data._id]
-            let req = (self?.urlMaker.rxMakeLoginURLComponents(urlTarget, userData))!
-            return req
-        }).bind(to: subject)
-            .disposed(by: disposeBag)
+    public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
+        let userData = ["queryMovieName":keyWord]
+        let req = (self.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))
+        req.bind(to: self.searchResultSubject).disposed(by: disposeBag)
     }
 }

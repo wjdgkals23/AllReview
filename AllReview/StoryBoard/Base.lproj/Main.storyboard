@@ -322,28 +322,43 @@
                                         <rect key="frame" x="15" y="58" width="22" height="22"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="22" id="Bky-50-Qgg"/>
-                                            <constraint firstAttribute="width" constant="22" id="iP9-3v-su1"/>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="iP9-3v-su1"/>
                                         </constraints>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <state key="normal" image="arrow.left" catalog="system">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                     </button>
-                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mFf-gI-wOW">
-                                        <rect key="frame" x="57" y="52" width="298" height="34"/>
+                                    <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mFf-gI-wOW">
+                                        <rect key="frame" x="57" y="52" width="268" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27W-ON-3pJ">
+                                        <rect key="frame" x="335" y="60" width="30" height="20"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="VWq-US-90w"/>
+                                            <constraint firstAttribute="height" constant="20" id="toh-ai-hWc"/>
+                                        </constraints>
+                                        <state key="normal" title="검색"/>
+                                        <state key="disabled" title="XX"/>
+                                        <connections>
+                                            <action selector="searchButtonTapped:" destination="cAg-qp-xcJ" eventType="touchUpInside" id="9SX-u9-5h5"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
                                     <constraint firstItem="vr0-Ej-xij" firstAttribute="leading" secondItem="VQr-v6-M2l" secondAttribute="leading" constant="15" id="0FB-1A-nv4"/>
                                     <constraint firstItem="mFf-gI-wOW" firstAttribute="top" secondItem="VQr-v6-M2l" secondAttribute="top" constant="52" id="0uF-bK-32V"/>
+                                    <constraint firstItem="27W-ON-3pJ" firstAttribute="top" secondItem="VQr-v6-M2l" secondAttribute="top" constant="60" id="27X-Kw-KoM"/>
+                                    <constraint firstAttribute="bottom" secondItem="27W-ON-3pJ" secondAttribute="bottom" constant="10" id="ABD-FR-ZCl"/>
                                     <constraint firstAttribute="bottom" secondItem="vr0-Ej-xij" secondAttribute="bottom" constant="10" id="bAG-Zt-8N1"/>
                                     <constraint firstAttribute="height" constant="90" id="f2A-P8-YE3"/>
                                     <constraint firstItem="mFf-gI-wOW" firstAttribute="leading" secondItem="vr0-Ej-xij" secondAttribute="trailing" constant="20" id="hcB-Mo-hlT"/>
                                     <constraint firstAttribute="bottom" secondItem="mFf-gI-wOW" secondAttribute="bottom" constant="4" id="ref-Ma-Fgd"/>
-                                    <constraint firstAttribute="trailing" secondItem="mFf-gI-wOW" secondAttribute="trailing" constant="20" id="zrm-Mo-iu7"/>
+                                    <constraint firstAttribute="trailing" secondItem="27W-ON-3pJ" secondAttribute="trailing" constant="10" id="vx8-T5-5Tj"/>
+                                    <constraint firstItem="27W-ON-3pJ" firstAttribute="leading" secondItem="mFf-gI-wOW" secondAttribute="trailing" constant="10" id="wMo-5E-0Vf"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zjd-UE-jnU">
@@ -363,8 +378,9 @@
                         <viewLayoutGuide key="safeArea" id="FMD-d0-BNR"/>
                     </view>
                     <connections>
+                        <outlet property="cancelButton" destination="vr0-Ej-xij" id="q2R-l5-eBe"/>
                         <outlet property="searchBar" destination="mFf-gI-wOW" id="jzl-jR-wcR"/>
-                        <outlet property="searchButton" destination="vr0-Ej-xij" id="XZJ-CI-3BT"/>
+                        <outlet property="searchButton" destination="27W-ON-3pJ" id="g5c-oc-Tg2"/>
                         <outlet property="webContainer" destination="Zjd-UE-jnU" id="rDu-o9-IHp"/>
                     </connections>
                 </viewController>

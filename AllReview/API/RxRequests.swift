@@ -29,7 +29,7 @@ class OneLineReviewAPI {
     }
     
     func rxTestLogin(userData: [String:String]) -> Observable<userLoginSession> {
-        self.urlMaker.rxMakeLoginURLComponents(OneLineReview.login, userData).flatMap { urlRequest -> Observable<userLoginSession> in
+        self.urlMaker.rxMakeURLRequestObservable(OneLineReview.login, userData).flatMap { urlRequest -> Observable<userLoginSession> in
             let dataTask = URLSession.shared.rx.response(request: urlRequest)
             return dataTask
                 .debug("testLoginRequest")

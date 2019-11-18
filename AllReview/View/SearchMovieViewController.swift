@@ -21,16 +21,17 @@ class SearchMovieViewController: UIViewController {
     private var router: MainRouter!
     
     private var webMainView: WKWebView!
-
+    
     @IBOutlet var webContainer: UIView!
     @IBOutlet var searchBar: UITextField!
     @IBOutlet var searchButton: UIButton!
+    @IBOutlet var cancelButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        webViewAddWebContainer()
         // Do any additional setup after loading the view.
         viewModel = SearchMovieViewModel()
+        webViewAddWebContainer()
         
         let searchKeywordValid = self.searchBar.rx.text.map{ $0!.count > 1 }
         searchKeywordValid
@@ -40,10 +41,6 @@ class SearchMovieViewController: UIViewController {
         viewModel.searchButtonEnabledDriver
             .drive(self.searchButton.rx.isEnabled)
             .disposed(by: disposeBag)
-        
-        self.searchButton.rx.tap.flatMap { _ -> Observable<String> in
-            return 
-        }
     }
     
     private func webViewAddWebContainer() {
@@ -62,17 +59,28 @@ class SearchMovieViewController: UIViewController {
         webMainView.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
         webMainView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
         webMainView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
+        
+        self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
+            self.webMainView.load(request) // 실패화면 구현 요청
+//            self.webMainView.reload()
+        }, onError: { (err) in
+            print("Error \(err.localizedDescription)")
+        }).disposed(by: disposeBag)
+        
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
+    @IBAction func searchButtonTapped(_ sender: Any) {
+        self.viewModel.searchKeywordBindResultPage(.searchMovie, self.searchBar.text!)
     }
-    */
-
+    
+    /*
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
