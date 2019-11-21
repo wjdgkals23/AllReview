@@ -32,14 +32,14 @@ class SearchMovieViewController: UIViewController {
         viewModel = SearchMovieViewModel()
         webViewAddWebContainer()
         
-        let searchKeywordValid = self.searchBar.rx.text.map{ $0!.count > 1 }
-        searchKeywordValid
-            .bind(to: viewModel.searchBarSubject)
+        self.searchBar.rx.text.distinctUntilChanged()
+            .bind(to: viewModel.keywordTextSubject)
             .disposed(by: disposeBag)
         
         viewModel.searchButtonEnabledDriver
             .drive(self.searchButton.rx.isEnabled)
             .disposed(by: disposeBag)
+        
     }
     
     private func webViewAddWebContainer() {

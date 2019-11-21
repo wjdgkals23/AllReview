@@ -55,7 +55,7 @@ class MainViewController: UIViewController {
             
             if(UIDevice.modelName == "iPhone 11 Pro") {
                 print("HERE")
-                headerViewHeightConstraint.constant = 90
+                headerViewHeightConstraint.constant = 80
                 bottomView.updateConstraints()
                 //            print(bottomView.constraints)
             }

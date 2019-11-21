@@ -20,6 +20,7 @@ class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
     private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     public var urlMaker = OneLineReviewURL()
     
+    var keywordTextSubject:BehaviorSubject<String?>!
     var searchBarSubject:BehaviorSubject<Bool>!
     var searchButtonEnabledDriver:Driver<Bool>!
     
@@ -27,10 +28,24 @@ class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
     
     override init() {
         super.init()
+        keywordTextSubject = BehaviorSubject(value: "")
         searchResultSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         
-        searchBarSubject = BehaviorSubject(value: false)
-        searchButtonEnabledDriver = searchBarSubject.distinctUntilChanged().asDriver(onErrorJustReturn: false)
+        let searchButtonEnabledObservable:Observable<Bool> = keywordTextSubject.distinctUntilChanged().flatMap { (keyword) -> Observable<Bool> in
+            return Observable.create { (obs) -> Disposable in
+                if let keyWord = keyword {
+                    let searchButtonEnabled = keyWord.count > 0
+                    obs.onNext(searchButtonEnabled)
+                    return Disposables.create()
+                } else {
+                    obs.onError(OneLineReviewError.parsing(description: "KeyWordParse ERROR"))
+                    return Disposables.create()
+                }
+            }
+        }
+
+        searchButtonEnabledDriver = searchButtonEnabledObservable.asDriver(onErrorJustReturn: false)
+        
     }
     
     public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
