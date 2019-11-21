@@ -24,6 +24,10 @@
 		F4D4D832237E36BB00905117 /* SearchMovieViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D831237E36BB00905117 /* SearchMovieViewModel.swift */; };
 		F4D4D8342382216900905117 /* SignUp.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D4D8332382216900905117 /* SignUp.storyboard */; };
 		F4D4D8362382217C00905117 /* ReviewAdd.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D4D8352382217C00905117 /* ReviewAdd.storyboard */; };
+		F4D4D842238625EE00905117 /* SignUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D841238625EE00905117 /* SignUpViewController.swift */; };
+		F4D4D8442386260200905117 /* SignUpViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D8432386260200905117 /* SignUpViewModel.swift */; };
+		F4D4D8462386261200905117 /* SignUpViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D8452386261200905117 /* SignUpViewRouter.swift */; };
+		F4D4D848238628AD00905117 /* ViewControllerExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D4D847238628AD00905117 /* ViewControllerExtension.swift */; };
 		F4D5049023399295003495AB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5048F23399295003495AB /* AppDelegate.swift */; };
 		F4D5049223399295003495AB /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D5049123399295003495AB /* LoginViewController.swift */; };
 		F4D5049523399295003495AB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049323399295003495AB /* Main.storyboard */; };
@@ -70,6 +74,10 @@
 		F4D4D831237E36BB00905117 /* SearchMovieViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewModel.swift; sourceTree = "<group>"; };
 		F4D4D8332382216900905117 /* SignUp.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = SignUp.storyboard; sourceTree = "<group>"; };
 		F4D4D8352382217C00905117 /* ReviewAdd.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = ReviewAdd.storyboard; sourceTree = "<group>"; };
+		F4D4D841238625EE00905117 /* SignUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewController.swift; sourceTree = "<group>"; };
+		F4D4D8432386260200905117 /* SignUpViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewModel.swift; sourceTree = "<group>"; };
+		F4D4D8452386261200905117 /* SignUpViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SignUpViewRouter.swift; sourceTree = "<group>"; };
+		F4D4D847238628AD00905117 /* ViewControllerExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewControllerExtension.swift; sourceTree = "<group>"; };
 		F4D5048C23399295003495AB /* AllReview.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AllReview.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4D5048F23399295003495AB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		F4D5049123399295003495AB /* LoginViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
@@ -157,6 +165,7 @@
 				F465137C2366C73A004CFBFC /* LoginViewRouter.swift */,
 				F46513822367BBBA004CFBFC /* DefaultRouter.swift */,
 				F4F0D63D237D252C00A869A0 /* MainViewRouter.swift */,
+				F4D4D8452386261200905117 /* SignUpViewRouter.swift */,
 			);
 			path = Router;
 			sourceTree = "<group>";
@@ -217,6 +226,7 @@
 				F46513842367EEFD004CFBFC /* MainViewController.swift */,
 				F4F0D63B237D213200A869A0 /* AddNewReviewController.swift */,
 				F4D4D82F237E36A700905117 /* SearchMovieViewController.swift */,
+				F4D4D841238625EE00905117 /* SignUpViewController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -228,6 +238,7 @@
 				F4651392236AD4BB004CFBFC /* MainViewModel.swift */,
 				F4D4D82D237E366800905117 /* AddNewReviewViewModel.swift */,
 				F4D4D831237E36BB00905117 /* SearchMovieViewModel.swift */,
+				F4D4D8432386260200905117 /* SignUpViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -237,6 +248,7 @@
 			children = (
 				F4F0D637237CE25100A869A0 /* StringExtension.swift */,
 				F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */,
+				F4D4D847238628AD00905117 /* ViewControllerExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -440,11 +452,14 @@
 			files = (
 				F4F0D63C237D213300A869A0 /* AddNewReviewController.swift in Sources */,
 				90474CFF2365CC8500C48C4A /* RxRequests.swift in Sources */,
+				F4D4D8442386260200905117 /* SignUpViewModel.swift in Sources */,
 				F4F0D63A237CF04400A869A0 /* UIDeviceExtension.swift in Sources */,
 				F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */,
 				90474CFD23658DCF00C48C4A /* URLCompoents.swift in Sources */,
 				F4D5049223399295003495AB /* LoginViewController.swift in Sources */,
+				F4D4D8462386261200905117 /* SignUpViewRouter.swift in Sources */,
 				F46513832367BBBA004CFBFC /* DefaultRouter.swift in Sources */,
+				F4D4D842238625EE00905117 /* SignUpViewController.swift in Sources */,
 				F4D4D832237E36BB00905117 /* SearchMovieViewModel.swift in Sources */,
 				F4D4D82E237E366800905117 /* AddNewReviewViewModel.swift in Sources */,
 				90474D012365CDD000C48C4A /* Response.swift in Sources */,
@@ -453,6 +468,7 @@
 				F465137A2366B736004CFBFC /* userSession.swift in Sources */,
 				F4F0D63E237D252C00A869A0 /* MainViewRouter.swift in Sources */,
 				F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */,
+				F4D4D848238628AD00905117 /* ViewControllerExtension.swift in Sources */,
 				F4D5049023399295003495AB /* AppDelegate.swift in Sources */,
 				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,
 				F4651393236AD4BB004CFBFC /* MainViewModel.swift in Sources */,

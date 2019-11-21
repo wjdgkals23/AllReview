@@ -18,7 +18,7 @@ class MainViewController: UIViewController {
     private var disposeBag = DisposeBag()
     
     private var viewModel: MainViewModel!
-    private var router: MainRouter!
+    private var router: DefaultRouter!
     
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
@@ -42,10 +42,9 @@ class MainViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+        if let navi = catchNavigation() {
             viewModel = MainViewModel()
-            router = MainRouter(navigation: navigationController)
+            router = MainRouter(navigation: navi)
             
             if(UIDevice.modelName == "Simulator iPhone 8") {
                 print("HERE")
@@ -60,16 +59,14 @@ class MainViewController: UIViewController {
                 bottomView.updateConstraints()
                 //            print(bottomView.constraints)
             }
-            
+
             webViewAddWebContainer()
             buttonTapBind();
             initWebView();
-            
-            //            navigationController.setNavigationBarHidden(true, animated: false)
+        } else {
+            self.viewDidLoad()
         }
-        else {
-            print("View Load Fail")
-        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {

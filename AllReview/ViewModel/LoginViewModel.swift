@@ -20,7 +20,7 @@ enum SocialType:String {
 class LoginViewModel: NSObject, LoginButtonDelegate {
     
     private let request = OneLineReviewAPI.sharedInstance
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     private var urlMaker = OneLineReviewURL()
     
@@ -36,17 +36,15 @@ class LoginViewModel: NSObject, LoginButtonDelegate {
             "password": "alfkzmf1!"
         ]
         
-        self.urlMaker.rxMakeURLRequestObservable(.login, data).flatMap { [weak self] (request) -> Observable<userLoginSession> in
-            return (self?.request.rxTestLogin(userData: data).observeOn(self!.backgroundScheduler))!
-        }.subscribe(onNext: { [weak self] resData in
-            UserLoginSession.sharedInstance.setLoginData(data: resData)
-            self?.didSignIn.onNext(())
-            }, onError: { [weak self] err in
-                self?.didFailSignIn.onNext(err)
-        }).disposed(by: disposeBag)
-    }
-    
-    func socialRegister() {
+        self.request.rxTestLogin(userData: data).observeOn(self.backgroundScheduler)
+            .subscribe(onNext: { [weak self] res in
+                UserLoginSession.sharedInstance.setLoginData(data: res)
+                self?.didSignIn.onNext(())
+                }, onError: { [weak self] err in
+                    self?.didFailSignIn.onNext(err)
+                }, onDisposed: { () -> Void in
+                    print("Test Login Disposed")
+            }).disposed(by: disposeBag)
         
     }
     
@@ -59,7 +57,6 @@ class LoginViewModel: NSObject, LoginButtonDelegate {
     }
     
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        print("LogOut")
         AccessToken.current = nil
     }
 }

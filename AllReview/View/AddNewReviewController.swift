@@ -13,6 +13,12 @@ class AddNewReviewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        if let navi = catchNavigation() {
+//            router = LoginRouter(navigation: navi)
+//            viewModel = LoginViewModel()
+        } else {
+            self.viewDidLoad()
+        }
         // Do any additional setup after loading the view.
     }
     

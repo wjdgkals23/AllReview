@@ -27,15 +27,11 @@ class LoginViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+        if let navi = catchNavigation() {
+            router = LoginRouter(navigation: navi)
             viewModel = LoginViewModel()
-            router = LoginRouter(navigation: navigationController)
-            setupView()
-            setupBinding()
-            navigationController.setNavigationBarHidden(true, animated: false)
-        }
-        else {
-            print("View Load Fail")
+        } else {
+            self.viewDidLoad()
         }
     }
     
@@ -82,5 +78,8 @@ class LoginViewController: UIViewController {
         viewModel.testLoginTapped()
     }
     
+    @IBAction func signUpViewButtonTapped(_ sender: Any) {
+        router.naviPush("signUp", [:])
+    }
 }
 

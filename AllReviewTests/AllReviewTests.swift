@@ -40,7 +40,7 @@ class AllReviewTests: XCTestCase {
             .subscribeOn(MainScheduler.instance)
             .subscribe(onNext: { resData in
                 print(resData)
-                XCTAssert(resData is userSession?)
+                XCTAssert(resData is userLoginSession?)
             }, onError: { err in
                 print(err)
             }).disposed(by: disposeBag)

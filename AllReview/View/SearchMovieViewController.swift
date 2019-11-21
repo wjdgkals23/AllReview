@@ -15,7 +15,6 @@ import RxWebKit
 class SearchMovieViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
-    private var disposeBles = Disposables.create()
     
     private var viewModel: SearchMovieViewModel!
     private var router: MainRouter!
@@ -73,6 +72,14 @@ class SearchMovieViewController: UIViewController {
         self.viewModel.searchKeywordBindResultPage(.searchMovie, self.searchBar.text!)
     }
     
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.popViewController(animated: false)
+        }
+        else {
+            print("View Load Fail")
+        }
+    }
     /*
      // MARK: - Navigation
      

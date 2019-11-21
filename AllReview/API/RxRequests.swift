@@ -32,7 +32,7 @@ class OneLineReviewAPI {
         self.urlMaker.rxMakeURLRequestObservable(OneLineReview.login, userData).flatMap { urlRequest -> Observable<userLoginSession> in
             let dataTask = URLSession.shared.rx.response(request: urlRequest)
             return dataTask
-                .debug("testLoginRequest")
+                .debug("TEST LOGIN REQUEST")
                 .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<userLoginSession> in
                     if 200 ..< 300 ~= response.statusCode {
                         do {

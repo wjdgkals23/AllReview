@@ -30,7 +30,9 @@ class LoginRouter: DefaultRouter {
             let vc = storyBoard.instantiateViewController(withIdentifier: "MainViewController")
             navigationController.pushViewController(vc, animated: true)
         case LoginRoute.signUp.rawValue:
-            print("signUp")
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: "SignUpViewController")
+            navigationController.pushViewController(vc, animated: true)
         default:
             print("default")
         }
