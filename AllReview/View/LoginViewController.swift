@@ -23,12 +23,13 @@ class LoginViewController: UIViewController {
 //    뷰에 보여질 데이터와 비즈니스 로직 포함 객체
     
     @IBOutlet var testLogin: UIButton!
+    @IBOutlet var signUpButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         if let navi = catchNavigation() {
-            navi.setNavigationBarHidden(true, animated: false)
+//            navi.setNavigationBarHidden(true, animated: false)
             router = LoginRouter(navigation: navi)
             viewModel = LoginViewModel()
             setupView()
@@ -81,8 +82,8 @@ class LoginViewController: UIViewController {
         viewModel.testLoginTapped()
     }
     
-    @IBAction func signUpViewButtonTapped(_ sender: Any) {
-        router.naviPush("signUp", [:])
+    @IBAction func signUpButtonTapped(_ sender: Any) {
+        router.naviPush("signUp", ["":""])
     }
 }
 

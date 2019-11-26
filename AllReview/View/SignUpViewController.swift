@@ -12,10 +12,15 @@ import RxCocoa
 
 class SignUpViewController: UIViewController {
 
-    @IBOutlet var emailTextField: UITextField!
-    @IBOutlet var pwTextField: UITextField!
-    @IBOutlet var nickNameTextField: UITextField!
     @IBOutlet var signUpButton: UIButton!
+    
+    @IBOutlet var emailTextFieldView: UIView!
+    @IBOutlet var pwTextFieldView: UIView!
+    @IBOutlet var nickTextFieldView: UIView!
+    
+    @IBOutlet var emailTextField: UITextField!
+    @IBOutlet var pwTextField: UIView!
+    @IBOutlet var nickNameTextField: UITextField!
     
     private var viewModel: SignUpViewModel!
     private let disposeBag = DisposeBag()

@@ -30,7 +30,6 @@ class SignUpViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
     var signUpDataValid:Driver<Bool>!
     
     override init() {
-        super.init()
         emailValidSubject = BehaviorSubject(value: nil)
         pwValidSubject = BehaviorSubject(value: nil)
         nickNameValidSubject = BehaviorSubject(value: nil)
@@ -46,5 +45,6 @@ class SignUpViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
         })
         
         self.signUpDataValid = signUpEnable.asDriver(onErrorJustReturn: false)
+        super.init()
     }
 }
