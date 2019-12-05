@@ -19,8 +19,11 @@ class SignUpViewController: UIViewController {
     @IBOutlet var nickTextFieldView: UIView!
     
     @IBOutlet var emailTextField: UITextField!
-    @IBOutlet var pwTextField: UIView!
+    @IBOutlet var pwTextField: UITextField!
     @IBOutlet var nickNameTextField: UITextField!
+    
+    @IBOutlet var femaleSelected: UIButton!
+    @IBOutlet var maleSelected: UIButton!
     
     private var viewModel: SignUpViewModel!
     private let disposeBag = DisposeBag()
@@ -29,12 +32,34 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         
         viewModel = SignUpViewModel()
+        self.emailTextField.rx.text.distinctUntilChanged().bind(to: self.viewModel.emailValidSubject).disposed(by: disposeBag)
+        self.pwTextField.rx.text.distinctUntilChanged().bind(to: self.viewModel.pwValidSubject).disposed(by: disposeBag)
+        self.nickNameTextField.rx.text.distinctUntilChanged().bind(to: self.viewModel.nickNameValidSubject).disposed(by: disposeBag)
         
-        emailTextField.rx.text.distinctUntilChanged().bind(to: viewModel.emailValidSubject).disposed(by: disposeBag)
-        pwTextField.rx.text.distinctUntilChanged().bind(to: viewModel.pwValidSubject).disposed(by: disposeBag)
-        nickNameTextField.rx.text.distinctUntilChanged().bind(to: viewModel.nickNameValidSubject).disposed(by: disposeBag)
         
-        viewModel.signUpDataValid.drive(self.signUpButton.rx.isEnabled).disposed(by: disposeBag)
+        self.femaleSelected.rx.tap.flatMap { [weak self] _ -> Observable<Bool> in
+            return Observable.just((self?.femaleSelected.isSelected)!)
+        }
+        .bind(to: viewModel.femaleSelected)
+        .disposed(by: disposeBag)
+        
+        self.maleSelected.rx.tap.flatMap { [weak self] _ -> Observable<Bool> in
+            return Observable.just((self?.maleSelected.isSelected)!)
+        }
+        .bind(to: viewModel.maleSelected)
+        .disposed(by: disposeBag)
+        
+        self.viewModel.valFemaleSelected.subscribe(onNext: { [weak self] val in
+            self?.femaleSelected.isSelected = !val
+            self?.maleSelected.isSelected = val
+        }).disposed(by: disposeBag)
+        
+        self.viewModel.valMaleSelected.subscribe(onNext: { [weak self] val in
+            self?.femaleSelected.isSelected = val
+            self?.maleSelected.isSelected = !val
+        }).disposed(by: disposeBag)
+        
+        self.viewModel.signUpDataValid.drive(self.signUpButton.rx.isEnabled).disposed(by: disposeBag)
         // Do any additional setup after loading the view.
     }
     

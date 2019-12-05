@@ -81,11 +81,11 @@ class MainViewController: UIViewController {
         let webMyViewWebConfigure = WKWebViewConfiguration()
         
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - self.bottomView.bounds.height-self.headerView.bounds.height)
-        webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
-        webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
-        webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
+        self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
+        self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
+        self.webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
         
-        webViewList = [webMyView,webRankView,webMainView]
+        self.webViewList = [self.webMyView,self.webRankView,self.webMainView]
         
         self.webMainView.uiDelegate = self.viewModel
         self.webMainView.navigationDelegate = self.viewModel
@@ -104,7 +104,7 @@ class MainViewController: UIViewController {
     
     private func buttonTapBind() {
         
-        mainViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
+        self.mainViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webMainView)
         }.subscribe(onNext: { [weak self] item in
             self?.webMainView.isHidden = item[0];
@@ -112,7 +112,7 @@ class MainViewController: UIViewController {
             self?.webRankView.isHidden = item[1];
         }).disposed(by: disposeBag)
         
-        rankViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
+        self.rankViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webRankView)
         }.subscribe(onNext: { [weak self] item in
             self?.webRankView.isHidden = item[0];
@@ -120,7 +120,7 @@ class MainViewController: UIViewController {
             self?.webMainView.isHidden = item[1];
         }).disposed(by: disposeBag)
         
-        myViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
+        self.myViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webMyView)
         }.subscribe(onNext: { [weak self] item in
             self?.webMyView.isHidden = item[0];

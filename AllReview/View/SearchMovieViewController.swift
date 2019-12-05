@@ -47,17 +47,17 @@ class SearchMovieViewController: UIViewController {
         let webMainViewWebConfigure = WKWebViewConfiguration()
         
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
+        self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         
         self.webMainView.uiDelegate = self.viewModel
         self.webMainView.navigationDelegate = self.viewModel
         
         self.webContainer.addSubview(webMainView)
-        webMainView.translatesAutoresizingMaskIntoConstraints = true
-        webMainView.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
-        webMainView.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
-        webMainView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
-        webMainView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
+        self.webMainView.translatesAutoresizingMaskIntoConstraints = true
+        self.webMainView.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
+        self.webMainView.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
+        self.webMainView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
+        self.webMainView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
             self.webMainView.load(request) // 실패화면 구현 요청

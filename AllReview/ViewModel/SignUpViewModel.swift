@@ -27,12 +27,37 @@ class SignUpViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
     var pwDriver:Driver<String>!
     var nickNameDriver:Driver<String>!
     
+    var femaleSelected:BehaviorSubject<Bool>!
+    var maleSelected:BehaviorSubject<Bool>!
+    
+    var valFemaleSelected:Observable<Bool>!
+    var valMaleSelected:Observable<Bool>!
+    
     var signUpDataValid:Driver<Bool>!
     
     override init() {
-        emailValidSubject = BehaviorSubject(value: nil)
-        pwValidSubject = BehaviorSubject(value: nil)
-        nickNameValidSubject = BehaviorSubject(value: nil)
+        super.init()
+        
+        self.emailValidSubject = BehaviorSubject(value: nil)
+        self.pwValidSubject = BehaviorSubject(value: nil)
+        self.nickNameValidSubject = BehaviorSubject(value: nil)
+        
+        femaleSelected = BehaviorSubject(value: false)
+        maleSelected = BehaviorSubject(value: false)
+
+        self.valFemaleSelected = femaleSelected.distinctUntilChanged().flatMap { value -> Observable<Bool> in
+            if (value) { return Observable.just(value) }
+            else { return Observable.just(!value) }
+        }
+
+        self.valMaleSelected = maleSelected.distinctUntilChanged().flatMap { value -> Observable<Bool> in
+            if (value) { return Observable.just(value) }
+            else { return Observable.just(!value) }
+        }
+        
+        let genderSelected = Observable.combineLatest(valMaleSelected, valFemaleSelected, resultSelector: { male,female in
+            return Observable.just(male^female)
+        })
         
         let signUpEnable:Observable<Bool> = Observable.combineLatest(emailValidSubject.asObservable(), pwValidSubject.asObservable(), nickNameValidSubject.asObservable(), resultSelector: { email,pw,nickName in
             var emailValid = false
@@ -45,6 +70,12 @@ class SignUpViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
         })
         
         self.signUpDataValid = signUpEnable.asDriver(onErrorJustReturn: false)
-        super.init()
+        
+    }
+}
+
+extension Bool {
+    static func ^ (left: Bool, right: Bool) -> Bool {
+        return left != right
     }
 }
