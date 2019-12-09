@@ -41,25 +41,11 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+        self.view.superview?.backgroundColor = .white
         if let navi = catchNavigation() {
             viewModel = MainViewModel()
             router = MainRouter(navigation: navi)
-            
-            if(UIDevice.modelName == "Simulator iPhone 8") {
-                print("HERE")
-                bottomViewHeightConstraint.constant = 70
-                bottomView.updateConstraints()
-                //            print(bottomView.constraints)
-            }
-            
-            if(UIDevice.modelName == "iPhone 11 Pro") {
-                print("HERE")
-                headerViewHeightConstraint.constant = 80
-                bottomView.updateConstraints()
-                //            print(bottomView.constraints)
-            }
-
+            navi.isNavigationBarHidden = true;
             webViewAddWebContainer()
             buttonTapBind();
             initWebView();
