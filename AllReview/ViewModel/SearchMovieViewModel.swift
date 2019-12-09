@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
+class SearchMovieViewModel: NSObject{
     
     private var userLoginSession = UserLoginSession.sharedInstance
     private let request = OneLineReviewAPI.sharedInstance
@@ -53,4 +53,30 @@ class SearchMovieViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
         let req = (self.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))
         req.bind(to: self.searchResultSubject).disposed(by: disposeBag)
     }
+}
+
+extension SearchMovieViewModel: WKUIDelegate, WKNavigationDelegate{
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let request = navigationAction.request
+        let url = request.url?.absoluteString
+        if((url?.contains("https://www.teammiracle.be/"))!) {
+            decisionHandler(.allow)
+            return
+        }
+        else if((url?.contains("app://writeContent"))!) {
+            decisionHandler(.allow)
+            let index = url?.firstIndex(of: "?") ?? url?.endIndex
+            let temp = String((url?[index!...])!)
+            let queryDict = temp.parseQueryString()
+            print(queryDict)
+//            self.urlMaker.rxMakeURLRequestObservable(.contentDetailView, queryDict).bind(to: searchResultSubject).disposed(by: disposeBag)
+            return
+        }
+        else {
+            decisionHandler(.cancel)
+            return
+        }
+    }
+    
 }

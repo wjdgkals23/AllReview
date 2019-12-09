@@ -150,14 +150,11 @@ class MainViewController: UIViewController {
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
+        
 
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {
-        self.router.viewPresent("", ["":""])
-    }
-    
-    @IBAction func openSearchViewButtonTapped(_ sender: Any) {
         self.router.viewPresent("add", ["":""])
     }
     

@@ -29,7 +29,7 @@ class LoginViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         if let navi = catchNavigation() {
-//            navi.setNavigationBarHidden(true, animated: false)
+            navi.setNavigationBarHidden(true, animated: false)
             router = LoginRouter(navigation: navi)
             viewModel = LoginViewModel()
             setupView()

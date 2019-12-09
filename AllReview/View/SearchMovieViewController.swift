@@ -61,7 +61,6 @@ class SearchMovieViewController: UIViewController {
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
             self.webMainView.load(request) // 실패화면 구현 요청
-//            self.webMainView.reload()
         }, onError: { (err) in
             print("Error \(err.localizedDescription)")
         }).disposed(by: disposeBag)
@@ -73,11 +72,16 @@ class SearchMovieViewController: UIViewController {
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.popViewController(animated: false)
-        }
-        else {
-            print("View Load Fail")
+        if (self.webMainView.canGoBack) {
+            print("cangoback")
+            self.webMainView.goBack()
+        } else {
+            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+                navigationController.popViewController(animated: true)
+            }
+            else {
+                print("View Load Fail")
+            }
         }
     }
     /*

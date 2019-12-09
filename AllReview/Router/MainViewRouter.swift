@@ -29,7 +29,7 @@ class MainRouter: DefaultRouter {
             if(to == "add") {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
-                self.navigationController.pushViewController(vc, animated: false)
+                self.navigationController.pushViewController(vc, animated: true)
             } else {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "AddNewReviewController")
