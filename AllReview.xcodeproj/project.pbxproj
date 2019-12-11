@@ -14,6 +14,8 @@
 		F4618531239E3F8E008E37CF /* SearchMovieViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */; };
 		F4618539239F6580008E37CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4618538239F6580008E37CF /* GoogleService-Info.plist */; };
 		F461853C23A08193008E37CF /* TotalWebViewNaviParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461853B23A08193008E37CF /* TotalWebViewNaviParser.swift */; };
+		F461854023A0D029008E37CF /* WkWebViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461853F23A0D029008E37CF /* WkWebViewExtension.swift */; };
+		F461854223A0D6B2008E37CF /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461854123A0D6B2008E37CF /* UIImageExtension.swift */; };
 		F465136F236681FF004CFBFC /* AllReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465136E236681FF004CFBFC /* AllReviewTests.swift */; };
 		F465137A2366B736004CFBFC /* UserLoginSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46513792366B736004CFBFC /* UserLoginSession.swift */; };
 		F465137D2366C73A004CFBFC /* LoginViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465137C2366C73A004CFBFC /* LoginViewRouter.swift */; };
@@ -61,6 +63,8 @@
 		F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewRouter.swift; sourceTree = "<group>"; };
 		F4618538239F6580008E37CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F461853B23A08193008E37CF /* TotalWebViewNaviParser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TotalWebViewNaviParser.swift; sourceTree = "<group>"; };
+		F461853F23A0D029008E37CF /* WkWebViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WkWebViewExtension.swift; sourceTree = "<group>"; };
+		F461854123A0D6B2008E37CF /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		F465136C236681FF004CFBFC /* AllReviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllReviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465136E236681FF004CFBFC /* AllReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllReviewTests.swift; sourceTree = "<group>"; };
 		F4651370236681FF004CFBFC /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -255,6 +259,8 @@
 				F4F0D637237CE25100A869A0 /* StringExtension.swift */,
 				F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */,
 				F4D4D847238628AD00905117 /* ViewControllerExtension.swift */,
+				F461853F23A0D029008E37CF /* WkWebViewExtension.swift */,
+				F461854123A0D6B2008E37CF /* UIImageExtension.swift */,
 			);
 			path = Extension;
 			sourceTree = "<group>";
@@ -424,6 +430,7 @@
 				F4D5049223399295003495AB /* LoginViewController.swift in Sources */,
 				F4D4D8462386261200905117 /* SignUpViewRouter.swift in Sources */,
 				F46513832367BBBA004CFBFC /* DefaultRouter.swift in Sources */,
+				F461854223A0D6B2008E37CF /* UIImageExtension.swift in Sources */,
 				F4D4D842238625EE00905117 /* SignUpViewController.swift in Sources */,
 				F4D4D832237E36BB00905117 /* SearchMovieViewModel.swift in Sources */,
 				F4D4D82E237E366800905117 /* AddNewReviewViewModel.swift in Sources */,
@@ -439,6 +446,7 @@
 				F4D5049023399295003495AB /* AppDelegate.swift in Sources */,
 				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,
 				F4651393236AD4BB004CFBFC /* MainViewModel.swift in Sources */,
+				F461854023A0D029008E37CF /* WkWebViewExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
