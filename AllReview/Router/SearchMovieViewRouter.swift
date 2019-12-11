@@ -26,7 +26,10 @@ class SearchViewRouter: DefaultRouter {
         }
         
         func viewPresent(_ to: String, _ data: Dictionary<String,String>) {
-            
+            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+            let vc = storyBoard.instantiateViewController(withIdentifier: "AddNewReviewController")
+//            vc.se
+            self.navigationController.pushViewController(vc, animated: true)
         }
         
         func viewDismiss(_ act: String) {
