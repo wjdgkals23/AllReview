@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct errResponse: Codable {
+struct ErrResponse: Codable {
     let driver: String
     let name: String
     let index: String
@@ -16,11 +16,11 @@ struct errResponse: Codable {
     let errmsg: String
 }
 
-struct successResponse: Codable {
+struct SuccessResponse: Codable {
     
 }
 
-struct userInfo: Codable {
+struct UserInfo: Codable {
     let memberGender: String
     let memberImageUrl: String
     let wantMovieIds: [String]
@@ -36,7 +36,7 @@ struct userInfo: Codable {
     let __v: String
 }
 
-struct loginInfo: Codable {
+struct LoginInfo: Codable {
     let memberGender: String
     let memberImageUrl: String
     let wantMovieIds: Array<String>?
@@ -61,19 +61,19 @@ struct loginInfo: Codable {
 //"memberEmail": "shjo@naver.com",
 //"deviceCheckId": "macos-yond"
 
-struct userLoginSession: Codable {
+struct UserLoginSessionResponse: Codable {
     let resultCode:String
     let resultMsg:String
-    let data:loginInfo
-    let err:successResponse
+    let data:LoginInfo
+    let err:SuccessResponse
     let connectionId:String
 }
 
-struct userInitSession: Codable {
+struct UserInitSession: Codable {
     let resultCode:String
     let resultMsg:String
-    let data:userInfo
-    let err:errResponse
+    let data:UserInfo
+    let err:ErrResponse
     let connectionId:String
 }
 

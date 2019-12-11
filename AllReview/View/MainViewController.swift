@@ -19,7 +19,7 @@ class MainViewController: UIViewController {
     
     private var viewModel: MainViewModel!
     private var router: DefaultRouter!
-    
+
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
     private var webMyView: WKWebView!
@@ -128,7 +128,7 @@ class MainViewController: UIViewController {
     }
     
     private func initWebView() {
-        
+
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
@@ -144,7 +144,7 @@ class MainViewController: UIViewController {
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
-        
+
         self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webMyView.load(request)
         }, onError: { (err) in
@@ -159,10 +159,14 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func backButtonTapped(_ sender: Any) {
-        if(self.webMainView.canGoBack) {
+        if(self.webMainView.canGoBack && !self.webMainView.isHidden) {
             self.webMainView.goBack()
-        } else {
-            return
+        }
+        if(self.webRankView.canGoBack && !self.webRankView.isHidden) {
+            self.webRankView.goBack()
+        }
+        if(self.webMyView.canGoBack && !self.webRankView.isHidden) {
+            self.webMyView.goBack()
         }
     }
 }

@@ -26,6 +26,8 @@ class SearchMovieViewModel: NSObject{
     
     var searchResultSubject:BehaviorSubject<URLRequest>!
     
+    let goToAddNewReviewSubject = PublishSubject<(String,[String:String])>()
+    
     override init() {
         super.init()
         keywordTextSubject = BehaviorSubject(value: "")
@@ -70,7 +72,7 @@ extension SearchMovieViewModel: WKUIDelegate, WKNavigationDelegate{
             let temp = String((url?[index!...])!)
             let queryDict = temp.parseQueryString()
             print(queryDict)
-//            self.urlMaker.rxMakeURLRequestObservable(.contentDetailView, queryDict).bind(to: searchResultSubject).disposed(by: disposeBag)
+            goToAddNewReviewSubject.onNext((("add",queryDict)))
             return
         }
         else {

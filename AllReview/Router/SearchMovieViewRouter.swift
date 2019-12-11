@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class SearchViewRouter: DefaultRouter {
+class SearchMovieViewRouter: DefaultRouter {
      
     private let navigationController: UINavigationController
         
@@ -27,9 +27,12 @@ class SearchViewRouter: DefaultRouter {
         
         func viewPresent(_ to: String, _ data: Dictionary<String,String>) {
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "AddNewReviewController")
-//            vc.se
-            self.navigationController.pushViewController(vc, animated: true)
+            if(to == "add") {
+                let vc = storyBoard.instantiateViewController(withIdentifier: "AddNewReviewController")
+                guard let rvc = vc as? AddNewReviewController else { return }
+                rvc.initData = data
+                self.navigationController.pushViewController(rvc, animated: true)
+            }
         }
         
         func viewDismiss(_ act: String) {

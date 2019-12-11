@@ -28,15 +28,15 @@ class OneLineReviewAPI {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
     
-    func rxTestLogin(userData: [String:String]) -> Observable<userLoginSession> {
-        self.urlMaker.rxMakeURLRequestObservable(OneLineReview.login, userData).flatMap { urlRequest -> Observable<userLoginSession> in
+    func rxTestLogin(userData: [String:String]) -> Observable<UserLoginSessionResponse> {
+        self.urlMaker.rxMakeURLRequestObservable(OneLineReview.login, userData).flatMap { urlRequest -> Observable<UserLoginSessionResponse> in
             let dataTask = URLSession.shared.rx.response(request: urlRequest)
             return dataTask
                 .debug("TEST LOGIN REQUEST")
-                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<userLoginSession> in
+                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<UserLoginSessionResponse> in
                     if 200 ..< 300 ~= response.statusCode {
                         do {
-                            let userSessionData = try self.decoder.decode(userLoginSession.self, from: data)
+                            let userSessionData = try self.decoder.decode(UserLoginSessionResponse.self, from: data)
                             return Observable.create { observer -> Disposable in
                                 observer.on(.next(userSessionData))
                                 return Disposables.create()

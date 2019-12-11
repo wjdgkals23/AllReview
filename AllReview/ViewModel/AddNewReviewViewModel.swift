@@ -24,6 +24,7 @@ class AddNewReviewViewModel: NSObject {
     let rankViewRequestSubject:BehaviorSubject<URLRequest?>
     let myViewRequestSubject:BehaviorSubject<URLRequest?>
     
+    
     override init() {
         mainViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         rankViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))

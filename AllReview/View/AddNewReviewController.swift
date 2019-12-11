@@ -9,11 +9,14 @@
 import UIKit
 
 class AddNewReviewController: UIViewController {
+    
+    var initData: [String:String] = [String:String]()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         
         if let navi = catchNavigation() {
+            print(initData)
 //            router = LoginRouter(navigation: navi)
 //            viewModel = LoginViewModel()
         } else {

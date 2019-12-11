@@ -58,7 +58,8 @@ extension MainViewModel: WKUIDelegate, WKNavigationDelegate {
             let queryDict = temp.parseQueryString()
             self.urlMaker.rxMakeURLRequestObservable(.contentDetailView, queryDict).bind(to: mainViewRequestSubject).disposed(by: disposeBag)
             return
-        } else {
+        }
+        else {
             decisionHandler(.cancel)
             return
         }

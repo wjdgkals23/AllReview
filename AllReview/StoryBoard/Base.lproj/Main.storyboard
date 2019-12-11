@@ -260,10 +260,19 @@
                                         <rect key="frame" x="184" y="336" width="46" height="30"/>
                                         <state key="normal" title="Button"/>
                                     </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uyN-76-r7D">
+                                        <rect key="frame" x="184.66666666666666" y="56" width="45" height="45"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="45" id="1j9-Aa-80m"/>
+                                            <constraint firstAttribute="height" constant="45" id="jkb-D0-zWx"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <constraints>
                                     <constraint firstItem="R7L-k3-VYb" firstAttribute="centerY" secondItem="3ah-55-Jbz" secondAttribute="centerY" id="PYP-8k-zrd"/>
                                     <constraint firstItem="R7L-k3-VYb" firstAttribute="centerX" secondItem="3ah-55-Jbz" secondAttribute="centerX" id="iGk-RW-S3G"/>
+                                    <constraint firstItem="uyN-76-r7D" firstAttribute="centerX" secondItem="3ah-55-Jbz" secondAttribute="centerX" id="lNB-gM-k7W"/>
+                                    <constraint firstItem="uyN-76-r7D" firstAttribute="top" secondItem="3ah-55-Jbz" secondAttribute="top" constant="56" id="o3s-zH-JwN"/>
                                 </constraints>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="eWR-mD-4P7">

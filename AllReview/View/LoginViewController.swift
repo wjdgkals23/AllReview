@@ -63,7 +63,7 @@ class LoginViewController: UIViewController {
         
         self.viewModel.didSignIn
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] in
+            .subscribe({ [weak self] _ in
                 self?.router.naviPush("login", ["":""])
             }).disposed(by: self.disposeBag)
         

@@ -11,15 +11,15 @@ import RxSwift
 
 class UserLoginSession {
 
-    private var loginData: Observable<userLoginSession>?
+    private var loginData: Observable<UserLoginSessionResponse>?
     
     static let sharedInstance = UserLoginSession()
     
-    public func setLoginData(data: userLoginSession) {
+    public func setLoginData(data: UserLoginSessionResponse) {
         loginData = Observable.just(data)
     }
     
-    public func getLoginData() -> Observable<userLoginSession>? {
+    public func getLoginData() -> Observable<UserLoginSessionResponse>? {
         return loginData
     }
 }

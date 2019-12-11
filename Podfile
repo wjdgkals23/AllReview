@@ -14,5 +14,4 @@ pod 'Firebase/Auth'
 pod 'Firebase/Storage'
 pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'
-
 end

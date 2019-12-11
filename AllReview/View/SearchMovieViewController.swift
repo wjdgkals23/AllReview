@@ -17,7 +17,7 @@ class SearchMovieViewController: UIViewController {
     private var disposeBag = DisposeBag()
     
     private var viewModel: SearchMovieViewModel!
-    private var router: MainRouter!
+    private var router: SearchMovieViewRouter!
     
     private var webMainView: WKWebView!
     
@@ -29,17 +29,29 @@ class SearchMovieViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        viewModel = SearchMovieViewModel()
-        webViewAddWebContainer()
-        
+        if let navi = catchNavigation() {
+            viewModel = SearchMovieViewModel()
+            router = SearchMovieViewRouter(navigation: navi)
+            bindingRx()
+            webViewAddWebContainer()
+        } else {
+            self.viewDidLoad()
+        }
+    }
+    
+    private func bindingRx() {
         self.searchBar.rx.text.distinctUntilChanged()
             .bind(to: viewModel.keywordTextSubject)
             .disposed(by: disposeBag)
         
-        viewModel.searchButtonEnabledDriver
+        self.viewModel.searchButtonEnabledDriver
             .drive(self.searchButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
+        self.viewModel.goToAddNewReviewSubject
+            .subscribe({ initData in
+                self.router.viewPresent(initData.element!.0, initData.element!.1)
+            }).disposed(by: self.disposeBag)
     }
     
     private func webViewAddWebContainer() {
