@@ -3,21 +3,21 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>545854735754-bblfp2siofakpuhlhbmhjbu3tj5htpbm.apps.googleusercontent.com</string>
+	<string>270783624818-drrstuqnp5b3thrvn689aaegrk6pth0f.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.545854735754-bblfp2siofakpuhlhbmhjbu3tj5htpbm</string>
+	<string>com.googleusercontent.apps.270783624818-drrstuqnp5b3thrvn689aaegrk6pth0f</string>
 	<key>API_KEY</key>
-	<string>AIzaSyD0gz_WMXF2Zne2oQmtP2IuW7atsYi0Agg</string>
+	<string>AIzaSyAvYgLc9lO8dGkBDEvOjA2YY9_4QPQ0sSY</string>
 	<key>GCM_SENDER_ID</key>
-	<string>545854735754</string>
+	<string>270783624818</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>com.teamMiracle.AllReview</string>
 	<key>PROJECT_ID</key>
-	<string>allreview-fe5a4</string>
+	<string>teammiraclephotoserver</string>
 	<key>STORAGE_BUCKET</key>
-	<string>allreview-fe5a4.appspot.com</string>
+	<string>teammiraclephotoserver.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
 	<false></false>
 	<key>IS_ANALYTICS_ENABLED</key>
@@ -29,8 +29,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:545854735754:ios:18d9bf7b24a7c4207db473</string>
+	<string>1:270783624818:ios:56ba90e93c55cffd9774eb</string>
 	<key>DATABASE_URL</key>
-	<string>https://allreview-fe5a4.firebaseio.com</string>
+	<string>https://teammiraclephotoserver.firebaseio.com</string>
 </dict>
 </plist>

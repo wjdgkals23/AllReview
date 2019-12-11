@@ -42,3 +42,4 @@ class MainRouter: DefaultRouter {
             print("LoginView Dismiss to \(act)")
         }
 }
+//external browser

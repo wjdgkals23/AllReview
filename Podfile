@@ -11,10 +11,8 @@ pod 'RxCocoa', '~> 5'
 pod 'RxWebKit'
 pod 'Firebase/Analytics', '6.6.0'
 pod 'Firebase/Auth'
+pod 'Firebase/Storage'
 pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'
-    target 'AllReviewTests' do
-	pod 'Firebase/Analytics', '6.6.0'
-	pod 'Firebase/Auth'
-    end
+
 end

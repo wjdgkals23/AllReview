@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class MainViewModel: NSObject, WKUIDelegate, WKNavigationDelegate {
+class MainViewModel: NSObject {
     
     private var userLoginSession = UserLoginSession.sharedInstance
     private let request = OneLineReviewAPI.sharedInstance
@@ -40,6 +40,9 @@ class MainViewModel: NSObject, WKUIDelegate, WKNavigationDelegate {
             .disposed(by: disposeBag)
     }
     
+}
+
+extension MainViewModel: WKUIDelegate, WKNavigationDelegate {
     func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
         let request = navigationAction.request
         let url = request.url?.absoluteString

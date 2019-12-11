@@ -19,6 +19,9 @@ PODS:
     - FirebaseAnalytics (= 6.1.0)
   - Firebase/CoreOnly (6.6.0):
     - FirebaseCore (= 6.2.0)
+  - Firebase/Storage (6.6.0):
+    - Firebase/CoreOnly
+    - FirebaseStorage (~> 3.4.0)
   - FirebaseAnalytics (6.1.0):
     - FirebaseCore (~> 6.2)
     - FirebaseInstanceID (~> 4.2)
@@ -51,6 +54,10 @@ PODS:
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
+  - FirebaseStorage (3.4.2):
+    - FirebaseAuthInterop (~> 1.0)
+    - FirebaseCore (~> 6.0)
+    - GTMSessionFetcher/Core (~> 1.1)
   - GoogleAppMeasurement (6.1.0):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
@@ -100,6 +107,7 @@ DEPENDENCIES:
   - FBSDKLoginKit
   - Firebase/Analytics (= 6.6.0)
   - Firebase/Auth
+  - Firebase/Storage
   - RxCocoa (~> 5)
   - RxSwift (~> 5)
   - RxWebKit
@@ -116,6 +124,7 @@ SPEC REPOS:
     - FirebaseCoreDiagnostics
     - FirebaseCoreDiagnosticsInterop
     - FirebaseInstanceID
+    - FirebaseStorage
     - GoogleAppMeasurement
     - GoogleDataTransport
     - GoogleDataTransportCCTSupport
@@ -138,6 +147,7 @@ SPEC CHECKSUMS:
   FirebaseCoreDiagnostics: af29e43048607588c050889d19204f4d7b758c9f
   FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
   FirebaseInstanceID: 550df9be1f99f751d8fcde3ac342a1e21a0e6c42
+  FirebaseStorage: 046abe9ac4e2a1a0e47d72f536490ffa50896632
   GoogleAppMeasurement: 47285fa897e5a125df56b9ef8750a1d81e4598a8
   GoogleDataTransport: 166f9b9f82cbf60a204e8fe2daa9db3e3ec1fb15
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
@@ -149,6 +159,6 @@ SPEC CHECKSUMS:
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   RxWebKit: 9ff7ea0780a093450defc7ff13e218678ebe6e4a
 
-PODFILE CHECKSUM: c9d78dc64f38322d0c9b82f33377e5a8e931be03
+PODFILE CHECKSUM: d27b03a599b2f1f300249877ff818f4b48d11ee8
 
 COCOAPODS: 1.8.4

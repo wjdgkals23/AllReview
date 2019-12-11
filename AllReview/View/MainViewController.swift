@@ -161,9 +161,8 @@ class MainViewController: UIViewController {
     @IBAction func backButtonTapped(_ sender: Any) {
         if(self.webMainView.canGoBack) {
             self.webMainView.goBack()
-            self.webMainView.reload()
         } else {
-            print("뒤로갈거 없는디?ㅎㅎ")
+            return
         }
     }
 }
