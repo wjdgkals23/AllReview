@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AddNewReviewController: UIViewController, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class AddNewReviewController: UIViewController {
     
     var initData: [String:String] = [String:String]()
     
@@ -21,7 +21,8 @@ class AddNewReviewController: UIViewController, UIImagePickerControllerDelegate,
     private var image: UIImage! {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
-            self.resizeImageViewPicker(size: resizedImage.size)
+//            self.resizeImageViewPicker(size: resizedImage.size)
+            self.imageViewPicker.contentMode = .scaleToFill
             self.imageViewPicker.image = resizedImage
         }
     }
@@ -34,10 +35,11 @@ class AddNewReviewController: UIViewController, UIImagePickerControllerDelegate,
             DispatchQueue.global().async {
                 self.getImageFromURL(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
             }
-            
+            resizeImageViewPicker(size: CGSize(width: 240, height: 325))
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imagePickerOpen))
             imageViewPicker.addGestureRecognizer(tapGesture)
             imageViewPicker.isUserInteractionEnabled = true
+            picker.delegate = self
         } else {
             self.viewDidLoad()
         }
@@ -62,6 +64,9 @@ class AddNewReviewController: UIViewController, UIImagePickerControllerDelegate,
     
     @objc func imagePickerOpen() {
         picker.sourceType = .photoLibrary
+        picker.allowsEditing = true
+        picker.setEditing(true, animated: true)
+//        picker.preferredContentSize = CGSize(width: 240, height: 325)
         self.present(picker, animated: false, completion: nil)
     }
     
@@ -73,16 +78,12 @@ class AddNewReviewController: UIViewController, UIImagePickerControllerDelegate,
             print("View Load Fail")
         }
     }
-    /*
-     // MARK: - Navigation
      
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
+}
+
+extension AddNewReviewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-//        info.
+        self.image = info[.editedImage] as? UIImage
+        picker.dismiss(animated: false, completion: nil)
     }
 }

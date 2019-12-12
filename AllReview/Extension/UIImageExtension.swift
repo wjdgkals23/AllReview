@@ -15,9 +15,9 @@ extension UIImage {
 
         var widthRatio  = targetSize / size.width
         
-        if (size.width > targetSize) {
-            widthRatio = size.width / targetSize
-        }
+//        if (size.width > targetSize) {
+//            widthRatio = size.width / targetSize
+//        }
 
         var newSize: CGSize
         newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)

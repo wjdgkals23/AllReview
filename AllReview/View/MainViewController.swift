@@ -104,10 +104,13 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             }
         }
 
-        self.webMainView.rx.decidePolicyNavigationAction.asObservable().subscribe(onNext: urlParserContext)
-        self.webMyView.rx.decidePolicyNavigationAction.asObservable().subscribe(onNext: urlParserContext)
-            
-        .disposed(by: disposeBag)
+        self.webMainView.rx.decidePolicyNavigationAction.asObservable()
+            .subscribe(onNext: urlParserContext)
+            .disposed(by: disposeBag)
+        
+        self.webMyView.rx.decidePolicyNavigationAction.asObservable()
+            .subscribe(onNext: urlParserContext)
+            .disposed(by: disposeBag)
         
         for item in self.webViewList {
             self.webContainer.addSubview(item)
