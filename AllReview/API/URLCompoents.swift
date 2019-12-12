@@ -20,7 +20,7 @@ enum OneLineReview: String {
     case register = "/member/add"
     case mainRankView = "/page/boxOfficePage"
     case mainMainView = "/page/mainIndexPage"
-    case mainMyView = "/page/myPage"
+    case mainMyView = "/mainList/showMyPage"
     case contentDetailView = "/mainList/showContentDetail"
     case searchMovie = "/naverapi/searchedMovieList"
 }
