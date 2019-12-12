@@ -12,19 +12,14 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class MainViewModel: NSObject {
+class MainViewModel: ViewModel{
     
-    private var userLoginSession = UserLoginSession.sharedInstance
-    private let request = OneLineReviewAPI.sharedInstance
-    private let disposeBag = DisposeBag()
-    private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    public var urlMaker = OneLineReviewURL()
-    
-    let mainViewRequestSubject:BehaviorSubject<URLRequest>
-    let rankViewRequestSubject:BehaviorSubject<URLRequest>
-    let myViewRequestSubject:BehaviorSubject<URLRequest>
+    var mainViewRequestSubject:BehaviorSubject<URLRequest>!
+    var rankViewRequestSubject:BehaviorSubject<URLRequest>!
+    var myViewRequestSubject:BehaviorSubject<URLRequest>!
     
     override init() {
+        super.init()
         mainViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         rankViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         myViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
@@ -40,28 +35,4 @@ class MainViewModel: NSObject {
             .disposed(by: disposeBag)
     }
     
-}
-
-extension MainViewModel: WKUIDelegate, WKNavigationDelegate {
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let request = navigationAction.request
-        let url = request.url?.absoluteString
-        
-        if((url?.contains("https://www.teammiracle.be"))!) {
-            decisionHandler(.allow)
-            return
-        }
-        else if((url?.contains("app://contentDetail"))!) {
-            decisionHandler(.allow)
-            let index = url?.firstIndex(of: "?") ?? url?.endIndex
-            let temp = String((url?[index!...])!)
-            let queryDict = temp.parseQueryString()
-            self.urlMaker.rxMakeURLRequestObservable(.contentDetailView, queryDict).bind(to: mainViewRequestSubject).disposed(by: disposeBag)
-            return
-        }
-        else {
-            decisionHandler(.cancel)
-            return
-        }
-    }
 }

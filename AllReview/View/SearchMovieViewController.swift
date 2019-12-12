@@ -12,7 +12,7 @@ import RxCocoa
 import WebKit
 import RxWebKit
 
-class SearchMovieViewController: UIViewController {
+class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     
     private var disposeBag = DisposeBag()
     
@@ -61,8 +61,32 @@ class SearchMovieViewController: UIViewController {
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         
-        self.webMainView.uiDelegate = self.viewModel
-        self.webMainView.navigationDelegate = self.viewModel
+        self.webMainView.navigationDelegate = self
+        
+        let urlParserContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
+            
+            let url = response.request.url?.absoluteString
+            
+            if((url?.contains("https://www.teammiracle.be/"))!) {
+                handler(.allow)
+                return
+            }
+            else if((url?.contains("app://writeContent"))!) {
+                handler(.allow)
+                let index = url?.firstIndex(of: "?") ?? url?.endIndex
+                let temp = String((url?[index!...])!)
+                let queryDict = temp.parseQueryString()
+                self?.router.viewPresent("add", queryDict)
+                return
+            }
+            else {
+                handler(.cancel)
+                return
+            }
+            
+        }
+        
+        self.webMainView.rx.decidePolicyNavigationAction.subscribe(onNext: urlParserContext)
         
         self.webContainer.addSubview(webMainView)
         self.webMainView.translatesAutoresizingMaskIntoConstraints = true

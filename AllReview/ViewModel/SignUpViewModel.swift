@@ -12,12 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class SignUpViewModel: NSObject, WKUIDelegate, WKNavigationDelegate{
-    
-    private let request = OneLineReviewAPI.sharedInstance
-    private let disposeBag = DisposeBag()
-    private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    public var urlMaker = OneLineReviewURL()
+class SignUpViewModel: ViewModel{
     
     var emailValidSubject:BehaviorSubject<String?>!
     var pwValidSubject:BehaviorSubject<String?>!

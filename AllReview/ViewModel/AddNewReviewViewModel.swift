@@ -12,13 +12,7 @@ import RxCocoa
 import UIKit
 import WebKit
 
-class AddNewReviewViewModel: NSObject {
-    
-    private var userLoginSession = UserLoginSession.sharedInstance
-    private let request = OneLineReviewAPI.sharedInstance
-    private let disposeBag = DisposeBag()
-    private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    public var urlMaker = OneLineReviewURL()
+class AddNewReviewViewModel: ViewModel{
     
     let mainViewRequestSubject:BehaviorSubject<URLRequest?>
     let rankViewRequestSubject:BehaviorSubject<URLRequest?>

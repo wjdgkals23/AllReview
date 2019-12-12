@@ -12,13 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class SearchMovieViewModel: NSObject{
-    
-    private var userLoginSession = UserLoginSession.sharedInstance
-    private let request = OneLineReviewAPI.sharedInstance
-    private let disposeBag = DisposeBag()
-    private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    public var urlMaker = OneLineReviewURL()
+class SearchMovieViewModel: ViewModel{
     
     var keywordTextSubject:BehaviorSubject<String?>!
     var searchBarSubject:BehaviorSubject<Bool>!
@@ -52,33 +46,7 @@ class SearchMovieViewModel: NSObject{
     
     public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
         let userData = ["queryMovieName":keyWord]
-        let req = (self.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))
-        req.bind(to: self.searchResultSubject).disposed(by: disposeBag)
+        self.urlMaker.rxMakeURLRequestObservable(.searchMovie, userData)
+        .bind(to: (self.searchResultSubject)!).disposed(by: disposeBag)
     }
-}
-
-extension SearchMovieViewModel: WKUIDelegate, WKNavigationDelegate{
-    
-    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
-        let request = navigationAction.request
-        let url = request.url?.absoluteString
-        if((url?.contains("https://www.teammiracle.be/"))!) {
-            decisionHandler(.allow)
-            return
-        }
-        else if((url?.contains("app://writeContent"))!) {
-            decisionHandler(.allow)
-            let index = url?.firstIndex(of: "?") ?? url?.endIndex
-            let temp = String((url?[index!...])!)
-            let queryDict = temp.parseQueryString()
-            print(queryDict)
-            goToAddNewReviewSubject.onNext((("add",queryDict)))
-            return
-        }
-        else {
-            decisionHandler(.cancel)
-            return
-        }
-    }
-    
 }

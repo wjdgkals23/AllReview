@@ -13,13 +13,13 @@ import RxWebKit
 import RxSwift
 import RxCocoa
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, WKNavigationDelegate {
     
     private var disposeBag = DisposeBag()
     
     private var viewModel: MainViewModel!
     private var router: DefaultRouter!
-
+    
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
     private var webMyView: WKWebView!
@@ -73,10 +73,41 @@ class MainViewController: UIViewController {
         
         self.webViewList = [self.webMyView,self.webRankView,self.webMainView]
         
-        self.webMainView.uiDelegate = self.viewModel
-        self.webMainView.navigationDelegate = self.viewModel
-        self.webRankView.uiDelegate = self.viewModel
-        self.webMyView.uiDelegate = self.viewModel
+        self.webMainView.navigationDelegate = self
+        self.webMyView.navigationDelegate = self
+//        (Event<(WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void)>) -> Void)        
+        
+        let urlParserContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
+            
+            let url = response.request.url?.absoluteString
+
+            if((url?.contains("https://www.teammiracle.be"))!) {
+                handler(.allow)
+                return
+            }
+            else if((url?.contains("app://contentDetail"))!) {
+                handler(.allow)
+                let index = url?.firstIndex(of: "?") ?? url?.endIndex
+                let temp = String((url?[index!...])!)
+                let queryDict = temp.parseQueryString()
+                print(webView.title)
+                if(webView.title == "마이페이지") {
+                    self?.viewModel.loadPageView(.contentDetailView, queryDict, (self?.viewModel.myViewRequestSubject)!)
+                } else if (webView.title == "메인 신규리스트") {
+                    self?.viewModel.loadPageView(.contentDetailView, queryDict, (self?.viewModel.mainViewRequestSubject)!)
+                }
+                return
+            }
+            else {
+                handler(.cancel)
+                return
+            }
+        }
+
+        self.webMainView.rx.decidePolicyNavigationAction.asObservable().subscribe(onNext: urlParserContext)
+        self.webMyView.rx.decidePolicyNavigationAction.asObservable().subscribe(onNext: urlParserContext)
+            
+        .disposed(by: disposeBag)
         
         for item in self.webViewList {
             self.webContainer.addSubview(item)
@@ -87,6 +118,7 @@ class MainViewController: UIViewController {
             item.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
         }
     }
+    
     
     private func buttonTapBind() {
         
@@ -128,7 +160,7 @@ class MainViewController: UIViewController {
     }
     
     private func initWebView() {
-
+        
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
@@ -144,14 +176,14 @@ class MainViewController: UIViewController {
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
-
+        
         self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webMyView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-
+        
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {
@@ -165,7 +197,7 @@ class MainViewController: UIViewController {
         if(self.webRankView.canGoBack && !self.webRankView.isHidden) {
             self.webRankView.goBack()
         }
-        if(self.webMyView.canGoBack && !self.webRankView.isHidden) {
+        if(self.webMyView.canGoBack && !self.webMyView.isHidden) {
             self.webMyView.goBack()
         }
     }

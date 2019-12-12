@@ -17,12 +17,7 @@ enum SocialType:String {
     case kakao
 }
 
-class LoginViewModel: NSObject, LoginButtonDelegate {
-    
-    private let request = OneLineReviewAPI.sharedInstance
-    private var disposeBag = DisposeBag()
-    private let backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    private var urlMaker = OneLineReviewURL()
+class LoginViewModel: ViewModel, LoginButtonDelegate {
     
     let didSignIn = PublishSubject<Void>()
     let didFailSignIn = PublishSubject<Error>()
