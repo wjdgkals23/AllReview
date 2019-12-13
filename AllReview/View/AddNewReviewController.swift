@@ -7,6 +7,10 @@
 //
 
 import UIKit
+import YPImagePicker
+import AVFoundation
+import AVKit
+import Photos
 
 class AddNewReviewController: UIViewController {
     
@@ -16,7 +20,7 @@ class AddNewReviewController: UIViewController {
     @IBOutlet var imageViewPickerWidth: NSLayoutConstraint!
     @IBOutlet var imageViewPickerHeight: NSLayoutConstraint!
     
-    private let picker = UIImagePickerController()
+    private var picker:YPImagePicker!
     
     private var image: UIImage! {
         willSet {
@@ -31,7 +35,6 @@ class AddNewReviewController: UIViewController {
         super.viewDidLoad()
         
         if let navi = catchNavigation() {
-            picker.delegate = self
             DispatchQueue.global().async {
                 self.getImageFromURL(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
             }
@@ -39,7 +42,6 @@ class AddNewReviewController: UIViewController {
             let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imagePickerOpen))
             imageViewPicker.addGestureRecognizer(tapGesture)
             imageViewPicker.isUserInteractionEnabled = true
-            picker.delegate = self
         } else {
             self.viewDidLoad()
         }
@@ -63,10 +65,39 @@ class AddNewReviewController: UIViewController {
     }
     
     @objc func imagePickerOpen() {
-        picker.sourceType = .photoLibrary
-        picker.allowsEditing = true
-        picker.setEditing(true, animated: true)
-//        picker.preferredContentSize = CGSize(width: 240, height: 325)
+        var config = YPImagePickerConfiguration()
+        
+        config.library.mediaType = .photo
+        config.shouldSaveNewPicturesToAlbum = false
+        config.video.compression = AVAssetExportPresetMediumQuality
+        config.video.libraryTimeLimit = 500.0
+        config.showsCrop = .rectangle(ratio: (240/325))
+        config.library.maxNumberOfItems = 1
+        config.screens = [.library]
+        
+        picker = YPImagePicker(configuration: config)
+        
+        picker.didFinishPicking { [unowned picker] items, cancel in //unowned 자신보다 먼저 해지될 타겟
+            if cancel {
+                print("picekr cancel")
+                picker?.dismiss(animated: true, completion: nil)
+                return
+            }
+            
+            if let firstItem = items.first {
+                switch firstItem {
+                case .photo(let photo):
+                    self.imageViewPicker.image = photo.image
+                    picker?.dismiss(animated: true, completion: nil)
+                    return
+                case .video(let _):
+                    return
+                }
+            }
+            
+            picker?.dismiss(animated: true, completion: nil)
+        }
+        
         self.present(picker, animated: false, completion: nil)
     }
     
@@ -81,9 +112,9 @@ class AddNewReviewController: UIViewController {
      
 }
 
-extension AddNewReviewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
-        self.image = info[.editedImage] as? UIImage
-        picker.dismiss(animated: false, completion: nil)
-    }
-}
+//extension AddNewReviewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+//    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+//        self.image = info[.editedImage] as? UIImage
+//        picker.dismiss(animated: false, completion: nil)
+//    }
+//}

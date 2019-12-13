@@ -68,5 +68,9 @@
 	</dict>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>TEST</string>
+	<key>NSCameraUsageDescription</key>
+	<string>TEST</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>TEST</string>
 </dict>
 </plist>

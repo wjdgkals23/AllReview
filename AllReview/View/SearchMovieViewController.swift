@@ -19,12 +19,15 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     private var viewModel: SearchMovieViewModel!
     private var router: SearchMovieViewRouter!
     
-    private var webMainView: WKWebView!
+    private var webSearchView: WKWebView!
     
     @IBOutlet var webContainer: UIView!
     @IBOutlet var searchBar: UITextField!
     @IBOutlet var searchButton: UIButton!
     @IBOutlet var cancelButton: UIButton!
+    
+    var topSafeArea:CGFloat!
+    var bottomSafeArea:CGFloat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,11 +35,23 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         if let navi = catchNavigation() {
             viewModel = SearchMovieViewModel()
             router = SearchMovieViewRouter(navigation: navi)
-            bindingRx()
-            webViewAddWebContainer()
+            
         } else {
             self.viewDidLoad()
         }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        
+        if #available(iOS 11.0, *) {
+            topSafeArea = self.view.safeAreaInsets.top
+            bottomSafeArea = self.view.safeAreaInsets.bottom
+        } else {
+            topSafeArea = topLayoutGuide.length
+            bottomSafeArea = self.bottomLayoutGuide.length
+        }
+        bindingRx()
+        webViewAddWebContainer()
     }
     
     private func bindingRx() {
@@ -56,47 +71,24 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     
     private func webViewAddWebContainer() {
         
-        let webMainViewWebConfigure = WKWebViewConfiguration()
+        let webSearchViewWebConfigure = WKWebViewConfiguration()
+        let webViewHeight = self.view.bounds.height - topSafeArea
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+        self.webSearchView = WKWebView(frame: cgRect, configuration: webSearchViewWebConfigure)
         
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height)
-        self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
+        self.webSearchView.navigationDelegate = self.viewModel
+        self.webSearchView.rx.decidePolicyNavigationAction.subscribe(onNext: self.viewModel.urlParserContext)
         
-        self.webMainView.navigationDelegate = self
-        
-        let urlParserContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
-            
-            let url = response.request.url?.absoluteString
-            
-            if((url?.contains("https://www.teammiracle.be/"))!) {
-                handler(.allow)
-                return
-            }
-            else if((url?.contains("app://writeContent"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                self?.router.viewPresent("add", queryDict)
-                return
-            }
-            else {
-                handler(.cancel)
-                return
-            }
-            
-        }
-        
-        self.webMainView.rx.decidePolicyNavigationAction.subscribe(onNext: urlParserContext)
-        
-        self.webContainer.addSubview(webMainView)
-        self.webMainView.translatesAutoresizingMaskIntoConstraints = true
-        self.webMainView.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
-        self.webMainView.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
-        self.webMainView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
-        self.webMainView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
+        self.webContainer.addSubview(webSearchView)
+        self.webSearchView.translatesAutoresizingMaskIntoConstraints = true
+        self.webSearchView.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
+        self.webSearchView.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
+        self.webSearchView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
+        self.webSearchView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
+        self.webSearchView.updateConstraints()
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
-            self.webMainView.load(request) // 실패화면 구현 요청
+            self.webSearchView.load(request) // 실패화면 구현 요청
         }, onError: { (err) in
             print("Error \(err.localizedDescription)")
         }).disposed(by: disposeBag)
@@ -108,9 +100,10 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     }
     
     @IBAction func cancelButtonTapped(_ sender: Any) {
-        if (self.webMainView.canGoBack) {
+        if (self.webSearchView.canGoBack) {
             print("cangoback")
-            self.webMainView.goBack()
+            //            self.webSearchView.go(to: WKBackForwardListItem)
+            self.webSearchView.goBack()
         } else {
             if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
                 navigationController.popViewController(animated: true)

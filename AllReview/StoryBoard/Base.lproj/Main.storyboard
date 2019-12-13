@@ -97,12 +97,14 @@
                                     <constraint firstItem="hO4-Ce-27Y" firstAttribute="centerY" secondItem="nmc-os-h7x" secondAttribute="centerY" id="9Bq-bB-XPR"/>
                                     <constraint firstItem="1YB-81-gCd" firstAttribute="centerX" secondItem="nmc-os-h7x" secondAttribute="centerX" id="BKg-49-RML"/>
                                     <constraint firstAttribute="height" constant="60" id="JCS-w1-hH5"/>
+                                    <constraint firstAttribute="width" secondItem="nmc-os-h7x" secondAttribute="height" multiplier="69:10" id="R42-qT-FeZ"/>
                                     <constraint firstItem="1YB-81-gCd" firstAttribute="centerY" secondItem="nmc-os-h7x" secondAttribute="centerY" id="lNp-Ll-I8a"/>
                                     <constraint firstItem="hO4-Ce-27Y" firstAttribute="leading" secondItem="nmc-os-h7x" secondAttribute="leading" constant="15" id="rl9-ck-KMV"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Feg-7b-XaU">
                                 <rect key="frame" x="0.0" y="104" width="414" height="712"/>
+                                <color key="backgroundColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="lqh-Yb-bzz">
                                 <rect key="frame" x="0.0" y="816" width="414" height="80"/>
@@ -155,6 +157,7 @@
                                     <constraint firstAttribute="bottom" secondItem="ehe-rV-ShY" secondAttribute="bottom" id="nwr-Ll-NOs"/>
                                     <constraint firstAttribute="bottom" secondItem="z9q-42-eBB" secondAttribute="bottom" id="p2V-Wg-FcZ"/>
                                     <constraint firstItem="z9q-42-eBB" firstAttribute="top" secondItem="lqh-Yb-bzz" secondAttribute="top" id="uFC-gy-6zt"/>
+                                    <constraint firstAttribute="width" secondItem="lqh-Yb-bzz" secondAttribute="height" multiplier="207:40" id="vBi-lX-JEZ"/>
                                 </constraints>
                             </stackView>
                         </subviews>

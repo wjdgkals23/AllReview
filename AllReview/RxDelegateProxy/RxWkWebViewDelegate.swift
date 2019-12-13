@@ -11,6 +11,10 @@ import WebKit
 import RxSwift
 import RxCocoa
 
+enum ViewWebDelegateEnum {
+    
+}
+
 //extension Reactive where Base: WKWebView {
 //    var delegate : DelegateProxy<WKWebView, WKNavigationDelegate> {
 //        return RxWkWebNavigationDelegateProxy.proxy(for: self.base)

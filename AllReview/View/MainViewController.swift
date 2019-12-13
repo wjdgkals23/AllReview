@@ -39,20 +39,38 @@ class MainViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet var bottomViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var headerViewHeightConstraint: NSLayoutConstraint!
     
+    var topSafeArea:CGFloat!
+    var bottomSafeArea:CGFloat!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.superview?.backgroundColor = .white
+        
         if let navi = catchNavigation() {
             viewModel = MainViewModel()
             router = MainRouter(navigation: navi)
             navi.isNavigationBarHidden = true;
-            webViewAddWebContainer()
-            buttonTapBind();
-            initWebView();
+        
         } else {
             self.viewDidLoad()
         }
         
+    }
+    
+    override func viewDidLayoutSubviews() {
+
+        if #available(iOS 11.0, *) {
+            topSafeArea = self.view.safeAreaInsets.top
+            bottomSafeArea = self.view.safeAreaInsets.bottom
+        } else {
+            topSafeArea = topLayoutGuide.length
+            bottomSafeArea = self.bottomLayoutGuide.length
+        }
+
+        webViewAddWebContainer()
+        buttonTapBind();
+        bindWebView();
+
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -65,61 +83,31 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         let webMainViewWebConfigure = WKWebViewConfiguration()
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
+
+        let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - topSafeArea
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
         
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.height - self.bottomView.bounds.height-self.headerView.bounds.height)
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
         self.webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
         
         self.webViewList = [self.webMyView,self.webRankView,self.webMainView]
         
-        self.webMainView.navigationDelegate = self
-        self.webMyView.navigationDelegate = self
-//        (Event<(WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void)>) -> Void)        
-        
-        let urlParserContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
-            
-            let url = response.request.url?.absoluteString
-
-            if((url?.contains("https://www.teammiracle.be"))!) {
-                handler(.allow)
-                return
-            }
-            else if((url?.contains("app://contentDetail"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                print(webView.title)
-                if(webView.title == "마이페이지") {
-                    self?.viewModel.loadPageView(.contentDetailView, queryDict, (self?.viewModel.myViewRequestSubject)!)
-                } else if (webView.title == "메인 신규리스트") {
-                    self?.viewModel.loadPageView(.contentDetailView, queryDict, (self?.viewModel.mainViewRequestSubject)!)
-                }
-                return
-            }
-            else {
-                handler(.cancel)
-                return
-            }
+        for item in self.webViewList {
+            self.webContainer.addSubview(item)
         }
-
+        
+        self.webMainView.navigationDelegate = self.viewModel
+        self.webMyView.navigationDelegate = self.viewModel
+        
         self.webMainView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: urlParserContext)
+            .subscribe(onNext: self.viewModel.urlParserContext)
             .disposed(by: disposeBag)
         
         self.webMyView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: urlParserContext)
+            .subscribe(onNext: self.viewModel.urlParserContext)
             .disposed(by: disposeBag)
         
-        for item in self.webViewList {
-            self.webContainer.addSubview(item)
-            item.translatesAutoresizingMaskIntoConstraints = true
-            item.leadingAnchor.constraint(equalTo: self.webContainer.leadingAnchor).isActive = true
-            item.trailingAnchor.constraint(equalTo: self.webContainer.trailingAnchor).isActive = true
-            item.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
-            item.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
-        }
     }
     
     
@@ -162,7 +150,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         }
     }
     
-    private func initWebView() {
+    private func bindWebView() {
         
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)

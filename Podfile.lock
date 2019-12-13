@@ -92,6 +92,7 @@ PODS:
     - nanopb/encode (= 0.3.901)
   - nanopb/decode (0.3.901)
   - nanopb/encode (0.3.901)
+  - PryntTrimmerView (4.0.0)
   - RxCocoa (5.0.0):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
@@ -101,6 +102,10 @@ PODS:
   - RxWebKit (1.0.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
+  - SteviaLayout (4.7.3)
+  - YPImagePicker (4.1.3):
+    - PryntTrimmerView (~> 4.0.0)
+    - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
   - FBSDKCoreKit
@@ -111,6 +116,7 @@ DEPENDENCIES:
   - RxCocoa (~> 5)
   - RxSwift (~> 5)
   - RxWebKit
+  - YPImagePicker
 
 SPEC REPOS:
   trunk:
@@ -131,10 +137,13 @@ SPEC REPOS:
     - GoogleUtilities
     - GTMSessionFetcher
     - nanopb
+    - PryntTrimmerView
     - RxCocoa
     - RxRelay
     - RxSwift
     - RxWebKit
+    - SteviaLayout
+    - YPImagePicker
 
 SPEC CHECKSUMS:
   FBSDKCoreKit: f9bae468a078f20c05c73450825ccd54cfafbbb7
@@ -154,11 +163,14 @@ SPEC CHECKSUMS:
   GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
   GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
   nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  PryntTrimmerView: 67e67573ffd4c073f1308effa66aefd0cfa667a0
   RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
   RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
   RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
   RxWebKit: 9ff7ea0780a093450defc7ff13e218678ebe6e4a
+  SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
+  YPImagePicker: 7a34eabd0ef544ae8fbf9785c3df9ec5bbf242e3
 
-PODFILE CHECKSUM: 06a7cde2625bf1372a31f0be812503d6bf9f2944
+PODFILE CHECKSUM: b33b4b989ee5640e637d58948bfbfe25d735cfe4
 
 COCOAPODS: 1.8.4
