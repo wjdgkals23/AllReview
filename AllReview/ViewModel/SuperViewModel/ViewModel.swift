@@ -10,6 +10,7 @@ import Foundation
 import RxSwift
 import RxCocoa
 import WebKit
+import UIKit
 
 class ViewModel: NSObject {
     
@@ -48,13 +49,26 @@ class ViewModel: NSObject {
                 }
                 return
             }
-            else if((url?.contains("app://writeContent"))!) {
+            else if((url?.contains("app://WriteContent"))!) {
                 handler(.allow)
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
                 self.goToAddNewReviewSubject.on(.next(("add", queryDict)))
                 return
+            }
+            else if((url?.contains("app://ExternalBrowser"))!) {
+                handler(.allow)
+                let index = url?.firstIndex(of: "?") ?? url?.endIndex
+                let temp = String((url?[index!...])!)
+                let queryDict = temp.parseQueryString()
+                let externalUrl = URL(string: (queryDict["url"])!)
+                if #available(iOS 10.0, *) {
+                    UIApplication.shared.open(externalUrl!)
+                } else {
+                    // Fallback on earlier versions
+                    return
+                }
             }
             else {
                 handler(.cancel)
