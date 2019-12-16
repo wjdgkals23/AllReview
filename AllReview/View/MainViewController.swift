@@ -39,7 +39,17 @@ class MainViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet var bottomViewHeightConstraint: NSLayoutConstraint!
     @IBOutlet var headerViewHeightConstraint: NSLayoutConstraint!
     
-    var topSafeArea:CGFloat!
+    var topSafeArea:CGFloat! {
+        willSet(newValue){
+            if(newValue != self.topSafeArea) {
+                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - newValue
+                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+                for item in self.webViewList {
+                    item.frame = cgRect
+                }
+            }
+        }
+    }
     var bottomSafeArea:CGFloat!
     
     override func viewDidLoad() {
@@ -60,7 +70,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         }
         
     }
-    
+
     override func viewDidLayoutSubviews() {
         if #available(iOS 11.0, *) {
             topSafeArea = self.view.safeAreaInsets.top
@@ -69,20 +79,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             topSafeArea = topLayoutGuide.length
             bottomSafeArea = self.bottomLayoutGuide.length
         }
-        
-        let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - topSafeArea
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
-        
-        for item in self.webViewList {
-            item.frame = cgRect
-        }
-        
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        
-        
+
     }
     
     private func webViewAddWebContainer() {
