@@ -156,19 +156,19 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
         
-        self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.mainViewRequestSubject.distinctUntilChanged().subscribe(onNext: { (request) in
             self.webMainView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.rankViewRequestSubject.distinctUntilChanged().subscribe(onNext: { (request) in
             self.webRankView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.myViewRequestSubject.distinctUntilChanged().subscribe(onNext: { (request) in
             self.webMyView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
