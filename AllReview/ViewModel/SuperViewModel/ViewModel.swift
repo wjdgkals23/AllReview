@@ -62,7 +62,8 @@ class ViewModel: NSObject {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                let externalUrl = URL(string: (queryDict["url"])!)
+                print(queryDict["url"])
+                let externalUrl = URL(string: ((queryDict["url"])!.decodeUrl())!)
                 if #available(iOS 10.0, *) {
                     UIApplication.shared.open(externalUrl!)
                 } else {
