@@ -178,9 +178,7 @@
                     </view>
                     <connections>
                         <outlet property="bottomView" destination="lqh-Yb-bzz" id="u8Q-Wr-kB4"/>
-                        <outlet property="bottomViewHeightConstraint" destination="Sml-ZN-i3A" id="cPh-ll-N4I"/>
                         <outlet property="headerView" destination="nmc-os-h7x" id="GGP-Y8-krx"/>
-                        <outlet property="headerViewHeightConstraint" destination="JCS-w1-hH5" id="aq4-Fk-Yp2"/>
                         <outlet property="mainViewButton" destination="z9q-42-eBB" id="vZq-OW-9pN"/>
                         <outlet property="myViewButton" destination="WNk-JG-Zyw" id="cne-ir-XSU"/>
                         <outlet property="rankViewButton" destination="ehe-rV-ShY" id="j9N-6J-Yhx"/>
@@ -384,6 +382,7 @@
                     </view>
                     <connections>
                         <outlet property="cancelButton" destination="vr0-Ej-xij" id="q2R-l5-eBe"/>
+                        <outlet property="headerView" destination="VQr-v6-M2l" id="z0m-HW-vbH"/>
                         <outlet property="searchBar" destination="mFf-gI-wOW" id="jzl-jR-wcR"/>
                         <outlet property="searchButton" destination="27W-ON-3pJ" id="g5c-oc-Tg2"/>
                         <outlet property="webContainer" destination="Zjd-UE-jnU" id="rDu-o9-IHp"/>

@@ -24,10 +24,23 @@ class MainViewController: UIViewController, WKNavigationDelegate {
     private var webRankView: WKWebView!
     private var webMyView: WKWebView!
     
-    private var webViewList: Array<WKWebView>!
+    private var viewList: Array<UIView>!
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var bottomView: UIStackView!
+    
+    var topSafeArea:CGFloat! {
+        willSet(newValue){
+            if(newValue != self.topSafeArea) {
+                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - newValue
+                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+                for item in self.viewList {
+                    item.frame = cgRect
+                }
+            }
+        }
+    }
+    var bottomSafeArea:CGFloat!
     
     @IBOutlet var webContainer: UIView!
     
@@ -36,21 +49,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
     @IBOutlet var tempViewButton: UIButton!
     @IBOutlet var myViewButton: UIButton!
     
-    @IBOutlet var bottomViewHeightConstraint: NSLayoutConstraint!
-    @IBOutlet var headerViewHeightConstraint: NSLayoutConstraint!
     
-    var topSafeArea:CGFloat! {
-        willSet(newValue){
-            if(newValue != self.topSafeArea) {
-                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - newValue
-                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
-                for item in self.webViewList {
-                    item.frame = cgRect
-                }
-            }
-        }
-    }
-    var bottomSafeArea:CGFloat!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -64,13 +63,13 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             webViewAddWebContainer()
             buttonTapBind();
             bindWebView();
-        
+            
         } else {
             self.viewDidLoad()
         }
         
     }
-
+    
     override func viewDidLayoutSubviews() {
         if #available(iOS 11.0, *) {
             topSafeArea = self.view.safeAreaInsets.top
@@ -79,7 +78,6 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             topSafeArea = topLayoutGuide.length
             bottomSafeArea = self.bottomLayoutGuide.length
         }
-
     }
     
     private func webViewAddWebContainer() {
@@ -87,7 +85,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         let webMainViewWebConfigure = WKWebViewConfiguration()
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
-
+        
         let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
         
@@ -95,9 +93,9 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
         self.webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
         
-        self.webViewList = [self.webMyView,self.webRankView,self.webMainView]
+        self.viewList = [self.webMyView,self.webRankView,self.webMainView]
         
-        for item in self.webViewList {
+        for item in self.viewList {
             self.webContainer.addSubview(item)
         }
         

@@ -22,11 +22,23 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     private var webSearchView: WKWebView!
     
     @IBOutlet var webContainer: UIView!
+    
+    
+    @IBOutlet var headerView: UIView!
     @IBOutlet var searchBar: UITextField!
     @IBOutlet var searchButton: UIButton!
     @IBOutlet var cancelButton: UIButton!
     
-    var topSafeArea:CGFloat!
+    var topSafeArea:CGFloat! {
+        willSet(newValue){
+            if(newValue != self.topSafeArea) {
+                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - newValue - self.bottomSafeArea
+                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+                self.webSearchView.frame = cgRect
+            }
+        }
+    }
+    
     var bottomSafeArea:CGFloat!
     
     override func viewDidLoad() {
@@ -35,7 +47,8 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         if let navi = catchNavigation() {
             viewModel = SearchMovieViewModel()
             router = SearchMovieViewRouter(navigation: navi)
-            
+            webViewAddWebContainer()
+            bindingRx()
         } else {
             self.viewDidLoad()
         }
@@ -44,14 +57,12 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     override func viewDidLayoutSubviews() {
         
         if #available(iOS 11.0, *) {
-            topSafeArea = self.view.safeAreaInsets.top
             bottomSafeArea = self.view.safeAreaInsets.bottom
+            topSafeArea = self.view.safeAreaInsets.top
         } else {
-            topSafeArea = topLayoutGuide.length
             bottomSafeArea = self.bottomLayoutGuide.length
+            topSafeArea = topLayoutGuide.length
         }
-        webViewAddWebContainer()
-        bindingRx()
     }
     
     private func bindingRx() {
@@ -78,7 +89,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     private func webViewAddWebContainer() {
         
         let webSearchViewWebConfigure = WKWebViewConfiguration()
-        let webViewHeight = self.view.bounds.height - topSafeArea
+        let webViewHeight = self.view.bounds.height
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
         self.webSearchView = WKWebView(frame: cgRect, configuration: webSearchViewWebConfigure)
         
