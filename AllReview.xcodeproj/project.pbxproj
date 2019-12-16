@@ -13,7 +13,6 @@
 		CAC09AF629ECFFB659E87701 /* Pods_AllReview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E34F32356B810FA9A8FB1353 /* Pods_AllReview.framework */; };
 		F4618531239E3F8E008E37CF /* SearchMovieViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */; };
 		F4618539239F6580008E37CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4618538239F6580008E37CF /* GoogleService-Info.plist */; };
-		F461853C23A08193008E37CF /* RxWkWebViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461853B23A08193008E37CF /* RxWkWebViewDelegate.swift */; };
 		F461854023A0D029008E37CF /* WkWebViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461853F23A0D029008E37CF /* WkWebViewExtension.swift */; };
 		F461854223A0D6B2008E37CF /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461854123A0D6B2008E37CF /* UIImageExtension.swift */; };
 		F465136F236681FF004CFBFC /* AllReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465136E236681FF004CFBFC /* AllReviewTests.swift */; };
@@ -65,7 +64,6 @@
 		E34F32356B810FA9A8FB1353 /* Pods_AllReview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AllReview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewRouter.swift; sourceTree = "<group>"; };
 		F4618538239F6580008E37CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		F461853B23A08193008E37CF /* RxWkWebViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxWkWebViewDelegate.swift; sourceTree = "<group>"; };
 		F461853F23A0D029008E37CF /* WkWebViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WkWebViewExtension.swift; sourceTree = "<group>"; };
 		F461854123A0D6B2008E37CF /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		F465136C236681FF004CFBFC /* AllReviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllReviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -148,14 +146,6 @@
 			path = Pods;
 			sourceTree = "<group>";
 		};
-		F461853A23A08169008E37CF /* RxDelegateProxy */ = {
-			isa = PBXGroup;
-			children = (
-				F461853B23A08193008E37CF /* RxWkWebViewDelegate.swift */,
-			);
-			path = RxDelegateProxy;
-			sourceTree = "<group>";
-		};
 		F465136D236681FF004CFBFC /* AllReviewTests */ = {
 			isa = PBXGroup;
 			children = (
@@ -208,7 +198,6 @@
 		F4D5048E23399295003495AB /* AllReview */ = {
 			isa = PBXGroup;
 			children = (
-				F461853A23A08169008E37CF /* RxDelegateProxy */,
 				F4F0D636237CE24200A869A0 /* Extension */,
 				F46513782366B727004CFBFC /* Model */,
 				90474CFB23658DC200C48C4A /* API */,
@@ -453,7 +442,6 @@
 				F4D4D832237E36BB00905117 /* SearchMovieViewModel.swift in Sources */,
 				F4D4D82E237E366800905117 /* AddNewReviewViewModel.swift in Sources */,
 				90474D012365CDD000C48C4A /* Response.swift in Sources */,
-				F461853C23A08193008E37CF /* RxWkWebViewDelegate.swift in Sources */,
 				F465137D2366C73A004CFBFC /* LoginViewRouter.swift in Sources */,
 				F4D4D830237E36A700905117 /* SearchMovieViewController.swift in Sources */,
 				F465137A2366B736004CFBFC /* UserLoginSession.swift in Sources */,

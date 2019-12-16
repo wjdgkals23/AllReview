@@ -75,7 +75,7 @@
                                         <rect key="frame" x="0.0" y="0.0" width="103.66666666666667" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="house" catalog="system">
+                                        <state key="normal" image="pencil" catalog="system">
                                             <attributedString key="attributedTitle"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
@@ -128,10 +128,10 @@
                             <constraint firstItem="Feg-7b-XaU" firstAttribute="top" secondItem="M9S-qD-lZE" secondAttribute="top" id="HJv-bW-ak0"/>
                             <constraint firstItem="Feg-7b-XaU" firstAttribute="leading" secondItem="M9S-qD-lZE" secondAttribute="leading" id="SlZ-9b-DOJ"/>
                             <constraint firstItem="lqh-Yb-bzz" firstAttribute="top" secondItem="Feg-7b-XaU" secondAttribute="bottom" id="dLT-hJ-sbc"/>
-                            <constraint firstItem="M9S-qD-lZE" firstAttribute="trailing" secondItem="lqh-Yb-bzz" secondAttribute="trailing" id="egQ-tg-TeM"/>
+                            <constraint firstAttribute="trailing" secondItem="lqh-Yb-bzz" secondAttribute="trailing" id="egQ-tg-TeM"/>
                             <constraint firstItem="M9S-qD-lZE" firstAttribute="trailing" secondItem="Feg-7b-XaU" secondAttribute="trailing" id="ggK-fY-TCa"/>
                             <constraint firstItem="lqh-Yb-bzz" firstAttribute="bottom" secondItem="EH8-ar-QLs" secondAttribute="bottom" id="t1Y-zA-4Y5"/>
-                            <constraint firstItem="lqh-Yb-bzz" firstAttribute="leading" secondItem="M9S-qD-lZE" secondAttribute="leading" id="w9j-Ho-Mgd"/>
+                            <constraint firstItem="lqh-Yb-bzz" firstAttribute="leading" secondItem="EH8-ar-QLs" secondAttribute="leading" id="w9j-Ho-Mgd"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="M9S-qD-lZE"/>
                     </view>
@@ -778,6 +778,7 @@
         <image name="arrow.left" catalog="system" width="64" height="48"/>
         <image name="house" catalog="system" width="64" height="54"/>
         <image name="list.number" catalog="system" width="64" height="48"/>
+        <image name="pencil" catalog="system" width="64" height="56"/>
         <image name="person" catalog="system" width="64" height="58"/>
         <image name="plus.circle" catalog="system" width="64" height="60"/>
     </resources>

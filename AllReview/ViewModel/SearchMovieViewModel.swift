@@ -20,37 +20,10 @@ class SearchMovieViewModel: ViewModel, WKNavigationDelegate{
     
     var searchResultSubject:BehaviorSubject<URLRequest>!
     
-    let goToAddNewReviewSubject = PublishSubject<(String,[String:String])>()
-    
-    var urlParserContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)!
-    
     override init() {
         super.init()
         keywordTextSubject = BehaviorSubject(value: "")
         searchResultSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-        
-        urlParserContext = {(webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
-            
-            let url = response.request.url?.absoluteString
-            
-            if((url?.contains("https://www.teammiracle.be/"))!) {
-                handler(.allow)
-                return
-            }
-            else if((url?.contains("app://writeContent"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                self.goToAddNewReviewSubject.on(.next(("add", queryDict)))
-                return
-            }
-            else {
-                handler(.cancel)
-                return
-            }
-            
-        }
         
         let searchButtonEnabledObservable:Observable<Bool> = keywordTextSubject.distinctUntilChanged().flatMap { (keyword) -> Observable<Bool> in
             return Observable.create { (obs) -> Disposable in

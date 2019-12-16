@@ -13,7 +13,7 @@ import RxWebKit
 import RxSwift
 import RxCocoa
 
-class MainViewController: UIViewController, WKNavigationDelegate {
+class MainViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     
@@ -29,27 +29,12 @@ class MainViewController: UIViewController, WKNavigationDelegate {
 //    @IBOutlet var headerView: UIView!
     @IBOutlet var bottomView: UIStackView!
     
-    var topSafeArea:CGFloat! {
-        willSet(newValue){
-            if(newValue != self.topSafeArea) {
-                let webViewHeight = self.view.bounds.height - newValue
-                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
-                for item in self.viewList {
-                    item.frame = cgRect
-                }
-            }
-        }
-    }
-    var bottomSafeArea:CGFloat!
-    
     @IBOutlet var webContainer: UIView!
     
     @IBOutlet var mainViewButton: UIButton!
     @IBOutlet var rankViewButton: UIButton!
     @IBOutlet var tempViewButton: UIButton!
     @IBOutlet var myViewButton: UIButton!
-    
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -59,24 +44,19 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             viewModel = MainViewModel()
             router = MainRouter(navigation: navi)
             navi.isNavigationBarHidden = true;
-            
-            webViewAddWebContainer()
-            buttonTapBind();
-            bindWebView();
-            
         } else {
             self.viewDidLoad()
         }
         
     }
     
-    override func viewDidLayoutSubviews() {
-        if #available(iOS 11.0, *) {
-            topSafeArea = self.view.safeAreaInsets.top
-            bottomSafeArea = self.view.safeAreaInsets.bottom
-        } else {
-            topSafeArea = topLayoutGuide.length
-            bottomSafeArea = self.bottomLayoutGuide.length
+    override func didMove(toParent parent: UIViewController?) {
+        if let `parent` = parent as! NonBottomViewController? {
+            parent.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+            self.view.frame = parent.containerView.bounds
+            webViewAddWebContainer()
+            buttonTapBind()
+            bindWebView()
         }
     }
     
@@ -86,7 +66,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
         
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.view.bounds.height - self.bottomView.bounds.height) // frame 자체도 빼고 
         
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
@@ -102,11 +82,11 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         self.webMyView.navigationDelegate = self.viewModel
         
         self.webMainView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext)
+            .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: disposeBag)
         
         self.webMyView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext)
+            .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: disposeBag)
         
     }
@@ -175,14 +155,13 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {
         self.router.viewPresent("add", ["":""])
     }
     
-    @IBAction func backButtonTapped(_ sender: Any) {
+    @objc func backButtonTapped() {
         if(self.webMainView.canGoBack && !self.webMainView.isHidden) {
             self.webMainView.goBack()
         }

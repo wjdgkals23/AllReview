@@ -10,41 +10,43 @@ import UIKit
 
 class NonBottomViewController: UIViewController {
     
+    private var naviVC: UINavigationController!
+    
     @IBOutlet var headerView: UIView!
     @IBOutlet var backButton: UIButton!
     
     @IBOutlet var containerView: UIView! // containerChange 함수 필요!
     
     public var childViewController: UIViewController!
-    private var naviVC: UINavigationController!
     
-//    var topSafeArea:CGFloat! {
-//        willSet(newValue){
-//            if(newValue != self.topSafeArea) {
-//                let webViewHeight = self.view.bounds.height - newValue
-//                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
-//                for item in self.viewList {
-//                    item.frame = cgRect
-//                }
-//            }
-//        }
-//    }
-//    
-//    override func viewDidLayoutSubviews() {
-//        if #available(iOS 11.0, *) {
-//            topSafeArea = self.view.safeAreaInsets.top
-//            bottomSafeArea = self.view.safeAreaInsets.bottom
-//        } else {
-//            topSafeArea = topLayoutGuide.length
-//            bottomSafeArea = self.bottomLayoutGuide.length
-//        }
-//    }
+    var topSafeArea:CGFloat! {
+        willSet(newValue){
+            if(newValue != self.topSafeArea) {
+                let topTotalHeight = self.headerView.bounds.height + newValue
+                let webViewHeight = self.view.bounds.height - topTotalHeight
+                let beforeRect = self.containerView.frame
+                let cgRect = CGRect(x: beforeRect.origin.x, y: beforeRect.origin.y, width: beforeRect.width, height: webViewHeight)
+                self.containerView.frame = cgRect
+                self.onAddChildController()
+            }
+        }
+    }
+    var bottomSafeArea:CGFloat!
+
+    override func viewDidLayoutSubviews() {
+        if #available(iOS 11.0, *) {
+            topSafeArea = self.view.safeAreaInsets.top
+            bottomSafeArea = self.view.safeAreaInsets.bottom
+        } else {
+            topSafeArea = topLayoutGuide.length
+            bottomSafeArea = bottomLayoutGuide.length
+        }
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
         if let navi = catchNavigation() {
             self.naviVC = navi
-            self.onAddChildController()
         } else {
             self.viewDidLoad()
         }

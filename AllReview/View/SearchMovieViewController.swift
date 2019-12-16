@@ -94,7 +94,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         self.webSearchView = WKWebView(frame: cgRect, configuration: webSearchViewWebConfigure)
         
         self.webSearchView.navigationDelegate = self.viewModel
-        self.webSearchView.rx.decidePolicyNavigationAction.subscribe(onNext: self.viewModel.urlParserContext)
+        self.webSearchView.rx.decidePolicyNavigationAction.subscribe(onNext: self.viewModel.urlParserContext!)
         
         self.webContainer.addSubview(webSearchView)
         self.webSearchView.translatesAutoresizingMaskIntoConstraints = true
