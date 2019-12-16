@@ -50,8 +50,8 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
             topSafeArea = topLayoutGuide.length
             bottomSafeArea = self.bottomLayoutGuide.length
         }
-        bindingRx()
         webViewAddWebContainer()
+        bindingRx()
     }
     
     private func bindingRx() {
@@ -67,6 +67,12 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
             .subscribe({ initData in
                 self.router.viewPresent(initData.element!.0, initData.element!.1)
             }).disposed(by: self.disposeBag)
+        
+        self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
+            self.webSearchView.load(request) // 실패화면 구현 요청
+        }, onError: { (err) in
+            print("Error \(err.localizedDescription)")
+        }).disposed(by: disposeBag)
     }
     
     private func webViewAddWebContainer() {
@@ -86,13 +92,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         self.webSearchView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
         self.webSearchView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
         self.webSearchView.updateConstraints()
-        
-        self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
-            self.webSearchView.load(request) // 실패화면 구현 요청
-        }, onError: { (err) in
-            print("Error \(err.localizedDescription)")
-        }).disposed(by: disposeBag)
-        
+    
     }
     
     @IBAction func searchButtonTapped(_ sender: Any) {

@@ -50,6 +50,10 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             viewModel = MainViewModel()
             router = MainRouter(navigation: navi)
             navi.isNavigationBarHidden = true;
+            
+            webViewAddWebContainer()
+            buttonTapBind();
+            bindWebView();
         
         } else {
             self.viewDidLoad()
@@ -58,7 +62,6 @@ class MainViewController: UIViewController, WKNavigationDelegate {
     }
     
     override func viewDidLayoutSubviews() {
-
         if #available(iOS 11.0, *) {
             topSafeArea = self.view.safeAreaInsets.top
             bottomSafeArea = self.view.safeAreaInsets.bottom
@@ -66,15 +69,19 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             topSafeArea = topLayoutGuide.length
             bottomSafeArea = self.bottomLayoutGuide.length
         }
-
-        webViewAddWebContainer()
-        buttonTapBind();
-        bindWebView();
-
+        
+        let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - topSafeArea
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+        
+        for item in self.webViewList {
+            item.frame = cgRect
+        }
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+        
         
     }
     
@@ -84,7 +91,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
 
-        let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - topSafeArea
+        let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
         
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
@@ -156,7 +163,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
         
-        self.viewModel.mainViewRequestSubject.distinctUntilChanged().subscribe(onNext: { (request) in
+        self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webMainView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
@@ -168,7 +175,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.myViewRequestSubject.distinctUntilChanged().subscribe(onNext: { (request) in
+        self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webMyView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
