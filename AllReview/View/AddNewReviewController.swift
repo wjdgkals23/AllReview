@@ -25,7 +25,7 @@ class AddNewReviewController: UIViewController {
     private var image: UIImage! {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
-//            self.resizeImageViewPicker(size: resizedImage.size)
+            //            self.resizeImageViewPicker(size: resizedImage.size)
             self.imageViewPicker.contentMode = .scaleToFill
             self.imageViewPicker.image = resizedImage
         }
@@ -109,7 +109,7 @@ class AddNewReviewController: UIViewController {
             print("View Load Fail")
         }
     }
-     
+    
 }
 
 //extension AddNewReviewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

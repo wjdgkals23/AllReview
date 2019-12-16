@@ -26,7 +26,7 @@ class MainViewController: UIViewController {
     
     private var viewList: Array<UIView>!
     
-//    @IBOutlet var headerView: UIView!
+    //    @IBOutlet var headerView: UIView!
     @IBOutlet var bottomView: UIStackView!
     
     @IBOutlet var webContainer: UIView!
@@ -90,9 +90,9 @@ class MainViewController: UIViewController {
             .disposed(by: disposeBag)
         
         self.viewModel.goToNewViewControllerReviewSubject
-        .subscribe({ initData in
-            self.router.viewPresent(initData.element!.0, initData.element!.1)
-        }).disposed(by: self.disposeBag)
+            .subscribe({ initData in
+                self.router.viewPresent(initData.element!.0, initData.element!.1)
+            }).disposed(by: self.disposeBag)
         
     }
     
@@ -155,6 +155,9 @@ class MainViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+            self.webMyView.isHidden = false
+            self.webMainView.isHidden = true
+            self.webRankView.isHidden = true
             self.webMyView.load(request)
         }, onError: { (err) in
             print("Err \(err)")

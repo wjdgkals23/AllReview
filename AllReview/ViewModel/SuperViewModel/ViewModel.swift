@@ -42,9 +42,12 @@ class ViewModel: NSObject {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                if(webView.title == "마이페이지") {
+//                print(webView.title)
+                if(webView.title == "마이페이지") { //memeerID 의 페이지
                     self.loadPageView(.contentDetailView, queryDict, (self.myViewRequestSubject))
                 } else if (webView.title == "메인 신규리스트") {
+                    self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
+                } else if (webView.title == "멤버 페이지") {
                     self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
                 }
                 return
@@ -75,6 +78,20 @@ class ViewModel: NSObject {
                 handler(.allow)
                 self.goToNewViewControllerReviewSubject.on(.next(("search",["":""])))
             }
+            else if((url?.contains("app://MemberContents"))!) {
+                handler(.allow)
+                let index = url?.firstIndex(of: "?") ?? url?.endIndex
+                let temp = String((url?[index!...])!)
+                let queryDict = temp.parseQueryString()
+                self.loadPageView(.showMembersContents, queryDict, (self.mainViewRequestSubject))
+            }
+            else if((url?.contains("app://MyContents"))!) {
+                handler(.allow)
+                let index = url?.firstIndex(of: "?") ?? url?.endIndex
+                let temp = String((url?[index!...])!)
+                let queryDict = temp.parseQueryString()
+                self.loadPageView(.mainMyView, queryDict, (self.mainViewRequestSubject))
+            }
             else {
                 handler(.cancel)
                 return
@@ -83,7 +100,7 @@ class ViewModel: NSObject {
     }
     
     func loadPageView(_ urlTarget:OneLineReview, _ param:[String:String], _ target: BehaviorSubject<URLRequest>) {
-        self.urlMaker.rxMakeURLRequestObservable(.contentDetailView, param).bind(to: target).disposed(by: disposeBag)
+        self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
     }
     
 }

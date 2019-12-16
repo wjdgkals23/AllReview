@@ -30,6 +30,10 @@ class MainRouter: DefaultRouter {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
                 self.navigationController.pushViewController(vc, animated: true)
+            } else {
+                let storyBoard = UIStoryboard(name: "Main", bundle: nil)
+                let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
+                self.navigationController.pushViewController(vc, animated: true)
             }
             print("LoginView Present to \(to)")
         }

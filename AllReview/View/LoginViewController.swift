@@ -64,6 +64,7 @@ class LoginViewController: UIViewController {
         self.viewModel.didSignIn
             .observeOn(MainScheduler.instance)
             .subscribe({ [weak self] _ in
+                self?.view.isUserInteractionEnabled = true
                 self?.router.naviPush("login", ["":""])
             }).disposed(by: self.disposeBag)
         
@@ -79,6 +80,7 @@ class LoginViewController: UIViewController {
     
     
     @IBAction func testLogin(_ sender: Any) {
+        self.view.isUserInteractionEnabled = false
         viewModel.testLoginTapped()
     }
     
