@@ -615,9 +615,6 @@
                                         <state key="normal" image="arrow.left" catalog="system">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
-                                        <connections>
-                                            <action selector="backButtonTapped:" destination="vHM-cE-ZZn" eventType="touchUpInside" id="0ar-7Y-rgm"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -661,9 +658,6 @@
                                         <state key="normal" image="plus.circle" catalog="system">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
-                                        <connections>
-                                            <action selector="addNewReviewButtonTapped:" destination="vHM-cE-ZZn" eventType="touchUpInside" id="f8S-cw-vbr"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WkK-bv-6YF">
                                         <rect key="frame" x="310.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
@@ -704,15 +698,6 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="j3A-HW-MWo"/>
                     </view>
-                    <connections>
-                        <outlet property="bottomView" destination="8E6-Fw-QIZ" id="YnI-k9-JUG"/>
-                        <outlet property="headerView" destination="9qi-VN-gHh" id="mqV-S0-Zbp"/>
-                        <outlet property="mainViewButton" destination="a0f-l6-vGL" id="3Rj-2o-d3v"/>
-                        <outlet property="myViewButton" destination="WkK-bv-6YF" id="V9n-NQ-5vp"/>
-                        <outlet property="rankViewButton" destination="8JC-fs-686" id="bwx-UT-MX2"/>
-                        <outlet property="tempViewButton" destination="aa8-qY-7VJ" id="3w0-r0-qPx"/>
-                        <outlet property="webContainer" destination="Lvv-Bv-ZbM" id="dKh-qw-IMr"/>
-                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="QJI-7F-eOS" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -749,9 +734,6 @@
                                         <state key="normal" image="arrow.left" catalog="system">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
-                                        <connections>
-                                            <action selector="backButtonTapped:" destination="faz-rJ-wV1" eventType="touchUpInside" id="BBy-yd-7BC"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -785,7 +767,6 @@
                         <outlet property="backButton" destination="D0i-yf-Qy0" id="2JS-Lx-P9p"/>
                         <outlet property="containerView" destination="1tj-Bg-zQc" id="UTh-lZ-Tz2"/>
                         <outlet property="headerView" destination="vl0-g6-nZX" id="27t-G4-jhQ"/>
-                        <outlet property="webContainer" destination="1tj-Bg-zQc" id="iUI-Iq-vhP"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goY-3T-QK6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

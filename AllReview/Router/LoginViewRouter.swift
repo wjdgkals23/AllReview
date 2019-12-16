@@ -27,7 +27,9 @@ class LoginRouter: DefaultRouter {
         switch to {
         case LoginRoute.login.rawValue:
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "MainViewController")
+            let vc = storyBoard.instantiateViewController(withIdentifier: "NonBottomViewController") as! NonBottomViewController
+            let childVC = storyBoard.instantiateViewController(withIdentifier: "MainViewController")
+            vc.childViewController = childVC
             navigationController.pushViewController(vc, animated: true)
         case LoginRoute.signUp.rawValue:
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)

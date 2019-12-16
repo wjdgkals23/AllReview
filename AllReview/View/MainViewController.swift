@@ -26,13 +26,13 @@ class MainViewController: UIViewController, WKNavigationDelegate {
     
     private var viewList: Array<UIView>!
     
-    @IBOutlet var headerView: UIView!
+//    @IBOutlet var headerView: UIView!
     @IBOutlet var bottomView: UIStackView!
     
     var topSafeArea:CGFloat! {
         willSet(newValue){
             if(newValue != self.topSafeArea) {
-                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height - newValue
+                let webViewHeight = self.view.bounds.height - newValue
                 let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
                 for item in self.viewList {
                     item.frame = cgRect
@@ -86,8 +86,7 @@ class MainViewController: UIViewController, WKNavigationDelegate {
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
         
-        let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - self.bottomView.bounds.height
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: 0)
         
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
