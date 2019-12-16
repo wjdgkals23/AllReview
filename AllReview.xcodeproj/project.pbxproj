@@ -38,7 +38,7 @@
 		F4D5049723399296003495AB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049623399296003495AB /* Assets.xcassets */; };
 		F4D5049A23399296003495AB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = F4D5049823399296003495AB /* LaunchScreen.storyboard */; };
 		F4D504A92339A1D9003495AB /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4D504A82339A1D9003495AB /* LoginViewModel.swift */; };
-		F4EB849D23A7106000FAD2A5 /* SuperViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EB849C23A7106000FAD2A5 /* SuperViewController.swift */; };
+		F4EB849D23A7106000FAD2A5 /* BottomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EB849C23A7106000FAD2A5 /* BottomViewController.swift */; };
 		F4EB849F23A7107C00FAD2A5 /* NonBottomViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4EB849E23A7107C00FAD2A5 /* NonBottomViewController.swift */; };
 		F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D637237CE25100A869A0 /* StringExtension.swift */; };
 		F4F0D63A237CF04400A869A0 /* UIDeviceExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */; };
@@ -94,7 +94,7 @@
 		F4D5049923399296003495AB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		F4D5049B23399296003495AB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		F4D504A82339A1D9003495AB /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
-		F4EB849C23A7106000FAD2A5 /* SuperViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SuperViewController.swift; sourceTree = "<group>"; };
+		F4EB849C23A7106000FAD2A5 /* BottomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BottomViewController.swift; sourceTree = "<group>"; };
 		F4EB849E23A7107C00FAD2A5 /* NonBottomViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NonBottomViewController.swift; sourceTree = "<group>"; };
 		F4F0D637237CE25100A869A0 /* StringExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StringExtension.swift; sourceTree = "<group>"; };
 		F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIDeviceExtension.swift; sourceTree = "<group>"; };
@@ -264,7 +264,7 @@
 		F4EB849B23A7104700FAD2A5 /* SuperView */ = {
 			isa = PBXGroup;
 			children = (
-				F4EB849C23A7106000FAD2A5 /* SuperViewController.swift */,
+				F4EB849C23A7106000FAD2A5 /* BottomViewController.swift */,
 				F4EB849E23A7107C00FAD2A5 /* NonBottomViewController.swift */,
 			);
 			path = SuperView;
@@ -466,7 +466,7 @@
 				F4651393236AD4BB004CFBFC /* MainViewModel.swift in Sources */,
 				F465268D23A1D6710062D01D /* ViewModel.swift in Sources */,
 				F461854023A0D029008E37CF /* WkWebViewExtension.swift in Sources */,
-				F4EB849D23A7106000FAD2A5 /* SuperViewController.swift in Sources */,
+				F4EB849D23A7106000FAD2A5 /* BottomViewController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
