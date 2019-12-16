@@ -13,7 +13,6 @@
 		CAC09AF629ECFFB659E87701 /* Pods_AllReview.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = E34F32356B810FA9A8FB1353 /* Pods_AllReview.framework */; };
 		F4618531239E3F8E008E37CF /* SearchMovieViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */; };
 		F4618539239F6580008E37CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4618538239F6580008E37CF /* GoogleService-Info.plist */; };
-		F461854023A0D029008E37CF /* WkWebViewExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461853F23A0D029008E37CF /* WkWebViewExtension.swift */; };
 		F461854223A0D6B2008E37CF /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461854123A0D6B2008E37CF /* UIImageExtension.swift */; };
 		F465136F236681FF004CFBFC /* AllReviewTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = F465136E236681FF004CFBFC /* AllReviewTests.swift */; };
 		F465137A2366B736004CFBFC /* UserLoginSession.swift in Sources */ = {isa = PBXBuildFile; fileRef = F46513792366B736004CFBFC /* UserLoginSession.swift */; };
@@ -63,7 +62,6 @@
 		E34F32356B810FA9A8FB1353 /* Pods_AllReview.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_AllReview.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewRouter.swift; sourceTree = "<group>"; };
 		F4618538239F6580008E37CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		F461853F23A0D029008E37CF /* WkWebViewExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WkWebViewExtension.swift; sourceTree = "<group>"; };
 		F461854123A0D6B2008E37CF /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
 		F465136C236681FF004CFBFC /* AllReviewTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = AllReviewTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		F465136E236681FF004CFBFC /* AllReviewTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AllReviewTests.swift; sourceTree = "<group>"; };
@@ -270,7 +268,6 @@
 				F4F0D637237CE25100A869A0 /* StringExtension.swift */,
 				F4F0D639237CF04400A869A0 /* UIDeviceExtension.swift */,
 				F4D4D847238628AD00905117 /* ViewControllerExtension.swift */,
-				F461853F23A0D029008E37CF /* WkWebViewExtension.swift */,
 				F461854123A0D6B2008E37CF /* UIImageExtension.swift */,
 			);
 			path = Extension;
@@ -458,7 +455,6 @@
 				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,
 				F4651393236AD4BB004CFBFC /* MainViewModel.swift in Sources */,
 				F465268D23A1D6710062D01D /* ViewModel.swift in Sources */,
-				F461854023A0D029008E37CF /* WkWebViewExtension.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

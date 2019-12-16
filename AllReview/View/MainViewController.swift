@@ -89,6 +89,11 @@ class MainViewController: UIViewController {
             .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: disposeBag)
         
+        self.viewModel.goToNewViewControllerReviewSubject
+        .subscribe({ initData in
+            self.router.viewPresent(initData.element!.0, initData.element!.1)
+        }).disposed(by: self.disposeBag)
+        
     }
     
     

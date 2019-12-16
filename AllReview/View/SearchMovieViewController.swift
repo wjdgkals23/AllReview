@@ -74,7 +74,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
             .drive(self.searchButton.rx.isEnabled)
             .disposed(by: disposeBag)
         
-        self.viewModel.goToAddNewReviewSubject
+        self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
                 self.router.viewPresent(initData.element!.0, initData.element!.1)
             }).disposed(by: self.disposeBag)

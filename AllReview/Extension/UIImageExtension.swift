@@ -13,11 +13,8 @@ extension UIImage {
     class func resizeImage(image: UIImage, targetSize: CGFloat) -> UIImage {
         let size = image.size
 
-        var widthRatio  = targetSize / size.width
-        
-//        if (size.width > targetSize) {
-//            widthRatio = size.width / targetSize
-//        }
+        let widthRatio  = targetSize / size.width
+    
 
         var newSize: CGSize
         newSize = CGSize(width: size.width * widthRatio, height: size.height * widthRatio)

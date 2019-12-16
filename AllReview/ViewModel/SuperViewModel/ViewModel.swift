@@ -25,7 +25,7 @@ class ViewModel: NSObject {
     var rankViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     var myViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     
-    let goToAddNewReviewSubject = PublishSubject<(String,[String:String])>()
+    let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String])>()
     
     override init() {
         super.init()
@@ -54,7 +54,7 @@ class ViewModel: NSObject {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.goToAddNewReviewSubject.on(.next(("add", queryDict)))
+                self.goToNewViewControllerReviewSubject.on(.next(("add", queryDict)))
                 return
             }
             else if((url?.contains("app://ExternalBrowser"))!) {
@@ -70,6 +70,10 @@ class ViewModel: NSObject {
                     // Fallback on earlier versions
                     return
                 }
+            }
+            else if((url?.contains("app://SearchMovie"))!) {
+                handler(.allow)
+                self.goToNewViewControllerReviewSubject.on(.next(("search",["":""])))
             }
             else {
                 handler(.cancel)
