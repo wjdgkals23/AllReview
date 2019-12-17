@@ -9,6 +9,27 @@
 import Foundation
 import UIKit
 
+extension UIApplication {
+    var statusBarView: UIView? {
+        if #available(iOS 13.0, *) {
+            let tag = 3333333
+            if let statusBar = self.keyWindow?.viewWithTag(tag) {
+                return statusBar
+            } else {
+                let registerBar = UIView(frame: self.statusBarFrame)
+                registerBar.tag = tag
+                self.keyWindow?.addSubview(registerBar)
+                return registerBar
+            }
+        } else {
+            if responds(to: Selector(("statusBar"))) {
+                return value(forKey: "statusBar") as? UIView
+            }
+            return nil
+        }
+    }
+}
+
 extension UIViewController {
     
     func catchNavigation() -> UINavigationController? {
@@ -36,7 +57,7 @@ extension UIViewController {
         toastLabel.frame = CGRect(x: self.view.frame.width/2 - frame.width/2 - 5, y: self.view.frame.height - 130, width: frame.width + 10, height: 30)
         self.view.addSubview(toastLabel)
         UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
-             toastLabel.alpha = 0.0
+            toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
             toastLabel.removeFromSuperview()
         })

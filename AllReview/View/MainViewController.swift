@@ -170,8 +170,12 @@ class MainViewController: UIViewController {
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] _ in
-            self?.statusSettingFunc((self?.myViewButton)!)
+        self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
+            if (!(self?.webMyView.isHidden)!) {
+                self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
+            } else {
+                self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
+            }
         })
         
     }

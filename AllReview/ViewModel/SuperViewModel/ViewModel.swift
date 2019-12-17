@@ -26,7 +26,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
     var myViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String])>()
-    let goToMyContentDetailViewSubject = PublishSubject<Void>()
+    let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
     
     override init() {
         super.init()
@@ -45,7 +45,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 let queryDict = temp.parseQueryString()
 //                print(webView.title)
                 if(webView.title == "마이페이지") { //memeerID 의 페이지
-                    self.loadPageView(.contentDetailView, queryDict, (self.myViewRequestSubject))
+                    self.goToMyContentDetailViewSubject.onNext(queryDict)
                 } else if (webView.title == "메인 신규리스트") {
                     self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
                 } else if (webView.title == "멤버 페이지") {
@@ -91,8 +91,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.loadPageView(.mainMyView, queryDict, (self.myViewRequestSubject))
-                self.goToMyContentDetailViewSubject.onNext(())
+                self.loadPageView(.mainMyView, queryDict, (self.mainViewRequestSubject))
             }
             else {
                 handler(.cancel)

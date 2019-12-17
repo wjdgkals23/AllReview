@@ -107,6 +107,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     }
     
     @IBAction func searchButtonTapped(_ sender: Any) {
+        self.searchBar.resignFirstResponder()
         self.viewModel.searchKeywordBindResultPage(.searchMovie, self.searchBar.text!)
     }
     
