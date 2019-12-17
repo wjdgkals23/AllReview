@@ -20,13 +20,14 @@ class MainViewController: UIViewController {
     private var viewModel: MainViewModel!
     private var router: DefaultRouter!
     
+    private unowned var parentView: NonBottomViewController!
+    
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
     private var webMyView: WKWebView!
     
     private var viewList: Array<UIView>!
     
-    //    @IBOutlet var headerView: UIView!
     @IBOutlet var bottomView: UIStackView!
     
     @IBOutlet var webContainer: UIView!
@@ -52,8 +53,9 @@ class MainViewController: UIViewController {
     
     override func didMove(toParent parent: UIViewController?) {
         if let `parent` = parent as! NonBottomViewController? {
-            parent.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-            self.view.frame = parent.containerView.bounds
+            self.parentView = parent
+            self.parentView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+            self.view.frame = self.parentView.containerView.bounds
             webViewAddWebContainer()
             bindWebView()
         }
@@ -116,6 +118,7 @@ class MainViewController: UIViewController {
         self.mainViewButton.isSelected = false
         self.rankViewButton.isSelected = false
         self.myViewButton.isSelected = false
+        self.parentView.titleImageVIew.image = #imageLiteral(resourceName: "title")
         
         sender.isSelected = true
         
@@ -126,6 +129,7 @@ class MainViewController: UIViewController {
             self.webMyView.isHidden = false
         case self.rankViewButton:
             self.webRankView.isHidden = false
+            self.parentView.titleImageVIew.image = #imageLiteral(resourceName: "title2")
         default:
             return
         }
@@ -179,12 +183,17 @@ class MainViewController: UIViewController {
     @objc func backButtonTapped() {
         if(self.webMainView.canGoBack && !self.webMainView.isHidden) {
             self.webMainView.goBack()
+            return
         }
         if(self.webRankView.canGoBack && !self.webRankView.isHidden) {
             self.webRankView.goBack()
+            return
         }
         if(self.webMyView.canGoBack && !self.webMyView.isHidden) {
             self.webMyView.goBack()
+            return
         }
+        
+        self.showToast(message: "로그인/로그아웃/리뷰등록 만 남았다!", font: UIFont.systemFont(ofSize: 18, weight: .semibold))
     }
 }

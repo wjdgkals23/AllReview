@@ -17,15 +17,7 @@ class AddNewReviewViewModel: ViewModel{
     override init() {
         
     }
-    
-    public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest>) {
-        userLoginSession.getRxLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
-            let userData = ["memberId":data.data._id]
-            let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
-            return req
-        }).bind(to: subject)
-            .disposed(by: disposeBag)
-    }
+
 }
 
 extension AddNewReviewViewModel: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

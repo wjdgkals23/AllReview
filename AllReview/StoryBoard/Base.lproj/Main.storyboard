@@ -674,6 +674,7 @@
                         <outlet property="containerView" destination="1tj-Bg-zQc" id="UTh-lZ-Tz2"/>
                         <outlet property="headerView" destination="vl0-g6-nZX" id="27t-G4-jhQ"/>
                         <outlet property="searchButton" destination="JA1-Bf-vFd" id="aq2-5v-Y7L"/>
+                        <outlet property="titleImageVIew" destination="ncv-z7-OB4" id="Phr-rc-VBy"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goY-3T-QK6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>

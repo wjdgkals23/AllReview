@@ -15,6 +15,7 @@ class NonBottomViewController: UIViewController {
     @IBOutlet var headerView: UIView!
     @IBOutlet var backButton: UIButton!
     @IBOutlet var searchButton: UIButton!
+    @IBOutlet var titleImageVIew: UIImageView!
     
     @IBOutlet var containerView: UIView! // containerChange 함수 필요!
     
