@@ -115,8 +115,11 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
     @IBAction func cancelButtonTapped(_ sender: Any) {
         if (self.webSearchView.canGoBack) {
             print("cangoback")
-            //            self.webSearchView.go(to: WKBackForwardListItem)
+            for item in self.webSearchView.backForwardList.backList {
+                print(item.url)
+            }
             self.webSearchView.goBack()
+            return
         } else {
             if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
                 navigationController.popViewController(animated: true)

@@ -76,7 +76,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 }
             }
             else if((url?.contains("app://SearchMovie"))!) {
-                handler(.allow)
+                handler(.cancel)
                 self.goToNewViewControllerReviewSubject.on(.next(("search",["":""])))
             }
             else if((url?.contains("app://MemberContents"))!) {

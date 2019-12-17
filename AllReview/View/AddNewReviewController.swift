@@ -64,52 +64,60 @@ class AddNewReviewController: UIViewController {
         }
     }
     
+}
+
+extension AddNewReviewController: YPImagePickerDelegate {
+    
+    func noPhotos() {
+        self.showToast(message: "사진이없습니다.", font: UIFont.systemFont(ofSize: 17, weight: .semibold))
+    }
+    
     @objc func imagePickerOpen() {
-        var config = YPImagePickerConfiguration()
-        
-        config.library.mediaType = .photo
-        config.shouldSaveNewPicturesToAlbum = false
-        config.video.compression = AVAssetExportPresetMediumQuality
-        config.video.libraryTimeLimit = 500.0
-        config.showsCrop = .rectangle(ratio: (240/325))
-        config.library.maxNumberOfItems = 1
-        config.screens = [.library]
-        
-        picker = YPImagePicker(configuration: config)
-        
-        picker.didFinishPicking { [unowned picker] items, cancel in //unowned 자신보다 먼저 해지될 타겟
-            if cancel {
-                print("picekr cancel")
-                picker?.dismiss(animated: true, completion: nil)
-                return
-            }
-            
-            if let firstItem = items.first {
-                switch firstItem {
-                case .photo(let photo):
-                    self.imageViewPicker.image = photo.image
-                    picker?.dismiss(animated: true, completion: nil)
-                    return
-                case .video(let _):
-                    return
-                }
-            }
-            
-            picker?.dismiss(animated: true, completion: nil)
-        }
-        
-        self.present(picker, animated: false, completion: nil)
-    }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.popViewController(animated: false)
-        }
-        else {
-            print("View Load Fail")
-        }
-    }
-    
+           var config = YPImagePickerConfiguration()
+           
+           config.library.mediaType = .photo
+           config.shouldSaveNewPicturesToAlbum = false
+           config.video.compression = AVAssetExportPresetMediumQuality
+           config.video.libraryTimeLimit = 500.0
+           config.showsCrop = .rectangle(ratio: (240/325))
+           config.library.maxNumberOfItems = 1
+           config.screens = [.library]
+           
+           picker = YPImagePicker(configuration: config)
+           picker.imagePickerDelegate = self
+               
+           picker.didFinishPicking { [unowned picker] items, cancel in //unowned 자신보다 먼저 해지될 타겟
+               if cancel {
+                   print("picekr cancel")
+                   picker?.dismiss(animated: true, completion: nil)
+                   return
+               }
+               
+               if let firstItem = items.first {
+                   switch firstItem {
+                   case .photo(let photo):
+                       self.imageViewPicker.image = photo.image
+                       picker?.dismiss(animated: true, completion: nil)
+                       return
+                   case .video(_):
+                       return
+                   }
+               }
+               
+               picker?.dismiss(animated: true, completion: nil)
+           }
+           
+           self.present(picker, animated: true, completion: nil)
+       }
+       
+       @IBAction func cancelButtonTapped(_ sender: Any) {
+           if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+               navigationController.popViewController(animated: false)
+           }
+           else {
+               print("View Load Fail")
+           }
+       }
 }
 
 //extension AddNewReviewController: UIImagePickerControllerDelegate, UINavigationControllerDelegate {
