@@ -200,13 +200,13 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="J6z-UQ-tAF">
-                                        <rect key="frame" x="15" y="24" width="32" height="22"/>
+                                        <rect key="frame" x="0.0" y="10" width="50" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="aAJ-ez-jEH"/>
-                                            <constraint firstAttribute="height" constant="22" id="otH-Y5-xDz"/>
+                                            <constraint firstAttribute="width" constant="50" id="aAJ-ez-jEH"/>
+                                            <constraint firstAttribute="height" constant="50" id="otH-Y5-xDz"/>
                                         </constraints>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <state key="normal" title="취소">
+                                        <state key="normal" image="backButtonIcon">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
@@ -220,7 +220,7 @@
                                     <constraint firstItem="J6z-UQ-tAF" firstAttribute="centerY" secondItem="6Ib-oB-ahg" secondAttribute="centerY" id="ILe-5w-fBJ"/>
                                     <constraint firstItem="gUP-Xp-7s3" firstAttribute="centerY" secondItem="6Ib-oB-ahg" secondAttribute="centerY" id="JrU-wh-gbg"/>
                                     <constraint firstItem="gUP-Xp-7s3" firstAttribute="centerX" secondItem="6Ib-oB-ahg" secondAttribute="centerX" id="U0u-1o-CB4"/>
-                                    <constraint firstItem="J6z-UQ-tAF" firstAttribute="leading" secondItem="6Ib-oB-ahg" secondAttribute="leading" constant="15" id="bRP-YD-bkm"/>
+                                    <constraint firstItem="J6z-UQ-tAF" firstAttribute="leading" secondItem="6Ib-oB-ahg" secondAttribute="leading" id="bRP-YD-bkm"/>
                                     <constraint firstItem="gUP-Xp-7s3" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="J6z-UQ-tAF" secondAttribute="trailing" constant="8" symbolic="YES" id="hdD-c5-pwg"/>
                                 </constraints>
                             </view>
@@ -291,13 +291,13 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="50"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="vr0-Ej-xij">
-                                        <rect key="frame" x="15" y="14" width="22" height="22"/>
+                                        <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="Bky-50-Qgg"/>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="22" id="iP9-3v-su1"/>
+                                            <constraint firstAttribute="height" constant="50" id="Bky-50-Qgg"/>
+                                            <constraint firstAttribute="width" constant="50" id="iP9-3v-su1"/>
                                         </constraints>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <state key="normal" image="arrow.left" catalog="system">
+                                        <state key="normal" image="backButtonIcon">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                         <connections>
@@ -305,7 +305,7 @@
                                         </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mFf-gI-wOW">
-                                        <rect key="frame" x="57" y="8" width="307" height="34"/>
+                                        <rect key="frame" x="53" y="8" width="311" height="34"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
@@ -324,11 +324,11 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
-                                    <constraint firstItem="vr0-Ej-xij" firstAttribute="leading" secondItem="VQr-v6-M2l" secondAttribute="leading" constant="15" id="0FB-1A-nv4"/>
+                                    <constraint firstItem="vr0-Ej-xij" firstAttribute="leading" secondItem="VQr-v6-M2l" secondAttribute="leading" id="0FB-1A-nv4"/>
                                     <constraint firstItem="mFf-gI-wOW" firstAttribute="centerY" secondItem="VQr-v6-M2l" secondAttribute="centerY" id="2mJ-y0-tl7"/>
                                     <constraint firstItem="vr0-Ej-xij" firstAttribute="centerY" secondItem="VQr-v6-M2l" secondAttribute="centerY" id="YiM-hO-6mc"/>
                                     <constraint firstAttribute="height" constant="50" id="f2A-P8-YE3"/>
-                                    <constraint firstItem="mFf-gI-wOW" firstAttribute="leading" secondItem="vr0-Ej-xij" secondAttribute="trailing" constant="20" id="hcB-Mo-hlT"/>
+                                    <constraint firstItem="mFf-gI-wOW" firstAttribute="leading" secondItem="vr0-Ej-xij" secondAttribute="trailing" constant="3" id="hcB-Mo-hlT"/>
                                     <constraint firstItem="27W-ON-3pJ" firstAttribute="centerY" secondItem="VQr-v6-M2l" secondAttribute="centerY" id="vpu-td-ai3"/>
                                     <constraint firstAttribute="trailing" secondItem="27W-ON-3pJ" secondAttribute="trailing" constant="5" id="vx8-T5-5Tj"/>
                                     <constraint firstItem="27W-ON-3pJ" firstAttribute="leading" secondItem="mFf-gI-wOW" secondAttribute="trailing" constant="5" id="wMo-5E-0Vf"/>
@@ -608,13 +608,13 @@
                                 <rect key="frame" x="0.0" y="44" width="414" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0i-yf-Qy0">
-                                        <rect key="frame" x="15" y="19" width="22" height="22"/>
+                                        <rect key="frame" x="0.0" y="5" width="50" height="50"/>
                                         <constraints>
-                                            <constraint firstAttribute="height" constant="22" id="KcF-Ru-WZ5"/>
-                                            <constraint firstAttribute="width" constant="22" id="a4h-SV-zuW"/>
+                                            <constraint firstAttribute="height" constant="50" id="KcF-Ru-WZ5"/>
+                                            <constraint firstAttribute="width" constant="50" id="a4h-SV-zuW"/>
                                         </constraints>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <state key="normal" image="arrow.left" catalog="system">
+                                        <state key="normal" image="backButtonIcon">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                     </button>
@@ -645,7 +645,7 @@
                                     <constraint firstItem="ncv-z7-OB4" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="15c-4R-vsQ"/>
                                     <constraint firstItem="D0i-yf-Qy0" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="CEB-hh-mrC"/>
                                     <constraint firstItem="ncv-z7-OB4" firstAttribute="centerX" secondItem="vl0-g6-nZX" secondAttribute="centerX" id="KeD-XQ-KLO"/>
-                                    <constraint firstItem="D0i-yf-Qy0" firstAttribute="leading" secondItem="vl0-g6-nZX" secondAttribute="leading" constant="15" id="VYA-Dw-fr2"/>
+                                    <constraint firstItem="D0i-yf-Qy0" firstAttribute="leading" secondItem="vl0-g6-nZX" secondAttribute="leading" id="VYA-Dw-fr2"/>
                                     <constraint firstAttribute="trailing" secondItem="JA1-Bf-vFd" secondAttribute="trailing" constant="10" id="ZMv-5a-ZWI"/>
                                     <constraint firstAttribute="height" constant="60" id="k00-u0-CYa"/>
                                     <constraint firstItem="JA1-Bf-vFd" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="krn-ar-5hE"/>
@@ -684,7 +684,7 @@
     </scenes>
     <resources>
         <image name="addButtonIcon" width="32" height="32"/>
-        <image name="arrow.left" catalog="system" width="64" height="48"/>
+        <image name="backButtonIcon" width="42" height="42"/>
         <image name="homeButtonIcon" width="32" height="32"/>
         <image name="myButtonIcon" width="84" height="55"/>
         <image name="rankButtonIcon" width="32" height="32"/>

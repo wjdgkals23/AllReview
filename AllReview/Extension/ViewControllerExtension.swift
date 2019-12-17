@@ -63,3 +63,13 @@ extension UIViewController {
         })
     }
 }
+
+extension UITextField {
+    func changeDefaultColor() {
+        self.backgroundColor = .white
+        self.textColor = .black
+        self.layer.borderColor = UIColor(red: 0.0, green: 0.0, blue: 0.0, alpha: 0.4).cgColor
+        self.layer.borderWidth = 0.5
+        self.layer.cornerRadius = 10.0
+    }
+}

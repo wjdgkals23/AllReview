@@ -47,6 +47,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         if let navi = catchNavigation() {
             viewModel = SearchMovieViewModel()
             router = SearchMovieViewRouter(navigation: navi)
+            searchBar.changeDefaultColor()
             webViewAddWebContainer()
             bindingRx()
         } else {
