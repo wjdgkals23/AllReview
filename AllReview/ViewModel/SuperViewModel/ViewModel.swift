@@ -76,7 +76,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 }
             }
             else if((url?.contains("app://SearchMovie"))!) {
-                handler(.cancel)
+                handler(.allow)
                 self.goToNewViewControllerReviewSubject.on(.next(("search",["":""])))
             }
             else if((url?.contains("app://MemberContents"))!) {
@@ -94,7 +94,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 self.loadPageView(.mainMyView, queryDict, (self.mainViewRequestSubject))
             }
             else {
-                handler(.cancel)
+                handler(.allow)
                 return
             }
         }

@@ -100,10 +100,6 @@ class MainViewController: UIViewController {
         self.webRankView.isHidden = true
         self.mainViewButton.isSelected = true
         self.rankViewButton.isSelected = false
-        self.myViewButton.imageView!.layer.borderWidth = 1
-        self.myViewButton.imageView!.layer.cornerRadius = (self.myViewButton.imageView!.bounds.width)/2
-        self.myViewButton.imageView!.layer.borderColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
-        
     }
     
     private func statusSettingFunc(_ sender: UIButton) {
