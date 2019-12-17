@@ -21,13 +21,12 @@ class ViewModel: NSObject, WKNavigationDelegate {
     var urlMaker = OneLineReviewURL()
     var urlParserContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     
-    var userImage:BehaviorSubject<UIImage?> = BehaviorSubject(value: #imageLiteral(resourceName: "userDefaultImage"))
-    
     var mainViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     var rankViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     var myViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String])>()
+    let goToMyContentDetailViewSubject = PublishSubject<Void>()
     
     override init() {
         super.init()
@@ -67,7 +66,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                print(queryDict["url"])
+    
                 let externalUrl = URL(string: ((queryDict["url"])!.decodeUrl())!)
                 if #available(iOS 10.0, *) {
                     UIApplication.shared.open(externalUrl!)
@@ -92,7 +91,8 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.loadPageView(.mainMyView, queryDict, (self.mainViewRequestSubject))
+                self.loadPageView(.mainMyView, queryDict, (self.myViewRequestSubject))
+                self.goToMyContentDetailViewSubject.onNext(())
             }
             else {
                 handler(.cancel)

@@ -2,17 +2,17 @@
   "images" : [
     {
       "idiom" : "universal",
-      "filename" : "iconUserThumnail.png",
+      "filename" : "mTab04Active.png",
       "scale" : "1x"
     },
     {
       "idiom" : "universal",
-      "filename" : "iconUserThumnail@2x.png",
+      "filename" : "mTab04Active@2x.png",
       "scale" : "2x"
     },
     {
       "idiom" : "universal",
-      "filename" : "iconUserThumnail@3x.png",
+      "filename" : "mTab04Active@3x.png",
       "scale" : "3x"
     }
   ],

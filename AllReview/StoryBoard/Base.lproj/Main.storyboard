@@ -79,7 +79,10 @@
                                             <attributedString key="attributedTitle"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
-                                        <state key="selected" image="tappedHomeButtonIcon"/>
+                                        <state key="selected" image="tappedhomeButtonIcon"/>
+                                        <connections>
+                                            <action selector="setBottomViewStatus:" destination="Asy-w4-d5S" eventType="touchUpInside" id="TTd-9j-apm"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehe-rV-ShY">
                                         <rect key="frame" x="103.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
@@ -89,6 +92,9 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
                                         <state key="selected" image="tappedRankButtonIcon"/>
+                                        <connections>
+                                            <action selector="setBottomViewStatus:" destination="Asy-w4-d5S" eventType="touchUpInside" id="IFx-NC-Src"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbL-FT-FN9">
                                         <rect key="frame" x="206.99999999999997" y="0.0" width="103.66666666666666" height="80"/>
@@ -105,9 +111,13 @@
                                         <rect key="frame" x="310.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="userDefaultImage">
+                                        <state key="normal" image="myButtonIcon">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
+                                        <state key="selected" image="tappedmyButtonIcon"/>
+                                        <connections>
+                                            <action selector="setBottomViewStatus:" destination="Asy-w4-d5S" eventType="touchUpInside" id="25e-5c-PTU"/>
+                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -299,14 +309,14 @@
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits"/>
                                     </textField>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27W-ON-3pJ">
-                                        <rect key="frame" x="374" y="15" width="30" height="20"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="27W-ON-3pJ">
+                                        <rect key="frame" x="369" y="5" width="40" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="20" id="VWq-US-90w"/>
-                                            <constraint firstAttribute="height" constant="20" id="toh-ai-hWc"/>
+                                            <constraint firstAttribute="width" constant="40" id="VWq-US-90w"/>
+                                            <constraint firstAttribute="height" constant="40" id="toh-ai-hWc"/>
                                         </constraints>
-                                        <state key="normal" title="검색"/>
-                                        <state key="disabled" title="XX"/>
+                                        <state key="normal" image="searchIcon"/>
+                                        <state key="disabled" title="X"/>
                                         <connections>
                                             <action selector="searchButtonTapped:" destination="cAg-qp-xcJ" eventType="touchUpInside" id="9SX-u9-5h5"/>
                                         </connections>
@@ -320,8 +330,8 @@
                                     <constraint firstAttribute="height" constant="50" id="f2A-P8-YE3"/>
                                     <constraint firstItem="mFf-gI-wOW" firstAttribute="leading" secondItem="vr0-Ej-xij" secondAttribute="trailing" constant="20" id="hcB-Mo-hlT"/>
                                     <constraint firstItem="27W-ON-3pJ" firstAttribute="centerY" secondItem="VQr-v6-M2l" secondAttribute="centerY" id="vpu-td-ai3"/>
-                                    <constraint firstAttribute="trailing" secondItem="27W-ON-3pJ" secondAttribute="trailing" constant="10" id="vx8-T5-5Tj"/>
-                                    <constraint firstItem="27W-ON-3pJ" firstAttribute="leading" secondItem="mFf-gI-wOW" secondAttribute="trailing" constant="10" id="wMo-5E-0Vf"/>
+                                    <constraint firstAttribute="trailing" secondItem="27W-ON-3pJ" secondAttribute="trailing" constant="5" id="vx8-T5-5Tj"/>
+                                    <constraint firstItem="27W-ON-3pJ" firstAttribute="leading" secondItem="mFf-gI-wOW" secondAttribute="trailing" constant="5" id="wMo-5E-0Vf"/>
                                 </constraints>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Zjd-UE-jnU">
@@ -609,10 +619,10 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JA1-Bf-vFd" userLabel="Search Button">
-                                        <rect key="frame" x="369" y="15" width="30" height="30"/>
+                                        <rect key="frame" x="364" y="10" width="40" height="40"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="30" id="5R5-z7-yS1"/>
-                                            <constraint firstAttribute="height" constant="30" id="Zdv-8J-SN6"/>
+                                            <constraint firstAttribute="width" constant="40" id="5R5-z7-yS1"/>
+                                            <constraint firstAttribute="height" constant="40" id="Zdv-8J-SN6"/>
                                         </constraints>
                                         <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
                                         <state key="normal" image="searchIcon">
@@ -636,7 +646,7 @@
                                     <constraint firstItem="D0i-yf-Qy0" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="CEB-hh-mrC"/>
                                     <constraint firstItem="ncv-z7-OB4" firstAttribute="centerX" secondItem="vl0-g6-nZX" secondAttribute="centerX" id="KeD-XQ-KLO"/>
                                     <constraint firstItem="D0i-yf-Qy0" firstAttribute="leading" secondItem="vl0-g6-nZX" secondAttribute="leading" constant="15" id="VYA-Dw-fr2"/>
-                                    <constraint firstAttribute="trailing" secondItem="JA1-Bf-vFd" secondAttribute="trailing" constant="15" id="ZMv-5a-ZWI"/>
+                                    <constraint firstAttribute="trailing" secondItem="JA1-Bf-vFd" secondAttribute="trailing" constant="10" id="ZMv-5a-ZWI"/>
                                     <constraint firstAttribute="height" constant="60" id="k00-u0-CYa"/>
                                     <constraint firstItem="JA1-Bf-vFd" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="krn-ar-5hE"/>
                                     <constraint firstAttribute="width" secondItem="vl0-g6-nZX" secondAttribute="height" multiplier="69:10" id="qg0-bT-Xee"/>
@@ -675,11 +685,12 @@
         <image name="addButtonIcon" width="32" height="32"/>
         <image name="arrow.left" catalog="system" width="64" height="48"/>
         <image name="homeButtonIcon" width="32" height="32"/>
+        <image name="myButtonIcon" width="84" height="55"/>
         <image name="rankButtonIcon" width="32" height="32"/>
         <image name="searchIcon" width="42" height="42"/>
-        <image name="tappedHomeButtonIcon" width="32" height="32"/>
         <image name="tappedRankButtonIcon" width="32" height="32"/>
+        <image name="tappedhomeButtonIcon" width="32" height="32"/>
+        <image name="tappedmyButtonIcon" width="84" height="55"/>
         <image name="title" width="65" height="42"/>
-        <image name="userDefaultImage" width="24" height="24"/>
     </resources>
 </document>

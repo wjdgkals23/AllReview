@@ -31,10 +31,4 @@ class MainViewModel: ViewModel{
             .disposed(by: disposeBag)
     }
     
-    public func loadUserImage() {
-        guard let userloginData = userLoginSession.getLoginData() else { return }
-        guard let userImageUrl = URL(string: userloginData.data.memberImageUrl) else { return }
-        request.loadImage(url: userImageUrl).observeOn(self.backgroundScheduler).bind(to: self.userImage).disposed(by: disposeBag)
-    }
-    
 }
