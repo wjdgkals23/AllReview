@@ -48,12 +48,12 @@ class AddNewReviewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func resizeImageViewPicker(size: CGSize) {
+    private func resizeImageViewPicker(size: CGSize) {
         imageViewPickerWidth.constant = size.width
         imageViewPickerHeight.constant = size.height
     }
     
-    func getImageFromURL(url: URL) {
+    private func getImageFromURL(url: URL) {
         do {
             let data = try Data(contentsOf: url)
             DispatchQueue.main.async {

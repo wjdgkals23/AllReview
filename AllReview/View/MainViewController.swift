@@ -106,11 +106,6 @@ class MainViewController: UIViewController {
         
     }
     
-    @IBAction func setBottomViewStatus(_ sender: Any) { // 나자신을 제외하고 끊다.
-        let targetButton = sender as! UIButton
-        self.statusSettingFunc(targetButton)
-    }
-    
     private func statusSettingFunc(_ sender: UIButton) {
         self.webMainView.isHidden = true
         self.webMyView.isHidden = true
@@ -178,6 +173,11 @@ class MainViewController: UIViewController {
             }
         })
         
+    }
+    
+    @IBAction func setBottomViewStatus(_ sender: Any) { // 나자신을 제외하고 끊다.
+        let targetButton = sender as! UIButton
+        self.statusSettingFunc(targetButton)
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {

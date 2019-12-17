@@ -55,7 +55,7 @@ class NonBottomViewController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    func onAddChildController() {
+    private func onAddChildController() {
         guard let childVC = self.childViewController else {
             naviVC.popViewController(animated: true)
             return

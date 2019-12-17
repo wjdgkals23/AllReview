@@ -22,7 +22,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
     let didSignIn = PublishSubject<Void>()
     let didFailSignIn = PublishSubject<Error>()
     
-    func testLoginTapped() {
+    public func testLoginTapped() {
         let data = [
             "memberId": "5d25b1a9b692d8fa466e8a75",
             "memberEmail": "shjo@naver.com",
@@ -43,7 +43,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         
     }
     
-    func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
+    public func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
         guard let result = result else {
             print(error!.localizedDescription)
             return
