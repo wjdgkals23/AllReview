@@ -19,19 +19,22 @@ class MainViewModel: ViewModel{
         self.mainViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         self.rankViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         self.myViewRequestSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+        
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest>) {
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
-            let userData = ["memberId":data.data._id]
+        userLoginSession.getRxLoginData()?.flatMap({ [weak self] user -> Observable<URLRequest> in
+            let userData = ["memberId":user.data._id]
             let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
             return req
         }).bind(to: subject)
             .disposed(by: disposeBag)
     }
     
-}
-
-extension MainViewModel: WKNavigationDelegate {
+    public func loadUserImage() {
+        guard let userloginData = userLoginSession.getLoginData() else { return }
+        guard let userImageUrl = URL(string: userloginData.data.memberImageUrl) else { return }
+        request.loadImage(url: userImageUrl).observeOn(self.backgroundScheduler).bind(to: self.userImage).disposed(by: disposeBag)
+    }
     
 }

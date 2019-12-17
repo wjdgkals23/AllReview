@@ -33,7 +33,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         willSet(newValue){
             if(newValue != self.topSafeArea) {
                 let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - newValue - self.bottomSafeArea
-                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
+                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight + bottomSafeArea)
                 self.webSearchView.frame = cgRect
             }
         }

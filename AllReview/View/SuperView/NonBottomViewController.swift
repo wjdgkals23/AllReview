@@ -14,6 +14,7 @@ class NonBottomViewController: UIViewController {
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var backButton: UIButton!
+    @IBOutlet var searchButton: UIButton!
     
     @IBOutlet var containerView: UIView! // containerChange 함수 필요!
     
@@ -63,6 +64,9 @@ class NonBottomViewController: UIViewController {
         childVC.didMove(toParent: self)
     }
     
+    @IBAction func searchButtonTapped(_ sender: Any) {
+        
+    }
     /*
      // MARK: - Navigation
      

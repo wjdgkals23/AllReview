@@ -57,6 +57,7 @@ class MainViewController: UIViewController {
             webViewAddWebContainer()
             buttonTapBind()
             bindWebView()
+            bindRx()
         }
     }
     
@@ -96,31 +97,57 @@ class MainViewController: UIViewController {
         
     }
     
+    func setBottomViewStatus(onOff: Bool, color: CGColor) {
+        self.webMainView.isHidden = onOff
+        self.webMyView.isHidden = !onOff
+        self.webRankView.isHidden = !onOff
+        self.mainViewButton.isSelected = onOff
+        self.rankViewButton.isSelected = !onOff
+        self.myViewButton.imageView!.layer.borderWidth = 1
+        self.myViewButton.imageView!.layer.cornerRadius = (self.myViewButton.imageView!.bounds.height)/2
+        self.myViewButton.imageView!.layer.borderColor = color
+    }
+    
     
     private func buttonTapBind() {
         
         self.mainViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webMainView)
         }.subscribe(onNext: { [weak self] item in
-            self?.webMainView.isHidden = item[0];
+            self?.webMainView.isHidden = item[0]
             self?.webMyView.isHidden = item[1]
-            self?.webRankView.isHidden = item[1];
+            self?.webRankView.isHidden = item[1]
+            self?.mainViewButton.isSelected = item[0]
+            self?.rankViewButton.isSelected = item[1]
+            self?.myViewButton.imageView!.layer.borderWidth = 1
+            self?.myViewButton.imageView!.layer.cornerRadius = (self?.myViewButton.imageView!.bounds.height)!/2
+            self?.myViewButton.imageView!.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }).disposed(by: disposeBag)
         
         self.rankViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webRankView)
         }.subscribe(onNext: { [weak self] item in
-            self?.webRankView.isHidden = item[0];
+            self?.webRankView.isHidden = item[0]
             self?.webMyView.isHidden = item[1]
-            self?.webMainView.isHidden = item[1];
+            self?.webMainView.isHidden = item[1]
+            self?.mainViewButton.isSelected = item[1]
+            self?.rankViewButton.isSelected = item[0]
+            self?.myViewButton.imageView!.layer.borderWidth = 1
+            self?.myViewButton.imageView!.layer.cornerRadius = (self?.myViewButton.imageView!.bounds.height)!/2
+            self?.myViewButton.imageView!.layer.borderColor = #colorLiteral(red: 0, green: 0, blue: 0, alpha: 1)
         }).disposed(by: disposeBag)
         
         self.myViewButton.rx.tap.flatMap { _ -> Observable<[Bool]> in
             return self.buttonflatMap(webView: self.webMyView)
         }.subscribe(onNext: { [weak self] item in
-            self?.webMyView.isHidden = item[0];
+            self?.webMyView.isHidden = item[0]
             self?.webMainView.isHidden = item[1]
-            self?.webRankView.isHidden = item[1];
+            self?.webRankView.isHidden = item[1]
+            self?.mainViewButton.isSelected = item[1]
+            self?.rankViewButton.isSelected = item[1]
+            self?.myViewButton.imageView!.layer.borderWidth = 1
+            self?.myViewButton.imageView!.layer.cornerRadius = (self?.myViewButton.imageView!.bounds.height)!/2
+            self?.myViewButton.imageView!.layer.borderColor = #colorLiteral(red: 1, green: 0.1491314173, blue: 0, alpha: 1)
         }).disposed(by: disposeBag)
         
     }
@@ -148,21 +175,30 @@ class MainViewController: UIViewController {
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.rankViewRequestSubject.distinctUntilChanged().subscribe(onNext: { (request) in
+        self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
             self.webRankView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
         self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webMyView.isHidden = false
-            self.webMainView.isHidden = true
-            self.webRankView.isHidden = true
             self.webMyView.load(request)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
+    }
+    
+    private func bindRx() {
+        self.viewModel.loadUserImage()
+        self.viewModel.userImage.asObservable().observeOn(MainScheduler.asyncInstance).subscribe(onNext: { [weak self] (image) in
+            guard let img = image else { return }
+            self?.myViewButton.imageEdgeInsets = UIEdgeInsets(top: 20,left: 20,bottom: 20,right: 20)
+            self?.myViewButton.imageView?.contentMode = .scaleAspectFit
+            let circleImg = UIImage.makeRoundImg(image: img, radius: 50)
+            self?.myViewButton.imageView?.frame.size = circleImg.size
+            self?.myViewButton.setImage(circleImg, for: .normal)
+        }).disposed(by: disposeBag)
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {

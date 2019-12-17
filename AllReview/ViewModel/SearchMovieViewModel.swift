@@ -12,7 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-class SearchMovieViewModel: ViewModel, WKNavigationDelegate{
+class SearchMovieViewModel: ViewModel {
     
     var keywordTextSubject:BehaviorSubject<String?>!
     var searchBarSubject:BehaviorSubject<Bool>!

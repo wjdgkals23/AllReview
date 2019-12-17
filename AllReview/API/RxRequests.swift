@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import UIKit
 import RxSwift
 import RxCocoa
 
@@ -50,6 +51,15 @@ class OneLineReviewAPI {
                     }
                 }
         }
+    }
+    
+    func loadImage(url: URL) -> Observable<UIImage?> {
+        if let data = try? Data(contentsOf: url) {
+            if let image = UIImage(data: data) {
+                return Observable.just(image)
+            }
+        }
+        return Observable.just(nil)
     }
 
 }

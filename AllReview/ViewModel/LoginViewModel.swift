@@ -33,7 +33,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         
         self.request.rxTestLogin(userData: data).observeOn(self.backgroundScheduler)
             .subscribe(onNext: { [weak self] res in
-                UserLoginSession.sharedInstance.setLoginData(data: res)
+                UserLoginSession.sharedInstance.setRxLoginData(data: res)
                 self?.didSignIn.onNext(())
                 }, onError: { [weak self] err in
                     self?.didFailSignIn.onNext(err)

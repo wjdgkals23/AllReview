@@ -19,7 +19,7 @@ class AddNewReviewViewModel: ViewModel{
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest>) {
-        userLoginSession.getLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
+        userLoginSession.getRxLoginData()?.flatMap({ [weak self] data -> Observable<URLRequest> in
             let userData = ["memberId":data.data._id]
             let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
             return req

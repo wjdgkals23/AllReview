@@ -75,24 +75,26 @@
                                         <rect key="frame" x="0.0" y="0.0" width="103.66666666666667" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="pencil" catalog="system">
+                                        <state key="normal" image="homeButtonIcon">
                                             <attributedString key="attributedTitle"/>
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
+                                        <state key="selected" image="tappedHomeButtonIcon"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehe-rV-ShY">
                                         <rect key="frame" x="103.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="list.number" catalog="system">
+                                        <state key="normal" image="rankButtonIcon">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
+                                        <state key="selected" image="tappedRankButtonIcon"/>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbL-FT-FN9">
                                         <rect key="frame" x="206.99999999999997" y="0.0" width="103.66666666666666" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="plus.circle" catalog="system">
+                                        <state key="normal" image="addButtonIcon">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
                                         <connections>
@@ -103,7 +105,7 @@
                                         <rect key="frame" x="310.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
                                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <color key="tintColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <state key="normal" image="person" catalog="system">
+                                        <state key="normal" image="userDefaultImage">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
                                     </button>
@@ -595,16 +597,6 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vl0-g6-nZX" userLabel="HeaderView">
                                 <rect key="frame" x="0.0" y="44" width="414" height="60"/>
                                 <subviews>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="한 줄 리뷰" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumScaleFactor="0.5" translatesAutoresizingMaskIntoConstraints="NO" id="lhp-Rp-xZg">
-                                        <rect key="frame" x="173" y="20" width="68" height="20"/>
-                                        <constraints>
-                                            <constraint firstAttribute="height" constant="20" id="jz4-VT-t0l"/>
-                                            <constraint firstAttribute="width" constant="68" id="o0F-Mt-viP"/>
-                                        </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
-                                        <nil key="highlightedColor"/>
-                                    </label>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0i-yf-Qy0">
                                         <rect key="frame" x="15" y="19" width="22" height="22"/>
                                         <constraints>
@@ -616,14 +608,37 @@
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
                                     </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="JA1-Bf-vFd" userLabel="Search Button">
+                                        <rect key="frame" x="369" y="15" width="30" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="width" constant="30" id="5R5-z7-yS1"/>
+                                            <constraint firstAttribute="height" constant="30" id="Zdv-8J-SN6"/>
+                                        </constraints>
+                                        <color key="tintColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <state key="normal" image="searchIcon">
+                                            <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="searchButtonTapped:" destination="faz-rJ-wV1" eventType="touchUpInside" id="HsW-iX-yj5"/>
+                                        </connections>
+                                    </button>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="title" translatesAutoresizingMaskIntoConstraints="NO" id="ncv-z7-OB4">
+                                        <rect key="frame" x="174.66666666666666" y="9" width="65" height="42"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="42" id="Pc7-K9-SOc"/>
+                                            <constraint firstAttribute="width" constant="65" id="mHW-fi-tU3"/>
+                                        </constraints>
+                                    </imageView>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <constraints>
+                                    <constraint firstItem="ncv-z7-OB4" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="15c-4R-vsQ"/>
                                     <constraint firstItem="D0i-yf-Qy0" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="CEB-hh-mrC"/>
+                                    <constraint firstItem="ncv-z7-OB4" firstAttribute="centerX" secondItem="vl0-g6-nZX" secondAttribute="centerX" id="KeD-XQ-KLO"/>
                                     <constraint firstItem="D0i-yf-Qy0" firstAttribute="leading" secondItem="vl0-g6-nZX" secondAttribute="leading" constant="15" id="VYA-Dw-fr2"/>
-                                    <constraint firstItem="lhp-Rp-xZg" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="f0o-FG-zt5"/>
+                                    <constraint firstAttribute="trailing" secondItem="JA1-Bf-vFd" secondAttribute="trailing" constant="15" id="ZMv-5a-ZWI"/>
                                     <constraint firstAttribute="height" constant="60" id="k00-u0-CYa"/>
-                                    <constraint firstItem="lhp-Rp-xZg" firstAttribute="centerX" secondItem="vl0-g6-nZX" secondAttribute="centerX" id="lgw-eg-SyY"/>
+                                    <constraint firstItem="JA1-Bf-vFd" firstAttribute="centerY" secondItem="vl0-g6-nZX" secondAttribute="centerY" id="krn-ar-5hE"/>
                                     <constraint firstAttribute="width" secondItem="vl0-g6-nZX" secondAttribute="height" multiplier="69:10" id="qg0-bT-Xee"/>
                                 </constraints>
                             </view>
@@ -648,6 +663,7 @@
                         <outlet property="backButton" destination="D0i-yf-Qy0" id="2JS-Lx-P9p"/>
                         <outlet property="containerView" destination="1tj-Bg-zQc" id="UTh-lZ-Tz2"/>
                         <outlet property="headerView" destination="vl0-g6-nZX" id="27t-G4-jhQ"/>
+                        <outlet property="searchButton" destination="JA1-Bf-vFd" id="aq2-5v-Y7L"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="goY-3T-QK6" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -656,10 +672,14 @@
         </scene>
     </scenes>
     <resources>
+        <image name="addButtonIcon" width="32" height="32"/>
         <image name="arrow.left" catalog="system" width="64" height="48"/>
-        <image name="list.number" catalog="system" width="64" height="48"/>
-        <image name="pencil" catalog="system" width="64" height="56"/>
-        <image name="person" catalog="system" width="64" height="58"/>
-        <image name="plus.circle" catalog="system" width="64" height="60"/>
+        <image name="homeButtonIcon" width="32" height="32"/>
+        <image name="rankButtonIcon" width="32" height="32"/>
+        <image name="searchIcon" width="42" height="42"/>
+        <image name="tappedHomeButtonIcon" width="32" height="32"/>
+        <image name="tappedRankButtonIcon" width="32" height="32"/>
+        <image name="title" width="65" height="42"/>
+        <image name="userDefaultImage" width="24" height="24"/>
     </resources>
 </document>

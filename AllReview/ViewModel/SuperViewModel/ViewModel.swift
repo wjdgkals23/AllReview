@@ -12,7 +12,7 @@ import RxCocoa
 import WebKit
 import UIKit
 
-class ViewModel: NSObject {
+class ViewModel: NSObject, WKNavigationDelegate {
     
     var userLoginSession = UserLoginSession.sharedInstance
     let request = OneLineReviewAPI.sharedInstance
@@ -20,6 +20,8 @@ class ViewModel: NSObject {
     let disposeBag = DisposeBag()
     var urlMaker = OneLineReviewURL()
     var urlParserContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
+    
+    var userImage:BehaviorSubject<UIImage?> = BehaviorSubject(value: #imageLiteral(resourceName: "userDefaultImage"))
     
     var mainViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     var rankViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
