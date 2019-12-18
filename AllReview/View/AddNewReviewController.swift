@@ -28,9 +28,8 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     private var image: UIImage! {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
-            //            self.resizeImageViewPicker(size: resizedImage.size)
-            self.imageViewPicker.contentMode = .scaleToFill
             self.imageViewPicker.image = resizedImage
+            print(resizedImage.accessibilityIdentifier)
         }
     }
     
@@ -38,31 +37,29 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         super.viewDidLoad()
         
         if let navi = catchNavigation() {
-            //            DispatchQueue.global().async {
-            //                self.getImageFromURL(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
-            //            }
             viewModel = AddNewReviewViewModel()
             setUpView()
             setUpRx()
         } else {
             self.viewDidLoad()
         }
-        // Do any additional setup after loading the view.
     }
     
     func setUpView() {
-        resizeImageViewPicker(size: CGSize(width: 240, height: 325))
+        self.resizeImageViewPicker(size: CGSize(width: 240, height: 325))
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imagePickerOpen))
-        imageViewPicker.addGestureRecognizer(tapGesture)
-        imageViewPicker.isUserInteractionEnabled = true
+        self.imageViewPicker.addGestureRecognizer(tapGesture)
+        self.imageViewPicker.isUserInteractionEnabled = true
+        self.imageViewPicker.contentMode = .scaleToFill
     }
     
     func setUpRx() {
-        self.viewModel.imageViewImageSubject.distinctUntilChanged().subscribe(onNext: { image in
-            self.image = image
+        self.viewModel.imageViewImageSubject.asObservable().subscribe(onNext: { [weak self] img in
+            self?.image = img
         })
-        
-        self.viewModel.request.commomImageLoad(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!).bind(to: self.viewModel.imageViewImageSubject).disposed(by: self.viewModel.disposeBag)
+        self.viewModel.request.commomImageLoad(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
+            .bind(to: self.viewModel.imageViewImageSubject)
+            .disposed(by: self.viewModel.disposeBag)
     }
     
     private func resizeImageViewPicker(size: CGSize) {
@@ -92,7 +89,7 @@ extension AddNewReviewController: YPImagePickerDelegate {
         picker = YPImagePicker(configuration: config)
         picker.imagePickerDelegate = self
         
-        picker.didFinishPicking { [unowned picker] items, cancel in //unowned 자신보다 먼저 해지될 타겟
+        picker.didFinishPicking { [unowned picker, weak self] items, cancel in //unowned 자신보다 먼저 해지될 타겟
             if cancel {
                 print("picekr cancel")
                 picker?.dismiss(animated: true, completion: nil)
@@ -102,7 +99,7 @@ extension AddNewReviewController: YPImagePickerDelegate {
             if let firstItem = items.first {
                 switch firstItem {
                 case .photo(let photo):
-                    Observable.just(photo.image).bind(to: self.viewModel.imageViewImageSubject).disposed(by: self.viewModel.disposeBag)
+                    self?.image = photo.image
                     picker?.dismiss(animated: true, completion: nil)
                     return
                 case .video(_):

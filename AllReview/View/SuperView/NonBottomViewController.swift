@@ -70,10 +70,6 @@ class NonBottomViewController: UIViewController {
         self.containerView.addSubview(childVC.view)
         childVC.didMove(toParent: self)
     }
-    
-    @IBAction func searchButtonTapped(_ sender: Any) {
-        
-    }
     /*
      // MARK: - Navigation
      

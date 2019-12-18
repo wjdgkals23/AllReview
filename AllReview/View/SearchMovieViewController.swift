@@ -87,6 +87,8 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         }, onError: { (err) in
             print("Error \(err.localizedDescription)")
         }).disposed(by: disposeBag)
+        
+        self.webSearchView.rx.decidePolicyNavigationAction.subscribe(onNext: self.viewModel.urlParserContext!).disposed(by: disposeBag)
     }
     
     func setUpWebView() {
@@ -96,7 +98,6 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         self.webSearchView = WKWebView(frame: cgRect, configuration: webSearchViewWebConfigure)
         
         self.webSearchView.navigationDelegate = self.viewModel
-        self.webSearchView.rx.decidePolicyNavigationAction.subscribe(onNext: self.viewModel.urlParserContext!)
         
         self.webContainer.addSubview(webSearchView)
         self.webSearchView.translatesAutoresizingMaskIntoConstraints = true

@@ -628,9 +628,6 @@
                                         <state key="normal" image="searchIcon">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
-                                        <connections>
-                                            <action selector="searchButtonTapped:" destination="faz-rJ-wV1" eventType="touchUpInside" id="HsW-iX-yj5"/>
-                                        </connections>
                                     </button>
                                     <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="title" translatesAutoresizingMaskIntoConstraints="NO" id="ncv-z7-OB4">
                                         <rect key="frame" x="174.66666666666666" y="9" width="65" height="42"/>

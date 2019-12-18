@@ -25,6 +25,8 @@ class ViewModel: NSObject, WKNavigationDelegate {
     var rankViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     var myViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     
+    var searchResultSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+    
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String])>()
     let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
     
@@ -50,6 +52,8 @@ class ViewModel: NSObject, WKNavigationDelegate {
                     self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
                 } else if (webView.title == "멤버 페이지") {
                     self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
+                } else {
+                    self.loadPageView(.contentDetailView, queryDict, (self.searchResultSubject))
                 }
                 return
             }

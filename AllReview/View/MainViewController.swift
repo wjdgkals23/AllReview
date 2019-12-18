@@ -56,12 +56,15 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             self.parentView = parent
             self.parentView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
             self.view.frame = self.parentView.containerView.bounds
+            setUpView()
             setUpWebView()
             setUpRx()
         }
     }
     
-    func setUpView() {}
+    func setUpView() {
+        self.parentView.searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+    }
     
     func setUpRx() {
         self.webMainView.rx.decidePolicyNavigationAction.asObservable()
@@ -174,6 +177,10 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             }
             return Disposables.create()
         }
+    }
+    
+    @objc private func searchButtonTapped() {
+        self.router.viewPresent("add", ["":""])
     }
     
     @IBAction func setBottomViewStatus(_ sender: Any) { // 나자신을 제외하고 끊다.

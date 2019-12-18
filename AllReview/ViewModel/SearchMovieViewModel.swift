@@ -18,12 +18,10 @@ class SearchMovieViewModel: ViewModel {
     var searchBarSubject:BehaviorSubject<Bool>!
     var searchButtonEnabledDriver:Driver<Bool>!
     
-    var searchResultSubject:BehaviorSubject<URLRequest>!
-    
     override init() {
         super.init()
+        
         keywordTextSubject = BehaviorSubject(value: "")
-        searchResultSubject = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
         
         let searchButtonEnabledObservable:Observable<Bool> = keywordTextSubject.distinctUntilChanged().flatMap { (keyword) -> Observable<Bool> in
             return Observable.create { (obs) -> Disposable in
@@ -43,8 +41,8 @@ class SearchMovieViewModel: ViewModel {
     }
     
     public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
-        let userData = ["queryMovieName":keyWord, "userId":(userLoginSession.getLoginData()?.data._id)!]
-        self.urlMaker.rxMakeURLRequestObservable(.searchMovie, userData)
-        .bind(to: (self.searchResultSubject)!).disposed(by: disposeBag)
+        let searchData = ["queryMovieName":keyWord, "userId":(userLoginSession.getLoginData()?.data._id)!]
+        self.urlMaker.rxMakeURLRequestObservable(.searchMovie, searchData)
+        .bind(to: (self.searchResultSubject)).disposed(by: disposeBag)
     }
 }
