@@ -29,6 +29,7 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
+//            self?.viewModel.request.uploadImageToFireBase(userId: "asdf", movieId: "assddfdfd", image: resizedImage)
             print(resizedImage.accessibilityIdentifier)
         }
     }

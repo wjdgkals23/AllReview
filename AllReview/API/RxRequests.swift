@@ -14,6 +14,8 @@ import FirebaseStorage
 
 //URLSession
 
+//이미지 업로드 -> refer가 있는지 확인(getURL) -> 없으면 해당 이름으로 진행
+
 typealias err = OneLineReviewError
 
 class OneLineReviewAPI {
@@ -24,6 +26,9 @@ class OneLineReviewAPI {
     
     private let decoder = JSONDecoder()
     private let urlMaker = OneLineReviewURL()
+    
+    private let storageRef = Storage.storage().reference()
+    private let settingMeta = StorageMetadata.init()
     
     init() {
         decoder.keyDecodingStrategy = .convertFromSnakeCase
@@ -62,9 +67,24 @@ class OneLineReviewAPI {
         }
         return Observable.just(nil)
     }
-    
-    private func uploadImageToFireBase() -> Observable<Bool> {
-        return Observable.just(false)
+
+    func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Observable<URL?> {
+        let targetRef = self.storageRef.child(movieId).child("\(userId)/\(String.timeString())")
+        settingMeta.contentType = "image/png"
+        settingMeta.cacheControl = "public,max-age=300"
+        settingMeta.contentEncoding = "gzip"
+        return Observable.create { obs in
+            DispatchQueue.global().async {
+                targetRef.putData(image.pngData()!, metadata: self.settingMeta) { [weak targetRef,self] metadata, err in
+                    guard let metadata = metadata else { return obs.onError(err!) }
+                    targetRef?.downloadURL(completion: { (url, err) in
+                        guard let url = url else { return obs.onError(err!) }
+                        obs.onNext(url)
+                    })
+                }
+            }
+            return Disposables.create()
+        }
     }
     
     private func getImageUrlFromFireBase() -> Observable<String> {

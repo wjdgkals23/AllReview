@@ -40,4 +40,14 @@ extension String {
     {
         return self.removingPercentEncoding
     }
+    
+    static func timeString() -> String {
+        let currentDate = Date()
+        
+        let format = DateFormatter()
+        format.timeZone = .current
+        format.dateFormat = "yyyy-MM-dd'T'HH:mm:ssZ"
+        
+        return format.string(from: currentDate)
+    }
 }
