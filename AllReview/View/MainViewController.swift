@@ -135,6 +135,10 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.webRankView.isHidden = true
         self.mainViewButton.isSelected = true
         self.rankViewButton.isSelected = false
+        
+        self.webMyView.scrollView.bounces = false
+        self.webRankView.scrollView.bounces = false
+        self.webMainView.scrollView.bounces = false
     }
     
     private func statusSettingFunc(_ sender: UIButton) {

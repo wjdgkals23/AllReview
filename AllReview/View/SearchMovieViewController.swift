@@ -105,6 +105,8 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         self.webSearchView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
         self.webSearchView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
         self.webSearchView.updateConstraints()
+        
+        self.webSearchView.scrollView.bounces = false
     }
     
     @IBAction func searchButtonTapped(_ sender: Any) {
