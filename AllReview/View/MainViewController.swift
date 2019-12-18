@@ -13,7 +13,7 @@ import RxWebKit
 import RxSwift
 import RxCocoa
 
-class MainViewController: UIViewController {
+class MainViewController: UIViewController, OneLineReviewViewProtocol {
     
     private var disposeBag = DisposeBag()
     
@@ -56,18 +56,66 @@ class MainViewController: UIViewController {
             self.parentView = parent
             self.parentView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
             self.view.frame = self.parentView.containerView.bounds
-            webViewAddWebContainer()
-            bindWebView()
+            setUpWebView()
+            setUpRx()
         }
     }
     
-    private func webViewAddWebContainer() {
+    func setUpView() {}
+    
+    func setUpRx() {
+        self.webMainView.rx.decidePolicyNavigationAction.asObservable()
+            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .disposed(by: disposeBag)
         
+        self.webMyView.rx.decidePolicyNavigationAction.asObservable()
+            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .disposed(by: disposeBag)
+        
+        self.viewModel.goToNewViewControllerReviewSubject
+            .subscribe({ initData in
+                self.router.viewPresent(initData.element!.0, initData.element!.1)
+            }).disposed(by: self.viewModel.disposeBag)
+        
+        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
+        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
+        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
+        
+        self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+            self.webMainView.load(request)
+        }, onError: { (err) in
+            print("Err \(err)")
+        }).disposed(by: disposeBag)
+        
+        self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+            self.webRankView.load(request)
+        }, onError: { (err) in
+            print("Err \(err)")
+        }).disposed(by: disposeBag)
+        
+        self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+            self.webMyView.load(request)
+        }, onError: { (err) in
+            print("Err \(err)")
+        }).disposed(by: disposeBag)
+        
+        self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
+                if (!(self?.webMyView.isHidden)!) {
+                    self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
+                } else {
+                    self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
+                }
+            }, onError: { [weak self] err in
+                self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
+        })
+    }
+    
+    func setUpWebView() {
         let webMainViewWebConfigure = WKWebViewConfiguration()
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
         
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.view.bounds.height - self.bottomView.bounds.height) // frame 자체도 빼고 
+        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.view.bounds.height - self.bottomView.bounds.height) // frame 자체도 빼고
         
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
@@ -81,19 +129,6 @@ class MainViewController: UIViewController {
         
         self.webMainView.navigationDelegate = self.viewModel
         self.webMyView.navigationDelegate = self.viewModel
-        
-        self.webMainView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext!)
-            .disposed(by: disposeBag)
-        
-        self.webMyView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext!)
-            .disposed(by: disposeBag)
-        
-        self.viewModel.goToNewViewControllerReviewSubject
-            .subscribe({ initData in
-                self.router.viewPresent(initData.element!.0, initData.element!.1)
-            }).disposed(by: self.disposeBag)
         
         self.webMainView.isHidden = false
         self.webMyView.isHidden = true
@@ -135,40 +170,6 @@ class MainViewController: UIViewController {
             }
             return Disposables.create()
         }
-    }
-    
-    private func bindWebView() {
-        
-        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
-        
-        self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webMainView.load(request)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webRankView.load(request)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webMyView.load(request)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
-            if (!(self?.webMyView.isHidden)!) {
-                self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
-            } else {
-                self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
-            }
-        })
-        
     }
     
     @IBAction func setBottomViewStatus(_ sender: Any) { // 나자신을 제외하고 끊다.

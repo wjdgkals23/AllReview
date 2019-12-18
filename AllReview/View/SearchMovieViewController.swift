@@ -12,7 +12,7 @@ import RxCocoa
 import WebKit
 import RxWebKit
 
-class SearchMovieViewController: UIViewController, WKNavigationDelegate {
+class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     
     private var disposeBag = DisposeBag()
     
@@ -48,8 +48,8 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
             viewModel = SearchMovieViewModel()
             router = SearchMovieViewRouter(navigation: navi)
             searchBar.changeDefaultColor()
-            webViewAddWebContainer()
-            bindingRx()
+            setUpWebView()
+            setUpRx()
         } else {
             self.viewDidLoad()
         }
@@ -66,7 +66,9 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         }
     }
     
-    private func bindingRx() {
+    func setUpView() {}
+    
+    func setUpRx() {
         self.searchBar.rx.text.distinctUntilChanged()
             .bind(to: viewModel.keywordTextSubject)
             .disposed(by: disposeBag)
@@ -78,7 +80,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
                 self.router.viewPresent(initData.element!.0, initData.element!.1)
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
             self.webSearchView.load(request) // 실패화면 구현 요청
@@ -87,8 +89,7 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         }).disposed(by: disposeBag)
     }
     
-    private func webViewAddWebContainer() {
-        
+    func setUpWebView() {
         let webSearchViewWebConfigure = WKWebViewConfiguration()
         let webViewHeight = self.view.bounds.height
         let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
@@ -104,7 +105,6 @@ class SearchMovieViewController: UIViewController, WKNavigationDelegate {
         self.webSearchView.topAnchor.constraint(equalTo: self.webContainer.topAnchor).isActive = true
         self.webSearchView.bottomAnchor.constraint(equalTo: self.webContainer.bottomAnchor).isActive = true
         self.webSearchView.updateConstraints()
-    
     }
     
     @IBAction func searchButtonTapped(_ sender: Any) {

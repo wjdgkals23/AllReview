@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SignUpViewController: UIViewController {
+class SignUpViewController: UIViewController, OneLineReviewViewProtocol {
 
     @IBOutlet var signUpButton: UIButton!
     
@@ -32,6 +32,13 @@ class SignUpViewController: UIViewController {
         super.viewDidLoad()
         
         viewModel = SignUpViewModel()
+        setUpRx()
+        // Do any additional setup after loading the view.
+    }
+    
+    func setUpView() {}
+    
+    func setUpRx() {
         self.emailTextField.rx.text.distinctUntilChanged().bind(to: self.viewModel.emailValidSubject).disposed(by: disposeBag)
         self.pwTextField.rx.text.distinctUntilChanged().bind(to: self.viewModel.pwValidSubject).disposed(by: disposeBag)
         self.nickNameTextField.rx.text.distinctUntilChanged().bind(to: self.viewModel.nickNameValidSubject).disposed(by: disposeBag)
@@ -60,7 +67,6 @@ class SignUpViewController: UIViewController {
         }).disposed(by: disposeBag)
         
         self.viewModel.signUpDataValid.drive(self.signUpButton.rx.isEnabled).disposed(by: disposeBag)
-        // Do any additional setup after loading the view.
     }
     
 

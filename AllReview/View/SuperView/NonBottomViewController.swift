@@ -8,6 +8,12 @@
 
 import UIKit
 
+@objc protocol OneLineReviewViewProtocol {
+    func setUpView()
+    func setUpRx()
+    @objc optional func setUpWebView()
+}
+
 class NonBottomViewController: UIViewController {
     
     private var naviVC: UINavigationController!

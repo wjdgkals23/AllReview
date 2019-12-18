@@ -14,8 +14,10 @@ import WebKit
 
 class AddNewReviewViewModel: ViewModel{
     
+    var imageViewImageSubject: BehaviorSubject<UIImage?>!
+    
     override init() {
-        
+        imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
     }
 
 }

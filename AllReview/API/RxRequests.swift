@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import RxSwift
 import RxCocoa
+import FirebaseStorage
 
 //URLSession
 
@@ -29,7 +30,7 @@ class OneLineReviewAPI {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
     
-    func rxTestLogin(userData: [String:String]) -> Observable<UserLoginSessionResponse> {
+    public func rxTestLogin(userData: [String:String]) -> Observable<UserLoginSessionResponse> {
         self.urlMaker.rxMakeURLRequestObservable(OneLineReview.login, userData).flatMap { urlRequest -> Observable<UserLoginSessionResponse> in
             let dataTask = URLSession.shared.rx.response(request: urlRequest)
             return dataTask
@@ -53,7 +54,7 @@ class OneLineReviewAPI {
         }
     }
     
-    func loadImage(url: URL) -> Observable<UIImage?> {
+    public func commomImageLoad(url: URL) -> Observable<UIImage?> {
         if let data = try? Data(contentsOf: url) {
             if let image = UIImage(data: data) {
                 return Observable.just(image)
@@ -61,6 +62,20 @@ class OneLineReviewAPI {
         }
         return Observable.just(nil)
     }
+    
+    private func uploadImageToFireBase() -> Observable<Bool> {
+        return Observable.just(false)
+    }
+    
+    private func getImageUrlFromFireBase() -> Observable<String> {
+        return Observable.just("")
+    }
+    
+    private func uploadNewReview(data: [String:String]) -> Observable<Bool> {
+        return Observable.just(false)
+    }
+    
+     
 
 }
 

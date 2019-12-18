@@ -13,7 +13,7 @@ import Firebase
 import RxSwift
 
 // facebook login logic 옮기기
-class LoginViewController: UIViewController {
+class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     
     private var router: LoginRouter!
     private var viewModel: LoginViewModel!
@@ -33,14 +33,14 @@ class LoginViewController: UIViewController {
             navi.setNavigationBarHidden(true, animated: false)
             router = LoginRouter(navigation: navi)
             viewModel = LoginViewModel()
-            setupView()
-            setupBinding()
+            setUpView()
+            setUpRx()
         } else {
             self.viewDidLoad()
         }
     }
     
-    func setupView() {
+    func setUpView() {
         let loginButton = FBLoginButton()
         
         loginButton.delegate = self.viewModel
@@ -60,14 +60,13 @@ class LoginViewController: UIViewController {
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
     }
     
-    func setupBinding() {
-        
+    func setUpRx() {
         self.viewModel.didSignIn
             .observeOn(MainScheduler.instance)
             .subscribe({ [weak self] _ in
                 self?.view.isUserInteractionEnabled = true
                 self?.router.naviPush("login", ["":""])
-            }).disposed(by: self.disposeBag)
+            }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
@@ -75,11 +74,9 @@ class LoginViewController: UIViewController {
             if let error = err as? OneLineReviewError {
                 print(error.localizedDescription)
             }
-        }).disposed(by: self.disposeBag)
-        
+        }).disposed(by: self.viewModel.disposeBag)
     }
-    
-    
+        
     @IBAction func testLogin(_ sender: Any) {
         self.view.isUserInteractionEnabled = false
         viewModel.testLoginTapped()
