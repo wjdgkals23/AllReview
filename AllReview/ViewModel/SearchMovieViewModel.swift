@@ -41,7 +41,7 @@ class SearchMovieViewModel: ViewModel {
     }
     
     public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
-        let searchData = ["queryMovieName":keyWord, "userId":(userLoginSession.getLoginData()?.data._id)!]
+        let searchData = ["queryMovieName":keyWord, "userId":(userLoginSession.getLoginData()?.data?._id)!]
         self.urlMaker.rxMakeURLRequestObservable(.searchMovie, searchData)
         .bind(to: (self.searchResultSubject)).disposed(by: disposeBag)
     }

@@ -21,7 +21,7 @@ class MainViewModel: ViewModel{
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest>) {
         userLoginSession.getRxLoginData()?.flatMap({ [weak self] user -> Observable<URLRequest> in
-            let userData = ["memberId":user.data._id]
+            let userData = ["memberId":user.data!._id]
             let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
             return req
         }).bind(to: subject)

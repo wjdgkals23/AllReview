@@ -8,6 +8,27 @@
 
 import Foundation
 
+//enum OneLineReview: String {
+//    case login = "/member/login"
+//    case register = "/member/add"
+//    case mainRankView = "/page/boxOfficePage"
+//    case mainMainView = "/page/mainIndexPage"
+//    case mainMyView = "/mainList/showMyPage"
+//    case contentDetailView = "/mainList/showContentDetail"
+//    case searchMovie = "/naverapi/searchedMovieList"
+//    case showMembersContents = "/mainList/showMemberPage"
+//}
+
+enum LoginErrResponse: String {
+    case success = "0000"
+    case noUserInfo = "0404"
+    case queryError = "0500"
+    case passwordErr1 = "1000"
+    case passwordErr2 = "2000"
+    case deviceCheckIdDiff = "3000"
+    case memberEmailDiff = "4000"
+}
+
 struct ErrResponse: Codable {
     let driver: String
     let name: String
@@ -64,7 +85,7 @@ struct LoginInfo: Codable {
 struct UserLoginSessionResponse: Codable {
     let resultCode:String
     let resultMsg:String
-    let data:LoginInfo
+    let data:LoginInfo?
     let err:SuccessResponse
     let connectionId:String
 }

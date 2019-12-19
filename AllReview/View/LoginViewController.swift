@@ -70,11 +70,11 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
         
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { err in
-            if let error = err as? OneLineReviewError {
-                print(error.localizedDescription)
-            }
-        }).disposed(by: self.viewModel.disposeBag)
+            .subscribe(onNext: { errMessage in
+                self.showToast(message: errMessage, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
+                self.view.isUserInteractionEnabled = true
+            })
+            .disposed(by: self.viewModel.disposeBag)
     }
         
     @IBAction func testLogin(_ sender: Any) {

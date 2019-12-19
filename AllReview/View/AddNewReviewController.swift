@@ -29,8 +29,8 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
-//            self?.viewModel.request.uploadImageToFireBase(userId: "asdf", movieId: "assddfdfd", image: resizedImage)
             print(resizedImage.accessibilityIdentifier)
+            self.SendPhoto()
         }
     }
     
@@ -61,6 +61,13 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.request.commomImageLoad(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
             .bind(to: self.viewModel.imageViewImageSubject)
             .disposed(by: self.viewModel.disposeBag)
+    }
+    
+    func SendPhoto() {
+        self.viewModel.request.uploadImageToFireBase(userId: "asdf", movieId: "assddfdfd", image: imageViewPicker.image!)
+            .subscribe(onNext: { url in
+                print(url)
+            }).disposed(by: self.viewModel.disposeBag)
     }
     
     private func resizeImageViewPicker(size: CGSize) {

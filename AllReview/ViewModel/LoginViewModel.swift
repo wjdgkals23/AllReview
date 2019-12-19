@@ -20,12 +20,12 @@ enum SocialType:String {
 class LoginViewModel: ViewModel, LoginButtonDelegate {
     
     let didSignIn = PublishSubject<Void>()
-    let didFailSignIn = PublishSubject<Error>()
+    let didFailSignIn = PublishSubject<String>()
     
     public func testLoginTapped() {
         let data = [
-            "memberId": "5d25b1a9b692d8fa466e8a75",
-            "memberEmail": "shjo@naver.com",
+            "memberId": "5dfb37ca2ecde240f922da80",
+            "memberEmail": "ddd@naver.com",
             "platformCode": "EM",
             "deviceCheckId": "macos-yond",
             "password": "alfkzmf1!"
@@ -33,10 +33,9 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         
         self.request.rxTestLogin(userData: data).observeOn(self.backgroundScheduler)
             .subscribe(onNext: { [weak self] res in
-                UserLoginSession.sharedInstance.setRxLoginData(data: res)
-                self?.didSignIn.onNext(())
+                self?.loginResultCodeParse(resultCode: LoginErrResponse(rawValue: res.resultCode)!, userData: res)
                 }, onError: { [weak self] err in
-                    self?.didFailSignIn.onNext(err)
+                    self?.didFailSignIn.onNext(err.localizedDescription)
                 }, onDisposed: { () -> Void in
                     print("Test Login Disposed")
             }).disposed(by: disposeBag)
@@ -49,6 +48,16 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
             return
         }
         print(result.grantedPermissions)
+    }
+    
+    private func loginResultCodeParse(resultCode: LoginErrResponse, userData: UserLoginSessionResponse) {
+        switch resultCode {
+        case .success:
+            UserLoginSession.sharedInstance.setRxLoginData(data: userData)
+            self.didSignIn.onNext(())
+        default:
+            self.didFailSignIn.onNext(resultCode.rawValue)
+        }
     }
     
     func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
