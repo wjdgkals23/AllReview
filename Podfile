@@ -15,4 +15,5 @@ pod 'Firebase/Storage'
 pod 'FBSDKCoreKit'
 pod 'FBSDKLoginKit'
 pod 'YPImagePicker'
+pod 'Cosmos', '~> 20.0'
 end

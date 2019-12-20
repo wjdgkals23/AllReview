@@ -19,6 +19,17 @@ class AddNewReviewViewModel: ViewModel{
     override init() {
         imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
     }
+    
+    func sendPhoto(img: UIImage) {
+        self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: "temp", image: img)
+                 .subscribe(onNext: { url in
+                     print(url)
+                 }).disposed(by: self.disposeBag)
+    }
+    
+    func sendNewReview(reviewData: [String:String]) {
+        
+    }
 
 }
 

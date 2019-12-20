@@ -1,4 +1,5 @@
 PODS:
+  - Cosmos (20.0.1)
   - FBSDKCoreKit (5.10.0):
     - FBSDKCoreKit/Basics (= 5.10.0)
     - FBSDKCoreKit/Core (= 5.10.0)
@@ -108,6 +109,7 @@ PODS:
     - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
+  - Cosmos (~> 20.0)
   - FBSDKCoreKit
   - FBSDKLoginKit
   - Firebase/Analytics (= 6.6.0)
@@ -120,6 +122,7 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
+    - Cosmos
     - FBSDKCoreKit
     - FBSDKLoginKit
     - Firebase
@@ -146,6 +149,7 @@ SPEC REPOS:
     - YPImagePicker
 
 SPEC CHECKSUMS:
+  Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
   FBSDKCoreKit: f9bae468a078f20c05c73450825ccd54cfafbbb7
   FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
   Firebase: a2b5951f30ff38fd3b3bdae9c7d340f940fd3c51
@@ -171,6 +175,6 @@ SPEC CHECKSUMS:
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: 7a34eabd0ef544ae8fbf9785c3df9ec5bbf242e3
 
-PODFILE CHECKSUM: b33b4b989ee5640e637d58948bfbfe25d735cfe4
+PODFILE CHECKSUM: 8b93ec496cd51a8d559a7682f9097796f3094541
 
 COCOAPODS: 1.8.4

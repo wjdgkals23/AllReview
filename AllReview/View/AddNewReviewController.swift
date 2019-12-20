@@ -12,6 +12,7 @@ import AVFoundation
 import AVKit
 import RxSwift
 import Photos
+import Cosmos
 
 class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     
@@ -22,6 +23,16 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     @IBOutlet var imageViewPicker: UIImageView!
     @IBOutlet var imageViewPickerWidth: NSLayoutConstraint!
     @IBOutlet var imageViewPickerHeight: NSLayoutConstraint!
+    @IBOutlet var starRatingView: CosmosView!
+    @IBOutlet var starRatingLabel: UILabel!
+    
+    @IBOutlet var movieName: UILabel!
+    
+    private var starPoint: Int = 0 {
+        willSet {
+            self.starRatingLabel.text = String(newValue)
+        }
+    }
     
     private var picker:YPImagePicker!
     
@@ -29,18 +40,17 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
-            print(resizedImage.accessibilityIdentifier)
-            self.SendPhoto()
         }
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         if let navi = catchNavigation() {
             viewModel = AddNewReviewViewModel()
             setUpView()
             setUpRx()
+            
+            print(initData)
         } else {
             self.viewDidLoad()
         }
@@ -52,6 +62,17 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         self.imageViewPicker.addGestureRecognizer(tapGesture)
         self.imageViewPicker.isUserInteractionEnabled = true
         self.imageViewPicker.contentMode = .scaleToFill
+        
+        self.movieName.text = self.initData["movieKorName"]!.decodeUrl()
+        
+        
+        self.starRatingView.didTouchCosmos = { rating in
+            self.starPoint = Int(rating*2)
+        }
+        self.starPoint = 5
+        self.starRatingView.settings.fillMode = .half
+        self.starRatingView.settings.minTouchRating = 0.0
+        self.starRatingView.settings.updateOnTouch = true
     }
     
     func setUpRx() {
@@ -63,11 +84,8 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
             .disposed(by: self.viewModel.disposeBag)
     }
     
-    func SendPhoto() {
-        self.viewModel.request.uploadImageToFireBase(userId: "asdf", movieId: "assddfdfd", image: imageViewPicker.image!)
-            .subscribe(onNext: { url in
-                print(url)
-            }).disposed(by: self.viewModel.disposeBag)
+    private func SendPhoto() {
+     
     }
     
     private func resizeImageViewPicker(size: CGSize) {

@@ -71,8 +71,6 @@ class OneLineReviewAPI {
     func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Observable<URL?> {
         let targetRef = self.storageRef.child(movieId).child("\(userId)/\(String.timeString())")
         settingMeta.contentType = "image/png"
-        settingMeta.cacheControl = "public,max-age=300"
-        settingMeta.contentEncoding = "gzip"
         return Observable.create { obs in
             DispatchQueue.global().async {
                 targetRef.putData(image.pngData()!, metadata: self.settingMeta) { [weak targetRef,self] metadata, err in
