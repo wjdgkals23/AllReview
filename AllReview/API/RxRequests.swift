@@ -36,39 +36,14 @@ class OneLineReviewAPI {
     }
     
     public func rxTestLogin(userData: [String:String]) -> Observable<UserLoginSessionResponse> {
-        self.urlMaker.rxMakeURLRequestObservable(OneLineReview.login, userData).flatMap { urlRequest -> Observable<UserLoginSessionResponse> in
-            let dataTask = URLSession.shared.rx.response(request: urlRequest)
-            return dataTask
-                .debug("TEST LOGIN REQUEST")
-                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<UserLoginSessionResponse> in
-                    if 200 ..< 300 ~= response.statusCode {
-                        do {
-                            let userSessionData = try self.decoder.decode(UserLoginSessionResponse.self, from: data)
-                            return Observable.create { observer -> Disposable in
-                                observer.on(.next(userSessionData))
-                                return Disposables.create()
-                            }
-                        } catch {
-                            return Observable.error(err.parsing(description: "RESPONSE PARSE ERROR \(error)"))
-                        }
-                    }
-                    else {
-                        return Observable.error(err.network(description: "NETWORK ERROR"))
-                    }
-                }
-        }
+        self.myObservableFunc(path: OneLineReview.login, data: userData, type: UserLoginSessionResponse.self, debugStr: "TEST LOGIN")
     }
     
-    public func commomImageLoad(url: URL) -> Observable<UIImage?> {
-        if let data = try? Data(contentsOf: url) {
-            if let image = UIImage(data: data) {
-                return Observable.just(image)
-            }
-        }
-        return Observable.just(nil)
+    public func uploadNewReview(reviewData: [String:Any]) -> Observable<UploadReviewResponse> {
+           self.myObservableFunc(path: OneLineReview.contentAdd, data: reviewData, type: UploadReviewResponse.self, debugStr: "TEST UPLOAD")
     }
-
-    func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Observable<URL?> {
+    
+    public func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Observable<URL?> {
         let targetRef = self.storageRef.child(movieId).child("\(userId)/\(String.timeString())")
         settingMeta.contentType = "image/png"
         return Observable.create { obs in
@@ -85,12 +60,42 @@ class OneLineReviewAPI {
         }
     }
     
+    public func commomImageLoad(url: URL) -> Observable<UIImage?> {
+        if let data = try? Data(contentsOf: url) {
+            if let image = UIImage(data: data) {
+                return Observable.just(image)
+            }
+        }
+        return Observable.just(nil)
+    }
+    
     private func getImageUrlFromFireBase() -> Observable<String> {
         return Observable.just("")
     }
     
-    private func uploadNewReview(data: [String:String]) -> Observable<Bool> {
-        return Observable.just(false)
+    private func myObservableFunc<T:Codable>(path: OneLineReview, data: [String:Any], type: T.Type, debugStr: String) -> Observable<T> {
+        self.urlMaker.rxMakeURLRequestObservable(path, data).flatMap { urlRequest -> Observable<T> in
+            let dataTask = URLSession.shared.rx.response(request: urlRequest)
+            return dataTask
+                .debug(debugStr)
+                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<T> in
+                    if 200 ..< 300 ~= response.statusCode {
+                        do {
+                            let savedData = try self.decoder.decode(T.self, from: data)
+                            print(savedData)
+                            return Observable.create { observer -> Disposable in
+                                observer.on(.next(savedData))
+                                return Disposables.create()
+                            }
+                        } catch {
+                            return Observable.error(err.parsing(description: "RESPONSE PARSE ERROR \(error)"))
+                        }
+                    }
+                    else {
+                        return Observable.error(err.network(description: "NETWORK ERROR"))
+                    }
+                }
+        }
     }
     
      

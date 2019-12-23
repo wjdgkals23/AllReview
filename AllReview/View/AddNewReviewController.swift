@@ -8,6 +8,7 @@
 
 import UIKit
 import YPImagePicker
+import Foundation
 import AVFoundation
 import AVKit
 import RxSwift
@@ -23,10 +24,15 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     @IBOutlet var imageViewPicker: UIImageView!
     @IBOutlet var imageViewPickerWidth: NSLayoutConstraint!
     @IBOutlet var imageViewPickerHeight: NSLayoutConstraint!
+    
     @IBOutlet var starRatingView: CosmosView!
     @IBOutlet var starRatingLabel: UILabel!
     
     @IBOutlet var movieName: UILabel!
+    
+    @IBOutlet var reviewTextView: UIView!
+    @IBOutlet var reviewTitle: UITextField!
+    @IBOutlet var reviewContent: UITextField!
     
     private var starPoint: Int = 0 {
         willSet {
@@ -49,7 +55,8 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
             viewModel = AddNewReviewViewModel()
             setUpView()
             setUpRx()
-            
+            NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification , object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification , object: nil)
             print(initData)
         } else {
             self.viewDidLoad()
@@ -73,6 +80,10 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         self.starRatingView.settings.fillMode = .half
         self.starRatingView.settings.minTouchRating = 0.0
         self.starRatingView.settings.updateOnTouch = true
+        
+        self.reviewTitle.delegate = self
+        self.reviewContent.delegate = self
+        self.reviewContent.layoutMargins = UIEdgeInsets.init(top: 3, left: 5, bottom: 3, right: 5)
     }
     
     func setUpRx() {
@@ -82,16 +93,61 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.request.commomImageLoad(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
             .bind(to: self.viewModel.imageViewImageSubject)
             .disposed(by: self.viewModel.disposeBag)
+        
+        self.viewModel.didSuccessAddReview
+            .observeOn(MainScheduler.instance)
+            .subscribe({ [weak self] _ in
+                print("SUCCESS")
+            }).disposed(by: self.viewModel.disposeBag)
+        
+        self.viewModel.didFailAddReview
+            .observeOn(MainScheduler.instance)
+            .subscribe(onNext: { errMessage in
+                print(errMessage)
+            })
+            .disposed(by: self.viewModel.disposeBag)
+    }
+    
+    @objc private func willShowKeyboard(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y == 0{
+                self.view.frame.origin.y -= keyboardSize.height
+            }
+        }
+    }
+    
+    @objc private func willHideKeyboard(notification: Notification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if self.view.frame.origin.y != 0 {
+                self.view.frame.origin.y += keyboardSize.height
+            }
+        }
     }
     
     private func SendPhoto() {
-     
+        
     }
     
     private func resizeImageViewPicker(size: CGSize) {
         imageViewPickerWidth.constant = size.width
         imageViewPickerHeight.constant = size.height
     }
+    
+    @IBAction func cancelButtonTapped(_ sender: Any) {
+        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
+            navigationController.popViewController(animated: false)
+        }
+        else {
+            print("View Load Fail")
+        }
+    }
+    
+    @IBAction func uploadReview(_ sender: Any) {
+        let sendData = ["memberId": self.viewModel.userLoginSession.getLoginData()?.data?._id,
+                        "movieId": self.initData["naverMovieId"], "starPoint": self.starPoint, "oneLineReview": self.reviewTitle.text, "detailReview":self.reviewContent.text] as [String : Any]
+        self.viewModel.addReview(img: self.imageViewPicker.image!, data: sendData)
+    }
+    
     
 }
 
@@ -138,14 +194,15 @@ extension AddNewReviewController: YPImagePickerDelegate {
         
         self.present(picker, animated: true, completion: nil)
     }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.popViewController(animated: false)
-        }
-        else {
-            print("View Load Fail")
-        }
-    }
 }
 
+extension AddNewReviewController: UITextFieldDelegate {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
+        textField.resignFirstResponder()
+        return true
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.view.endEditing(true)
+    }
+}

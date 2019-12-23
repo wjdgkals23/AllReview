@@ -15,22 +15,43 @@ import WebKit
 class AddNewReviewViewModel: ViewModel{
     
     var imageViewImageSubject: BehaviorSubject<UIImage?>!
+    let didSuccessAddReview = PublishSubject<Void>()
+    let didFailAddReview = PublishSubject<String>()
     
     override init() {
         imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
     }
     
-    func sendPhoto(img: UIImage) {
-        self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: "temp", image: img)
-                 .subscribe(onNext: { url in
-                     print(url)
-                 }).disposed(by: self.disposeBag)
+    func addReview(img: UIImage, data: [String:Any]) {
+        self.sendNewReview(reviewData: data, image: img)
+            .subscribe(onNext: { [weak self] res in
+                self?.loginResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res)
+            }, onError: { [weak self] err in
+                self?.didFailAddReview.onNext(err.localizedDescription)
+            })
     }
     
-    func sendNewReview(reviewData: [String:String]) {
-        
+    private func sendPhoto(img: UIImage) -> Observable<URL?> {
+        return self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: "temp", image: img)
     }
-
+    
+    private func sendNewReview(reviewData: [String:Any], image: UIImage) -> Observable<UploadReviewResponse> {
+        self.sendPhoto(img: image).observeOn(backgroundScheduler).flatMapLatest { url -> Observable<UploadReviewResponse> in
+            var tempData = reviewData
+            tempData["imageUrl"] = url?.absoluteString
+            return self.request.uploadNewReview(reviewData: tempData)
+        }
+    }
+    
+    private func loginResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {
+        switch resultCode {
+        case .success:
+            self.didSuccessAddReview.onNext(())
+        default:
+            self.didFailAddReview.onNext(userData.resultMsg)
+        }
+    }
+    
 }
 
 extension AddNewReviewViewModel: UIImagePickerControllerDelegate, UINavigationControllerDelegate {

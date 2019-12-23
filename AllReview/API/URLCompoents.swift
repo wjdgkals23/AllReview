@@ -24,6 +24,7 @@ enum OneLineReview: String {
     case contentDetailView = "/mainList/showContentDetail"
     case searchMovie = "/naverapi/searchedMovieList"
     case showMembersContents = "/mainList/showMemberPage"
+    case contentAdd = "/content/add"
 }
 
 class OneLineReviewURL { // 기본 url 셋팅
@@ -37,7 +38,7 @@ class OneLineReviewURL { // 기본 url 셋팅
         return request
     }
     
-    func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:String]) -> Observable<URLRequest> {
+    func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:Any]) -> Observable<URLRequest> {
         return Observable.create { [unowned self] observer in
             if let url = URL(string: self.scheme + self.host + path.rawValue) {
                 var request = self.makeRequest(url)
