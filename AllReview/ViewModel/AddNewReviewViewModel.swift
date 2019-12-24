@@ -25,7 +25,7 @@ class AddNewReviewViewModel: ViewModel{
     func addReview(img: UIImage, data: [String:Any]) {
         self.sendNewReview(reviewData: data, image: img)
             .subscribe(onNext: { [weak self] res in
-                self?.loginResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res)
+                self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res)
             }, onError: { [weak self] err in
                 self?.didFailAddReview.onNext(err.localizedDescription)
             })
@@ -43,7 +43,7 @@ class AddNewReviewViewModel: ViewModel{
         }
     }
     
-    private func loginResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {
+    private func uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {
         switch resultCode {
         case .success:
             self.didSuccessAddReview.onNext(())

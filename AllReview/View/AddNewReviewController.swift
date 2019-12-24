@@ -49,9 +49,12 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         }
     }
     
+    private var navi:UINavigationController!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         if let navi = catchNavigation() {
+            self.navi = navi
             viewModel = AddNewReviewViewModel()
             setUpView()
             setUpRx()
@@ -90,14 +93,14 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.imageViewImageSubject.asObservable().subscribe(onNext: { [weak self] img in
             self?.image = img
         })
-        self.viewModel.request.commomImageLoad(url: URL(string: self.initData["posterImage"]!.decodeUrl()!)!)
-            .bind(to: self.viewModel.imageViewImageSubject)
-            .disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didSuccessAddReview
             .observeOn(MainScheduler.instance)
             .subscribe({ [weak self] _ in
                 print("SUCCESS")
+                let reloadSearchVeiw = self?.navi.children[self!.navi.children.count-2] as! SearchMovieViewController
+                reloadSearchVeiw.reloadWebView()
+                self?.navi.popViewController(animated: true)
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didFailAddReview
@@ -106,6 +109,14 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
                 print(errMessage)
             })
             .disposed(by: self.viewModel.disposeBag)
+        
+        if let imageUrl = self.initData["posterImage"]?.decodeUrl(), imageUrl != "" {
+            self.viewModel.request.commomImageLoad(url: URL(string: imageUrl)!)
+            .bind(to: self.viewModel.imageViewImageSubject)
+            .disposed(by: self.viewModel.disposeBag)
+        } else {
+            
+        }
     }
     
     @objc private func willShowKeyboard(notification: Notification) {

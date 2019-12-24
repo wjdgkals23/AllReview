@@ -109,7 +109,7 @@ struct UserInitSession: Codable {
 
 struct UploadedItemData: Codable {
     let memberImageUrl:String
-    let likedMemberIds:String
+    let likedMemberIds:[String]
     let _id:String
     let writeDateTime:String
     let movieId:String
@@ -120,10 +120,10 @@ struct UploadedItemData: Codable {
     let detailReview:String
     let memberId:String
     let memberName:String
-    let starPoint:String
+    let starPoint:Int
     let imageUrl:String
     let detailLinkUrl:String
-    let __v:String
+    let __v:Int
 }
 
 //{

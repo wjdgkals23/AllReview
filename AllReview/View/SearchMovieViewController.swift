@@ -29,6 +29,8 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     @IBOutlet var searchButton: UIButton!
     @IBOutlet var cancelButton: UIButton!
     
+    private var navi:UINavigationController!
+    
     var topSafeArea:CGFloat! {
         willSet(newValue){
             if(newValue != self.topSafeArea) {
@@ -45,6 +47,7 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
         if let navi = catchNavigation() {
+            self.navi = navi
             viewModel = SearchMovieViewModel()
             router = SearchMovieViewRouter(navigation: navi)
             searchBar.changeDefaultColor()
@@ -110,6 +113,13 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         self.webSearchView.scrollView.bounces = false
     }
     
+    func reloadWebView() {
+        self.webSearchView.reload()
+        let superView = self.navi.children[self.navi.children.count-3] as! NonBottomViewController
+        let mainView = superView.childViewController as! MainViewController
+        mainView.reloadWebView()
+    }
+    
     @IBAction func searchButtonTapped(_ sender: Any) {
         self.searchBar.resignFirstResponder()
         self.viewModel.searchKeywordBindResultPage(.searchMovie, self.searchBar.text!)
@@ -125,7 +135,7 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
             return
         } else {
             if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-                navigationController.popViewController(animated: true)
+                self.navi.popViewController(animated: true)
             }
             else {
                 print("View Load Fail")

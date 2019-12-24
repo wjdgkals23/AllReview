@@ -56,6 +56,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
             UserLoginSession.sharedInstance.setRxLoginData(data: userData)
             self.didSignIn.onNext(())
         default:
+            print("didFailSignIn")
             self.didFailSignIn.onNext(resultCode.rawValue)
         }
     }

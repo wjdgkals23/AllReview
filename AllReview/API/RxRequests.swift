@@ -36,11 +36,11 @@ class OneLineReviewAPI {
     }
     
     public func rxTestLogin(userData: [String:String]) -> Observable<UserLoginSessionResponse> {
-        self.myObservableFunc(path: OneLineReview.login, data: userData, type: UserLoginSessionResponse.self, debugStr: "TEST LOGIN")
+        return self.myObservableFunc(path: OneLineReview.login, data: userData, type: UserLoginSessionResponse.self, debugStr: "TEST LOGIN")
     }
     
     public func uploadNewReview(reviewData: [String:Any]) -> Observable<UploadReviewResponse> {
-           self.myObservableFunc(path: OneLineReview.contentAdd, data: reviewData, type: UploadReviewResponse.self, debugStr: "TEST UPLOAD")
+        return self.myObservableFunc(path: OneLineReview.contentAdd, data: reviewData, type: UploadReviewResponse.self, debugStr: "TEST UPLOAD")
     }
     
     public func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Observable<URL?> {

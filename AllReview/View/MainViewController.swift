@@ -144,6 +144,11 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.webMainView.scrollView.bounces = false
     }
     
+    func reloadWebView() {
+        self.webMyView.reload()
+        self.webMainView.reload()
+    }
+    
     private func statusSettingFunc(_ sender: UIButton) {
         self.webMainView.isHidden = true
         self.webMyView.isHidden = true

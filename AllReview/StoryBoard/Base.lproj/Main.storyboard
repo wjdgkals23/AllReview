@@ -236,21 +236,21 @@
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="3ah-55-Jbz">
                                 <rect key="frame" x="0.0" y="114" width="414" height="782"/>
                                 <subviews>
-                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="uyN-76-r7D">
-                                        <rect key="frame" x="184.66666666666666" y="10" width="45" height="45"/>
+                                    <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="homeButtonIcon" translatesAutoresizingMaskIntoConstraints="NO" id="uyN-76-r7D">
+                                        <rect key="frame" x="87" y="10" width="240" height="320"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="45" id="1j9-Aa-80m"/>
-                                            <constraint firstAttribute="height" constant="45" id="jkb-D0-zWx"/>
+                                            <constraint firstAttribute="width" constant="240" id="1j9-Aa-80m"/>
+                                            <constraint firstAttribute="height" constant="320" id="jkb-D0-zWx"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="3E8-1b-02e">
-                                        <rect key="frame" x="186.33333333333334" y="65" width="41.666666666666657" height="20.333333333333329"/>
+                                        <rect key="frame" x="186.33333333333334" y="340" width="41.666666666666657" height="20.333333333333314"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Jb2-oa-4Rr" userLabel="Star View">
-                                        <rect key="frame" x="119" y="121" width="176" height="28"/>
+                                        <rect key="frame" x="119" y="396" width="176" height="28"/>
                                         <subviews>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BzQ-bX-TBJ" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="0.0" y="2" width="138" height="24"/>
@@ -296,7 +296,7 @@
                                         </constraints>
                                     </stackView>
                                     <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="NXe-fi-fl5">
-                                        <rect key="frame" x="20" y="164" width="374" height="598"/>
+                                        <rect key="frame" x="20" y="439" width="374" height="323"/>
                                         <subviews>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="리뷰 제목" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="ayl-3k-Tme">
                                                 <rect key="frame" x="0.0" y="0.0" width="374" height="35"/>
@@ -307,7 +307,7 @@
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
                                             <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" borderStyle="roundedRect" placeholder="내용을 입력해주세요." textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="pXz-Dt-Zg0">
-                                                <rect key="frame" x="0.0" y="55" width="374" height="533"/>
+                                                <rect key="frame" x="0.0" y="55" width="374" height="258"/>
                                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                 <textInputTraits key="textInputTraits"/>
                                             </textField>
