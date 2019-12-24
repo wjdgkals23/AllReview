@@ -75,6 +75,10 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: disposeBag)
         
+        self.webRankView.rx.decidePolicyNavigationAction.asObservable()
+            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .disposed(by: disposeBag)
+        
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
                 self.router.viewPresent(initData.element!.0, initData.element!.1)
@@ -105,8 +109,10 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
                 if (!(self?.webMyView.isHidden)!) {
                     self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
-                } else {
+                } else if(!(self?.webMainView.isHidden)!) {
                     self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
+                } else {
+                    self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.rankViewRequestSubject)!))
                 }
             }, onError: { [weak self] err in
                 self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
@@ -132,6 +138,7 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         
         self.webMainView.navigationDelegate = self.viewModel
         self.webMyView.navigationDelegate = self.viewModel
+        self.webRankView.navigationDelegate = self.viewModel
         
         self.webMainView.isHidden = false
         self.webMyView.isHidden = true

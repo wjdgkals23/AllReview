@@ -75,7 +75,6 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         
         self.movieName.text = self.initData["movieKorName"]!.decodeUrl()
         
-        
         self.starRatingView.didTouchCosmos = { rating in
             self.starPoint = Int(rating*2)
         }

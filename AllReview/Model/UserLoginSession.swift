@@ -28,4 +28,5 @@ class UserLoginSession {
     public func getLoginData() -> UserLoginSessionResponse? {
         return loginData
     }
+    
 }
