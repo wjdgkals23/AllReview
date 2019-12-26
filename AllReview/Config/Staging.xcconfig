@@ -1,0 +1,16 @@
+//
+//  Staging.xcconfig
+//  AllReview
+//
+//  Created by 정하민 on 2019/12/26.
+//  Copyright © 2019 swift. All rights reserved.
+//
+
+// Configuration settings file format documentation can be found at:
+// https://help.apple.com/xcode/#/dev745c5c974
+#include "Pods/Target Support Files/Pods-AllReview/Pods-AllReview.debug (staging).xcconfig"
+
+ROOT_URL = https:/$()/www.teammiracle.be
+
+APP_NAME = OneLineReview (stg)
+APP_BUNDLE_ID = com.teammiracle.OneLineReview.stg
