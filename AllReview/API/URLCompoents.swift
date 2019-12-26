@@ -28,8 +28,6 @@ enum OneLineReview: String {
 }
 
 class OneLineReviewURL { // 기본 url 셋팅
-    private let scheme = "https://"
-    private let host = "www.teammiracle.be"
     
     func makeRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url)
@@ -40,7 +38,7 @@ class OneLineReviewURL { // 기본 url 셋팅
     
     func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:Any]) -> Observable<URLRequest> {
         return Observable.create { [unowned self] observer in
-            if let url = URL(string: self.scheme + self.host + path.rawValue) {
+            if let url = URL(string: Environment.rootURL + path.rawValue) {
                 var request = self.makeRequest(url)
                 do {
                     let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)

@@ -14,8 +14,6 @@ import RxWebKit
 
 class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     
-    private var disposeBag = DisposeBag()
-    
     private var viewModel: SearchMovieViewModel!
     private var router: SearchMovieViewRouter!
     
@@ -29,13 +27,14 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     @IBOutlet var searchButton: UIButton!
     @IBOutlet var cancelButton: UIButton!
     
+    public var rankedSearchWord: String!
     private var navi:UINavigationController!
     
     var topSafeArea:CGFloat! {
         willSet(newValue){
             if(newValue != self.topSafeArea) {
-                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - newValue - self.bottomSafeArea
-                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight + bottomSafeArea)
+                let webViewHeight = self.view.bounds.height - self.headerView.bounds.height - newValue
+                let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: webViewHeight)
                 self.webSearchView.frame = cgRect
             }
         }
@@ -53,6 +52,10 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
             searchBar.changeDefaultColor()
             setUpWebView()
             setUpRx()
+            if rankedSearchWord != nil {
+                self.viewModel.searchKeywordBindResultPage(.searchMovie, rankedSearchWord)
+                self.searchBar.text = rankedSearchWord
+            }
         } else {
             self.viewDidLoad()
         }
@@ -74,11 +77,11 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     func setUpRx() {
         self.searchBar.rx.text.distinctUntilChanged()
             .bind(to: viewModel.keywordTextSubject)
-            .disposed(by: disposeBag)
+            .disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.searchButtonEnabledDriver
             .drive(self.searchButton.rx.isEnabled)
-            .disposed(by: disposeBag)
+            .disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
@@ -89,9 +92,11 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
             self.webSearchView.load(request) // 실패화면 구현 요청
         }, onError: { (err) in
             print("Error \(err.localizedDescription)")
-        }).disposed(by: disposeBag)
+        }).disposed(by: self.viewModel.disposeBag)
         
-        self.webSearchView.rx.decidePolicyNavigationAction.subscribe(onNext: self.viewModel.urlParserContext!).disposed(by: disposeBag)
+        self.webSearchView.rx.decidePolicyNavigationAction
+            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {

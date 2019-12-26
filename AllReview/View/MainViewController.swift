@@ -195,7 +195,7 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.router.viewPresent("add", ["":""])
     }
     
-    @IBAction func setBottomViewStatus(_ sender: Any) { // 나자신을 제외하고 끊다.
+    @IBAction func setBottomViewStatus(_ sender: Any) {
         let targetButton = sender as! UIButton
         self.statusSettingFunc(targetButton)
     }

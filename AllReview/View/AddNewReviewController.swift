@@ -134,10 +134,6 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         }
     }
     
-    private func SendPhoto() {
-        
-    }
-    
     private func resizeImageViewPicker(size: CGSize) {
         imageViewPickerWidth.constant = size.width
         imageViewPickerHeight.constant = size.height

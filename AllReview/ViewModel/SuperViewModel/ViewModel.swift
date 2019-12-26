@@ -81,7 +81,11 @@ class ViewModel: NSObject, WKNavigationDelegate {
             }
             else if((url?.contains("app://SearchMovie"))!) {
                 handler(.allow)
-                self.goToNewViewControllerReviewSubject.on(.next(("search",["":""])))
+                let index = url?.firstIndex(of: "?") ?? url?.endIndex
+                let temp = String((url?[index!...])!)
+                let queryDict = temp.parseQueryString()
+                
+                self.goToNewViewControllerReviewSubject.on(.next(("search", ["movieNm":queryDict["movieNm"]!])))
             }
             else if((url?.contains("app://MemberContents"))!) {
                 handler(.allow)

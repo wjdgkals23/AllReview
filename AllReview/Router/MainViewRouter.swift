@@ -29,7 +29,9 @@ class MainRouter: DefaultRouter {
             if(to == "search") {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
-                self.navigationController.pushViewController(vc, animated: true)
+                let searchVC = vc as! SearchMovieViewController
+                searchVC.rankedSearchWord = data["movieNm"]?.decodeUrl()!
+                self.navigationController.pushViewController(searchVC, animated: true)
             } else {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")

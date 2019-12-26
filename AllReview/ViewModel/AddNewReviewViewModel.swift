@@ -31,12 +31,12 @@ class AddNewReviewViewModel: ViewModel{
             })
     }
     
-    private func sendPhoto(img: UIImage) -> Observable<URL?> {
+    private func sendPhoto(img: UIImage, movieId: String) -> Observable<URL?> {
         return self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: "temp", image: img)
     }
     
     private func sendNewReview(reviewData: [String:Any], image: UIImage) -> Observable<UploadReviewResponse> {
-        self.sendPhoto(img: image).observeOn(backgroundScheduler).flatMapLatest { url -> Observable<UploadReviewResponse> in
+        self.sendPhoto(img: image, movieId: reviewData["movieId"] as! String).observeOn(backgroundScheduler).flatMapLatest { url -> Observable<UploadReviewResponse> in
             var tempData = reviewData
             tempData["imageUrl"] = url?.absoluteString
             return self.request.uploadNewReview(reviewData: tempData)
