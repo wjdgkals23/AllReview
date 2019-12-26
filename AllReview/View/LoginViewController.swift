@@ -22,6 +22,7 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
 //    var router: Router! 화면 전환 객체
 //    뷰에 보여질 데이터와 비즈니스 로직 포함 객체
     
+    @IBOutlet var testScrollView: UIScrollView!
     @IBOutlet var testLogin: UIButton!
     @IBOutlet var signUpButton: UIButton!
     
@@ -58,6 +59,47 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
             relatedBy: .equal, toItem: self.testLogin, attribute: .bottom, multiplier: 1, constant: 10)
         
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
+        
+        setUpScrollView()
+        
+        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+    }
+    
+    func setUpScrollView() {
+        let boundsSize = self.view.bounds.size
+        self.testScrollView.isPagingEnabled = true
+        self.testScrollView.contentSize = CGSize(width: boundsSize.width*3, height: self.testScrollView.bounds.size.height)
+        
+        for ind in 0..<3 {
+            let x = boundsSize.width * CGFloat(integerLiteral: ind)
+            let temp_frame = CGRect(x: x, y: 0, width: boundsSize.width, height: self.testScrollView.bounds.size.height)
+            let temp = UIView(frame: temp_frame)
+            if(ind == 1) {
+                let textView = UILabel()
+                textView.text = "TEMP"
+                textView.translatesAutoresizingMaskIntoConstraints = false
+                temp.addSubview(textView)
+                temp.addConstraint(NSLayoutConstraint(item: textView, attribute: .centerX, relatedBy: .equal, toItem: temp, attribute: .centerX, multiplier: 1, constant: 0))
+                temp.addConstraint(NSLayoutConstraint(item: textView, attribute: .centerY, relatedBy: .equal, toItem: temp, attribute: .centerY, multiplier: 1, constant: 0))
+            }
+            temp.backgroundColor = UIColor.random
+            self.testScrollView.addSubview(temp)
+            self.testScrollView.isUserInteractionEnabled = false
+        }
+    }
+    
+    @objc func moveToNextPage() {
+        let pageWidth:CGFloat = self.testScrollView.frame.width
+        let maxWidth:CGFloat = pageWidth * 3
+        let contentOffset:CGFloat = self.testScrollView.contentOffset.x
+                
+        var slideToX = contentOffset + pageWidth
+                
+        if  contentOffset + pageWidth == maxWidth
+        {
+              slideToX = 0
+        }
+        self.testScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width:pageWidth, height:self.testScrollView.frame.height), animated: true)
     }
     
     func setUpRx() {
@@ -87,3 +129,11 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     }
 }
 
+extension UIColor {
+    static var random: UIColor {
+        return UIColor(red: .random(in: 0...1),
+                       green: .random(in: 0...1),
+                       blue: .random(in: 0...1),
+                       alpha: 1.0)
+    }
+}
