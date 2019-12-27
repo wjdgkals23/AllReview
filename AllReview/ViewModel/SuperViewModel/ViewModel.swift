@@ -27,7 +27,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
     
     var searchResultSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
     
-    let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String])>()
+    let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
     
     override init() {
@@ -49,11 +49,11 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 if(webView.title == "마이페이지") { //memeerID 의 페이지
                     self.goToMyContentDetailViewSubject.onNext(queryDict)
                 } else if (webView.title == "메인 신규리스트") {
-                    self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
+                    self.makePageURLRequest(.contentDetailView, queryDict, (self.mainViewRequestSubject))
                 } else if (webView.title == "멤버 페이지") {
-                    self.loadPageView(.contentDetailView, queryDict, (self.mainViewRequestSubject))
+                    self.makePageURLRequest(.contentDetailView, queryDict, (self.mainViewRequestSubject))
                 } else {
-                    self.loadPageView(.contentDetailView, queryDict, (self.searchResultSubject))
+                    self.makePageURLRequest(.contentDetailView, queryDict, (self.searchResultSubject))
                 }
                 return
             }
@@ -81,25 +81,24 @@ class ViewModel: NSObject, WKNavigationDelegate {
             }
             else if((url?.contains("app://SearchMovie"))!) {
                 handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
+                guard let index = url?.firstIndex(of: "?") ?? url?.endIndex, index != url!.endIndex else { return self.goToNewViewControllerReviewSubject.onNext(("search", ["movieNm":""])) }
+                let temp = String((url?[index...])!)
                 let queryDict = temp.parseQueryString()
-                
-                self.goToNewViewControllerReviewSubject.on(.next(("search", ["movieNm":queryDict["movieNm"]!])))
+                self.goToNewViewControllerReviewSubject.onNext(("search", ["movieNm":queryDict["movieNm"]!]))
             }
             else if((url?.contains("app://MemberContents"))!) {
                 handler(.allow)
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.loadPageView(.showMembersContents, queryDict, (self.mainViewRequestSubject))
+                self.makePageURLRequest(.showMembersContents, queryDict, (self.mainViewRequestSubject))
             }
             else if((url?.contains("app://MyContents"))!) {
                 handler(.allow)
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.loadPageView(.mainMyView, queryDict, (self.mainViewRequestSubject))
+                self.makePageURLRequest(.mainMyView, queryDict, (self.mainViewRequestSubject))
             }
             else {
                 handler(.allow)
@@ -108,7 +107,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
         }
     }
     
-    public func loadPageView(_ urlTarget:OneLineReview, _ param:[String:String], _ target: BehaviorSubject<URLRequest>) {
+    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: BehaviorSubject<URLRequest>) {
         self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
     }
     

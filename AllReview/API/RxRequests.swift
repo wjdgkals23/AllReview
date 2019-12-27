@@ -39,7 +39,7 @@ class OneLineReviewAPI {
         return self.myObservableFunc(path: OneLineReview.login, data: userData, type: UserLoginSessionResponse.self, debugStr: "TEST LOGIN")
     }
     
-    public func uploadNewReview(reviewData: [String:Any]) -> Observable<UploadReviewResponse> {
+    public func uploadReviewData(reviewData: [String:Any]) -> Observable<UploadReviewResponse> {
         return self.myObservableFunc(path: OneLineReview.contentAdd, data: reviewData, type: UploadReviewResponse.self, debugStr: "TEST UPLOAD")
     }
     

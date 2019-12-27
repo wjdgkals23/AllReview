@@ -151,7 +151,7 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     @IBAction func uploadReview(_ sender: Any) {
         let sendData = ["memberId": self.viewModel.userLoginSession.getLoginData()?.data?._id,
                         "movieId": self.initData["naverMovieId"], "starPoint": self.starPoint, "oneLineReview": self.reviewTitle.text, "detailReview":self.reviewContent.text] as [String : Any]
-        self.viewModel.addReview(img: self.imageViewPicker.image!, data: sendData)
+        self.viewModel.uploadReview(img: self.imageViewPicker.image!, data: sendData)
     }
     
     

@@ -52,7 +52,7 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
             searchBar.changeDefaultColor()
             setUpWebView()
             setUpRx()
-            if rankedSearchWord != nil {
+            if rankedSearchWord != nil && rankedSearchWord != "" {
                 self.viewModel.searchKeywordBindResultPage(.searchMovie, rankedSearchWord)
                 self.searchBar.text = rankedSearchWord
             }
@@ -85,7 +85,7 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
-                self.router.viewPresent(initData.element!.0, initData.element!.1)
+                self.router.viewPresent(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서

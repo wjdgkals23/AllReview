@@ -41,6 +41,11 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
+    }
+    
     func setUpView() {
         let loginButton = FBLoginButton()
         
@@ -61,27 +66,17 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
         
         setUpScrollView()
-        
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
     }
     
     func setUpScrollView() {
-        let boundsSize = self.view.bounds.size
+        let frameSize = self.testScrollView.frame.size
         self.testScrollView.isPagingEnabled = true
-        self.testScrollView.contentSize = CGSize(width: boundsSize.width*3, height: self.testScrollView.bounds.size.height)
+        self.testScrollView.contentSize = CGSize(width: frameSize.width*3, height: frameSize.height)
         
         for ind in 0..<3 {
-            let x = boundsSize.width * CGFloat(integerLiteral: ind)
-            let temp_frame = CGRect(x: x, y: 0, width: boundsSize.width, height: self.testScrollView.bounds.size.height)
+            let x = frameSize.width * CGFloat(integerLiteral: ind)
+            let temp_frame = CGRect(x: x, y: 0, width: frameSize.width, height: frameSize.height)
             let temp = UIView(frame: temp_frame)
-            if(ind == 1) {
-                let textView = UILabel()
-                textView.text = "TEMP"
-                textView.translatesAutoresizingMaskIntoConstraints = false
-                temp.addSubview(textView)
-                temp.addConstraint(NSLayoutConstraint(item: textView, attribute: .centerX, relatedBy: .equal, toItem: temp, attribute: .centerX, multiplier: 1, constant: 0))
-                temp.addConstraint(NSLayoutConstraint(item: textView, attribute: .centerY, relatedBy: .equal, toItem: temp, attribute: .centerY, multiplier: 1, constant: 0))
-            }
             temp.backgroundColor = UIColor.random
             self.testScrollView.addSubview(temp)
             self.testScrollView.isUserInteractionEnabled = false

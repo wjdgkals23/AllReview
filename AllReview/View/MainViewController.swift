@@ -81,7 +81,7 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
-                self.router.viewPresent(initData.element!.0, initData.element!.1)
+                self.router.naviPush(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
@@ -107,13 +107,13 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         }).disposed(by: disposeBag)
         
         self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
-                if (!(self?.webMyView.isHidden)!) {
-                    self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
-                } else if(!(self?.webMainView.isHidden)!) {
-                    self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
-                } else {
-                    self?.viewModel.loadPageView(.contentDetailView, query, ((self?.viewModel.rankViewRequestSubject)!))
-                }
+            if (!(self?.webMyView.isHidden)!) {
+                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
+            } else if(!(self?.webMainView.isHidden)!) {
+                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
+            } else {
+                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.rankViewRequestSubject)!))
+            }
             }, onError: { [weak self] err in
                 self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
         })
@@ -192,7 +192,7 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     @objc private func searchButtonTapped() {
-        self.router.viewPresent("add", ["":""])
+        self.router.naviPush("add", ["":""])
     }
     
     @IBAction func setBottomViewStatus(_ sender: Any) {
@@ -201,7 +201,7 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     @IBAction func addNewReviewButtonTapped(_ sender: Any) {
-        self.router.viewPresent("add", ["":""])
+        self.router.naviPush("add", ["":""])
     }
     
     @objc func backButtonTapped() {

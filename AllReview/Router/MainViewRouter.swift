@@ -18,14 +18,6 @@ class MainRouter: DefaultRouter {
         }
         
         func naviPush(_ to: String, _ data: Dictionary<String,String>) {
-            
-        }
-        
-        func naviPop(_ act: String) {
-            print("LoginView NaviPop after this \(act)")
-        }
-        
-        func viewPresent(_ to: String, _ data: Dictionary<String,String>) {
             if(to == "search") {
                 let storyBoard = UIStoryboard(name: "Main", bundle: nil)
                 let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
@@ -37,6 +29,14 @@ class MainRouter: DefaultRouter {
                 let vc = storyBoard.instantiateViewController(withIdentifier: "SearchMovieViewController")
                 self.navigationController.pushViewController(vc, animated: true)
             }
+        }
+        
+        func naviPop(_ act: String) {
+            print("LoginView NaviPop after this \(act)")
+        }
+        
+        func viewPresent(_ to: String, _ data: Dictionary<String,String>) {
+            
             print("LoginView Present to \(to)")
         }
         

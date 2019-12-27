@@ -15,15 +15,31 @@ import WebKit
 class AddNewReviewViewModel: ViewModel{
     
     var imageViewImageSubject: BehaviorSubject<UIImage?>!
+    var reviewTitleTextSubject: BehaviorSubject<String>!
+    var reviewContentTextSubject: BehaviorSubject<String>!
     let didSuccessAddReview = PublishSubject<Void>()
     let didFailAddReview = PublishSubject<String>()
     
+    let sendButtonDriver: Driver<Bool>!
+    
     override init() {
         imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+        reviewTitleTextSubject = BehaviorSubject(value: "")
+        reviewContentTextSubject = BehaviorSubject(value: "")
+        
+        let combineSearchCondition:Observable<Bool> = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable(), resultSelector: {
+            a,b,c in
+            if(a != #imageLiteral(resourceName: "title") && b != "" && c != "") {
+                return true
+            }
+            return false
+        })
+        
+        sendButtonDriver = combineSearchCondition.asDriver(onErrorJustReturn: false)
     }
     
-    func addReview(img: UIImage, data: [String:Any]) {
-        self.sendNewReview(reviewData: data, image: img)
+    func uploadReview(img: UIImage, data: [String:Any]) {
+        self.uploadReviewData(reviewData: data, image: img)
             .subscribe(onNext: { [weak self] res in
                 self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res)
             }, onError: { [weak self] err in
@@ -31,16 +47,16 @@ class AddNewReviewViewModel: ViewModel{
             })
     }
     
-    private func sendPhoto(img: UIImage, movieId: String) -> Observable<URL?> {
-        return self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: "temp", image: img)
-    }
-    
-    private func sendNewReview(reviewData: [String:Any], image: UIImage) -> Observable<UploadReviewResponse> {
-        self.sendPhoto(img: image, movieId: reviewData["movieId"] as! String).observeOn(backgroundScheduler).flatMapLatest { url -> Observable<UploadReviewResponse> in
+    private func uploadReviewData(reviewData: [String:Any], image: UIImage) -> Observable<UploadReviewResponse> {
+        self.uploadPhoto(img: image, movieId: reviewData["movieId"] as! String).observeOn(backgroundScheduler).flatMapLatest { url -> Observable<UploadReviewResponse> in
             var tempData = reviewData
             tempData["imageUrl"] = url?.absoluteString
-            return self.request.uploadNewReview(reviewData: tempData)
+            return self.request.uploadReviewData(reviewData: tempData)
         }
+    }
+    
+    private func uploadPhoto(img: UIImage, movieId: String) -> Observable<URL?> {
+        return self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: movieId, image: img)
     }
     
     private func uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {

@@ -11,6 +11,7 @@
 		90474CFD23658DCF00C48C4A /* URLCompoents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90474CFC23658DCF00C48C4A /* URLCompoents.swift */; };
 		90474CFF2365CC8500C48C4A /* RxRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90474CFE2365CC8500C48C4A /* RxRequests.swift */; };
 		90474D012365CDD000C48C4A /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90474D002365CDD000C48C4A /* Response.swift */; };
+		F44A1AC323B5A2840002A3C2 /* ReviewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A1AC223B5A2840002A3C2 /* ReviewModel.swift */; };
 		F4618531239E3F8E008E37CF /* SearchMovieViewRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */; };
 		F4618539239F6580008E37CF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = F4618538239F6580008E37CF /* GoogleService-Info.plist */; };
 		F461854223A0D6B2008E37CF /* UIImageExtension.swift in Sources */ = {isa = PBXBuildFile; fileRef = F461854123A0D6B2008E37CF /* UIImageExtension.swift */; };
@@ -56,6 +57,7 @@
 		9E78278DE4E7BAF10A5FF0A0 /* Pods-AllReview.release (development).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllReview.release (development).xcconfig"; path = "Target Support Files/Pods-AllReview/Pods-AllReview.release (development).xcconfig"; sourceTree = "<group>"; };
 		D1057545E71E8D3E9B85B2BA /* Pods-AllReview.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllReview.dev debug.xcconfig"; path = "Target Support Files/Pods-AllReview/Pods-AllReview.dev debug.xcconfig"; sourceTree = "<group>"; };
 		F20800BBD5ABBEE2C30EECAB /* Pods-AllReview.release (production).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllReview.release (production).xcconfig"; path = "Target Support Files/Pods-AllReview/Pods-AllReview.release (production).xcconfig"; sourceTree = "<group>"; };
+		F44A1AC223B5A2840002A3C2 /* ReviewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReviewModel.swift; sourceTree = "<group>"; };
 		F4618530239E3F8E008E37CF /* SearchMovieViewRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchMovieViewRouter.swift; sourceTree = "<group>"; };
 		F4618538239F6580008E37CF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		F461854123A0D6B2008E37CF /* UIImageExtension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIImageExtension.swift; sourceTree = "<group>"; };
@@ -142,6 +144,7 @@
 			isa = PBXGroup;
 			children = (
 				F46513792366B736004CFBFC /* UserLoginSession.swift */,
+				F44A1AC223B5A2840002A3C2 /* ReviewModel.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -415,6 +418,7 @@
 				F46513852367EEFD004CFBFC /* MainViewController.swift in Sources */,
 				F4651393236AD4BB004CFBFC /* MainViewModel.swift in Sources */,
 				F465268D23A1D6710062D01D /* ViewModel.swift in Sources */,
+				F44A1AC323B5A2840002A3C2 /* ReviewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
