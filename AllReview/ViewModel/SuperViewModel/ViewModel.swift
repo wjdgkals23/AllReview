@@ -21,11 +21,11 @@ class ViewModel: NSObject, WKNavigationDelegate {
     var urlMaker = OneLineReviewURL()
     var urlParserContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     
-    var mainViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-    var rankViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
-    var myViewRequestSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+    var mainViewRequestSubject:BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
+    var rankViewRequestSubject:BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
+    var myViewRequestSubject:BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
     
-    var searchResultSubject:BehaviorSubject<URLRequest> = BehaviorSubject(value: URLRequest(url: URL(string: "http://www.blankwebsite.com/")!))
+    var searchResultSubject:BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
     
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
@@ -107,7 +107,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
         }
     }
     
-    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: BehaviorSubject<URLRequest>) {
+    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: BehaviorSubject<URLRequest?>) {
         self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
     }
     

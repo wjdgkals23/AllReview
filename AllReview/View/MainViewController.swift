@@ -89,19 +89,22 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
         
         self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webMainView.load(request)
+            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold)) }
+            self.webMainView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
         self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webRankView.load(request)
+            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold)) }
+            self.webRankView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
         self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            self.webMyView.load(request)
+            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold)) }
+            self.webMyView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
