@@ -33,6 +33,7 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     @IBOutlet var reviewTextView: UIView!
     @IBOutlet var reviewTitle: UITextField!
     @IBOutlet var reviewContent: UITextField!
+    @IBOutlet var uploadButton: UIButton!
     
     private var starPoint: Int = 0 {
         willSet {
@@ -55,9 +56,9 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         super.viewDidLoad()
         if let navi = catchNavigation() {
             self.navi = navi
-            viewModel = AddNewReviewViewModel()
-            setUpView()
+            viewModel = AddNewReviewViewModel(imgURL: self.initData["posterImage"])
             setUpRx()
+            setUpView()
             NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification , object: nil)
             NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification , object: nil)
             print(initData)
@@ -89,9 +90,10 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     func setUpRx() {
-        self.viewModel.imageViewImageSubject.asObservable().subscribe(onNext: { [weak self] img in
-            self?.image = img
-        })
+        
+        self.viewModel.imageViewDriver
+            .drive(self.imageViewPicker.rx.image)
+            .disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didSuccessAddReview
             .observeOn(MainScheduler.instance)
@@ -106,16 +108,23 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { errMessage in
                 print(errMessage)
+                self.uploadButton.isEnabled = false
             })
             .disposed(by: self.viewModel.disposeBag)
         
-        if let imageUrl = self.initData["posterImage"]?.decodeUrl(), imageUrl != "" {
-            self.viewModel.request.commomImageLoad(url: URL(string: imageUrl)!)
-            .bind(to: self.viewModel.imageViewImageSubject)
+        self.reviewTitle.rx.text
+            .bind(to: self.viewModel.reviewTitleTextSubject)
             .disposed(by: self.viewModel.disposeBag)
-        } else {
-            
+        
+        self.reviewContent.rx.text
+            .bind(to: self.viewModel.reviewContentTextSubject)
+            .disposed(by: self.viewModel.disposeBag)
+        
+        Observable.combineLatest(viewModel.isImageValid, viewModel.isTitleValid, viewModel.isContentValid) {
+            $0 && ($1 && $2)
         }
+            .bind(to: self.uploadButton.rx.isEnabled)
+            .disposed(by: viewModel.disposeBag)
     }
     
     @objc private func willShowKeyboard(notification: Notification) {
@@ -149,6 +158,7 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     @IBAction func uploadReview(_ sender: Any) {
+        self.uploadButton.isEnabled = true
         let sendData = ["memberId": self.viewModel.userLoginSession.getLoginData()?.data?._id,
                         "movieId": self.initData["naverMovieId"], "starPoint": self.starPoint, "oneLineReview": self.reviewTitle.text, "detailReview":self.reviewContent.text] as [String : Any]
         self.viewModel.uploadReview(img: self.imageViewPicker.image!, data: sendData)

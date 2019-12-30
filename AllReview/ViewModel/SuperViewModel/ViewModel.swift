@@ -40,23 +40,6 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 handler(.allow)
                 return
             }
-            else if((url?.contains("app://ContentDetail"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-//                print(webView.title)
-                if(webView.title == "마이페이지") { //memeerID 의 페이지
-                    self.goToMyContentDetailViewSubject.onNext(queryDict)
-                } else if (webView.title == "메인 신규리스트") {
-                    self.makePageURLRequest(.contentDetailView, queryDict, (self.mainViewRequestSubject))
-                } else if (webView.title == "멤버 페이지") {
-                    self.makePageURLRequest(.contentDetailView, queryDict, (self.mainViewRequestSubject))
-                } else {
-                    self.makePageURLRequest(.contentDetailView, queryDict, (self.searchResultSubject))
-                }
-                return
-            }
             else if((url?.contains("app://WriteContent"))!) {
                 handler(.allow)
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex

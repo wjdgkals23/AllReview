@@ -98,6 +98,7 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         self.webSearchView.rx.decidePolicyNavigationAction
             .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: self.viewModel.disposeBag)
+    
     }
     
     func setUpWebView() {

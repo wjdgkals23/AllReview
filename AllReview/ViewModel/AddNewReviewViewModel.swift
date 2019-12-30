@@ -15,35 +15,59 @@ import WebKit
 class AddNewReviewViewModel: ViewModel{
     
     var imageViewImageSubject: BehaviorSubject<UIImage?>!
-    var reviewTitleTextSubject: BehaviorSubject<String>!
-    var reviewContentTextSubject: BehaviorSubject<String>!
+    var reviewTitleTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
+    var reviewContentTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
+    
+    var imageViewDriver: Driver<UIImage?>!
+    
+    var isImageValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    var isTitleValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    var isContentValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
+    
     let didSuccessAddReview = PublishSubject<Void>()
     let didFailAddReview = PublishSubject<String>()
     
-    let sendButtonDriver: Driver<Bool>!
+    var uploadData: Observable<(UIImage?, String?, String?)>!
     
-    override init() {
-        imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
-        reviewTitleTextSubject = BehaviorSubject(value: "")
-        reviewContentTextSubject = BehaviorSubject(value: "")
+    init(imgURL: String?) {
         
-        let combineSearchCondition:Observable<Bool> = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable(), resultSelector: {
-            a,b,c in
-            if(a != #imageLiteral(resourceName: "title") && b != "" && c != "") {
-                return true
-            }
-            return false
-        })
+        super.init()
         
-        sendButtonDriver = combineSearchCondition.asDriver(onErrorJustReturn: false)
+        if let imageUrl = imgURL, imageUrl != "" {
+            imageViewImageSubject = BehaviorSubject(value: nil)
+            self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!)
+                .bind(to: imageViewImageSubject)
+                .disposed(by: disposeBag)
+        } else {
+            imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+        }
+        
+        uploadData = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable())
+        
+        _ = imageViewImageSubject.distinctUntilChanged()
+            .map({ image in
+                return image != #imageLiteral(resourceName: "title")
+            }).bind(to: isImageValid)
+        
+        _ = reviewTitleTextSubject.distinctUntilChanged()
+        .map({ title in
+            return title != "" && title!.count > 1
+        }).bind(to: isTitleValid)
+        
+        _ = reviewContentTextSubject.distinctUntilChanged()
+        .map({ content in
+            return content != "" && content!.count > 1
+        }).bind(to: isContentValid)
+        
+        imageViewDriver = imageViewImageSubject.distinctUntilChanged().asDriver(onErrorJustReturn: #imageLiteral(resourceName: "title"))
     }
     
     func uploadReview(img: UIImage, data: [String:Any]) {
         self.uploadReviewData(reviewData: data, image: img)
             .subscribe(onNext: { [weak self] res in
                 self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res)
-            }, onError: { [weak self] err in
-                self?.didFailAddReview.onNext(err.localizedDescription)
+                }, onError: { [weak self] err in
+                    self?.didFailAddReview.onNext(err.localizedDescription)
             })
     }
     
