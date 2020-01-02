@@ -14,11 +14,6 @@ import WebKit
 
 class MainViewModel: ViewModel{
     
-    override init() {
-        super.init()
-        
-    }
-    
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest?>) {
         userLoginSession.getRxLoginData()?.flatMap({ [weak self] user -> Observable<URLRequest> in
             let userData = ["memberId":user.data!._id]

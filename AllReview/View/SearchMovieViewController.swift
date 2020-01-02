@@ -12,7 +12,7 @@ import RxCocoa
 import WebKit
 import RxWebKit
 
-class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
+class SearchMovieViewController: UIViewController {
     
     private var viewModel: SearchMovieViewModel!
     private var router: SearchMovieViewRouter!
@@ -45,20 +45,20 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view.
-        if let navi = catchNavigation() {
-            self.navi = navi
-            viewModel = SearchMovieViewModel()
-            router = SearchMovieViewRouter(navigation: navi)
-            searchBar.changeDefaultColor()
-            setUpWebView()
-            setUpRx()
-            if rankedSearchWord != nil && rankedSearchWord != "" {
-                self.viewModel.searchKeywordBindResultPage(.searchMovie, rankedSearchWord)
-                self.searchBar.text = rankedSearchWord
-            }
-        } else {
-            self.viewDidLoad()
-        }
+//        if let navi = catchNavigation() {
+//            self.navi = navi
+//            viewModel = SearchMovieViewModel()
+//            router = SearchMovieViewRouter(navigation: navi)
+//            searchBar.changeDefaultColor()
+//            setUpWebView()
+//            setUpRx()
+//            if rankedSearchWord != nil && rankedSearchWord != "" {
+//                self.viewModel.searchKeywordBindResultPage(.searchMovie, rankedSearchWord)
+//                self.searchBar.text = rankedSearchWord
+//            }
+//        } else {
+//            self.viewDidLoad()
+//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {

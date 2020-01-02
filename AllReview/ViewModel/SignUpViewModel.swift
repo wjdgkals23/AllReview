@@ -30,8 +30,8 @@ class SignUpViewModel: ViewModel{
     
     var signUpDataValid:Driver<Bool>!
     
-    override init() {
-        super.init()
+    init(sceneCoordinator: SceneCoordinator) {
+        super.init(sceneCoordinator: sceneCoordinator)
         
         self.emailValidSubject = BehaviorSubject(value: nil)
         self.pwValidSubject = BehaviorSubject(value: nil)

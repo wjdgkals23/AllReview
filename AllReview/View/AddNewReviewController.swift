@@ -15,7 +15,7 @@ import RxSwift
 import Photos
 import Cosmos
 
-class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
+class AddNewReviewController: UIViewController {
     
     var initData: [String:String] = [String:String]()
     
@@ -56,13 +56,13 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let navi = catchNavigation() {
-            self.navi = navi
-            viewModel = AddNewReviewViewModel(imgURL: self.initData["posterImage"])
-            setUpRx()
-            setUpView()
-            NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification , object: nil)
-            NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification , object: nil)
-            print(initData)
+//            self.navi = navi
+//            viewModel = AddNewReviewViewModel(imgURL: self.initData["posterImage"],)
+//            setUpRx()
+//            setUpView()
+//            NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification , object: nil)
+//            NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification , object: nil)
+//            print(initData)
         } else {
             self.viewDidLoad()
         }

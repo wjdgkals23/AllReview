@@ -10,7 +10,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SignUpViewController: UIViewController, OneLineReviewViewProtocol {
+class SignUpViewController: UIViewController {
 
     @IBOutlet var signUpButton: UIButton!
     
@@ -31,7 +31,6 @@ class SignUpViewController: UIViewController, OneLineReviewViewProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        viewModel = SignUpViewModel()
         setUpRx()
         // Do any additional setup after loading the view.
     }

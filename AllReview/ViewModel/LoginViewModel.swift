@@ -54,7 +54,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         switch resultCode {
         case .success:
             UserLoginSession.sharedInstance.setRxLoginData(data: userData)
-            self.didSignIn.onNext(())
+            
         default:
             self.didFailSignIn.onNext(resultCode.rawValue)
         }

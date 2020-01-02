@@ -15,8 +15,8 @@ import RxSwift
 // facebook login logic 옮기기
 class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     
+    var viewModel: LoginViewModel!
     private var router: LoginRouter!
-    private var viewModel: LoginViewModel!
     
     private let disposeBag = DisposeBag()
 //    var router: Router! 화면 전환 객체
@@ -29,17 +29,6 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        if let navi = catchNavigation() {
-            UIApplication.shared.statusBarView?.backgroundColor = .white
-            navi.setNavigationBarHidden(true, animated: false)
-            router = LoginRouter(navigation: navi)
-            viewModel = LoginViewModel()
-            setUpView()
-            setUpRx()
-        } else {
-            self.viewDidLoad()
-        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -113,12 +102,12 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     func setUpRx() {
-        self.viewModel.didSignIn
-            .observeOn(MainScheduler.instance)
-            .subscribe({ [weak self] _ in
-                self?.view.isUserInteractionEnabled = true
-                self?.router.naviPush("login", ["":""])
-            }).disposed(by: self.viewModel.disposeBag)
+//        self.viewModel.didSignIn
+//            .observeOn(MainScheduler.instance)
+//            .subscribe({ [weak self] _ in
+//                self?.view.isUserInteractionEnabled = true
+//                self?.router.naviPush("login", ["":""])
+//            }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
@@ -134,6 +123,10 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
                 self?.viewModel.testLoginTapped()
         }.disposed(by: self.viewModel.disposeBag)
         
+    }
+    
+    func setUpWebView() {
+        print("setupwebView")
     }
     
 }

@@ -18,8 +18,8 @@ class SearchMovieViewModel: ViewModel {
     var searchBarSubject:BehaviorSubject<Bool>!
     var searchButtonEnabledDriver:Driver<Bool>!
     
-    override init() {
-        super.init()
+    init(sceneCoordinator: SceneCoordinator) {
+        super.init(sceneCoordinator: sceneCoordinator)
         
         keywordTextSubject = BehaviorSubject(value: "")
         

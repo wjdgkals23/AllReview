@@ -29,9 +29,8 @@ class AddNewReviewViewModel: ViewModel{
     
     var uploadData: Observable<(UIImage?, String?, String?)>!
     
-    init(imgURL: String?) {
-        
-        super.init()
+    init(imgURL: String?, sceneCoordinator: SceneCoordinator) {
+        super.init(sceneCoordinator: sceneCoordinator)
         
         if let imageUrl = imgURL, imageUrl != "" {
             imageViewImageSubject = BehaviorSubject(value: nil)

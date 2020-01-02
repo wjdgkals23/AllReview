@@ -13,7 +13,7 @@ import RxWebKit
 import RxSwift
 import RxCocoa
 
-class MainViewController: UIViewController, OneLineReviewViewProtocol {
+class MainViewController: UIViewController {
     
     private var disposeBag = DisposeBag()
     
@@ -41,13 +41,13 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         super.viewDidLoad()
         self.view.superview?.backgroundColor = .white
         
-        if let navi = catchNavigation() {
-            viewModel = MainViewModel()
-            router = MainRouter(navigation: navi)
-            navi.isNavigationBarHidden = true;
-        } else {
-            self.viewDidLoad()
-        }
+//        if let navi = catchNavigation() {
+//            viewModel = MainViewModel(sc)
+//            router = MainRouter(navigation: navi)
+//            navi.isNavigationBarHidden = true;
+//        } else {
+//            self.viewDidLoad()
+//        }
         
     }
     

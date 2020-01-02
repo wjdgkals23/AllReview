@@ -8,15 +8,29 @@
 
 import UIKit
 
-@objc protocol OneLineReviewViewProtocol {
+protocol OneLineReviewViewProtocol {
+    
+    associatedtype ViewModelType
+    
+    var viewModel: ViewModelType! { get set }
+    
     func setUpView()
     func setUpRx()
-    @objc optional func setUpWebView()
+    func setUpWebView()
+
+}
+
+extension OneLineReviewViewProtocol where Self: UIViewController {
+    mutating func bind(viewModel: Self.ViewModelType) {
+        self.viewModel = viewModel
+        loadViewIfNeeded()
+        setUpView()
+        setUpRx()
+        setUpWebView()
+    }
 }
 
 class NonBottomViewController: UIViewController {
-    
-    private var naviVC: UINavigationController!
     
     @IBOutlet var headerView: UIView!
     @IBOutlet var backButton: UIButton!
@@ -54,7 +68,7 @@ class NonBottomViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         if let navi = catchNavigation() {
-            self.naviVC = navi
+//            self.naviVC = navi
         } else {
             self.viewDidLoad()
         }
@@ -63,21 +77,12 @@ class NonBottomViewController: UIViewController {
     
     private func onAddChildController() {
         guard let childVC = self.childViewController else {
-            naviVC.popViewController(animated: true)
+//            naviVC.popViewController(animated: true)
             return
         }
         self.addChild(childVC)
         self.containerView.addSubview(childVC.view)
         childVC.didMove(toParent: self)
     }
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
     
 }
