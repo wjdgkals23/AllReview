@@ -47,6 +47,7 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
+            Observable.just(resizedImage).bind(to: self.viewModel.imageViewImageSubject).disposed(by: self.viewModel.disposeBag)
         }
     }
     
@@ -98,10 +99,18 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.didSuccessAddReview
             .observeOn(MainScheduler.instance)
             .subscribe({ [weak self] _ in
-                print("SUCCESS")
-                let reloadSearchVeiw = self?.navi.children[self!.navi.children.count-2] as! SearchMovieViewController
-                reloadSearchVeiw.reloadWebView()
-                self?.navi.popViewController(animated: true)
+//                self?.viewModel.reloadRequestSubject.onNext(())
+                do {
+                    let mainSubjectValue = try self?.viewModel.mainViewRequestSubject.value()
+                    self?.viewModel.mainViewRequestSubject.onNext(mainSubjectValue)
+                    let mySubjectValue = try self?.viewModel.myViewRequestSubject.value()
+                    self?.viewModel.myViewRequestSubject.onNext(mySubjectValue)
+                    let searchSubjectValue = try self?.viewModel.searchResultSubject.value()
+                    self?.viewModel.searchResultSubject.onNext(searchSubjectValue)
+                    self?.navi.popViewController(animated: true)
+                } catch {
+                    self?.showToast(message: "리로딩 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold))
+                }
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didFailAddReview
@@ -158,7 +167,6 @@ class AddNewReviewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     @IBAction func uploadReview(_ sender: Any) {
-        self.uploadButton.isEnabled = true
         let sendData = ["memberId": self.viewModel.userLoginSession.getLoginData()?.data?._id,
                         "movieId": self.initData["naverMovieId"], "starPoint": self.starPoint, "oneLineReview": self.reviewTitle.text, "detailReview":self.reviewContent.text] as [String : Any]
         self.viewModel.uploadReview(img: self.imageViewPicker.image!, data: sendData)

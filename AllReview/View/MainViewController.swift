@@ -63,7 +63,7 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
     }
     
     func setUpView() {
-        self.parentView.searchButton.addTarget(self, action: #selector(searchButtonTapped), for: .touchUpInside)
+        
     }
     
     func setUpRx() {
@@ -82,6 +82,12 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
                 self.router.naviPush(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
+            }).disposed(by: self.viewModel.disposeBag)
+        
+        self.viewModel.reloadRequestSubject.asObservable()
+            .subscribe(onNext: { _ in
+                print("reloadRequestSubject")
+                self.reloadWebView()
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
@@ -120,6 +126,13 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             }, onError: { [weak self] err in
                 self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
         })
+        
+        self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
+        self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
+        self.tempViewButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)
+        self.myViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.myViewButton) }.disposed(by: self.viewModel.disposeBag)
+        
+        self.parentView.searchButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {
@@ -192,19 +205,6 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             }
             return Disposables.create()
         }
-    }
-    
-    @objc private func searchButtonTapped() {
-        self.router.naviPush("add", ["":""])
-    }
-    
-    @IBAction func setBottomViewStatus(_ sender: Any) {
-        let targetButton = sender as! UIButton
-        self.statusSettingFunc(targetButton)
-    }
-    
-    @IBAction func addNewReviewButtonTapped(_ sender: Any) {
-        self.router.naviPush("add", ["":""])
     }
     
     @objc func backButtonTapped() {

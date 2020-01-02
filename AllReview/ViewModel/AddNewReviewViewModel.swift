@@ -64,6 +64,7 @@ class AddNewReviewViewModel: ViewModel{
     
     func uploadReview(img: UIImage, data: [String:Any]) {
         self.uploadReviewData(reviewData: data, image: img)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .subscribe(onNext: { [weak self] res in
                 self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res)
                 }, onError: { [weak self] err in

@@ -28,9 +28,6 @@
                                 <state key="normal" title="테스트 로그인">
                                     <color key="titleColor" cocoaTouchSystemColor="scrollViewTexturedBackgroundColor"/>
                                 </state>
-                                <connections>
-                                    <action selector="testLogin:" destination="BYZ-38-t0r" eventType="touchUpInside" id="kyv-3l-2wD"/>
-                                </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Pco-Jq-XuM">
                                 <rect key="frame" x="184" y="227" width="46" height="30"/>
@@ -88,9 +85,6 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
                                         <state key="selected" image="tappedhomeButtonIcon"/>
-                                        <connections>
-                                            <action selector="setBottomViewStatus:" destination="Asy-w4-d5S" eventType="touchUpInside" id="TTd-9j-apm"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ehe-rV-ShY">
                                         <rect key="frame" x="103.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
@@ -100,9 +94,6 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
                                         <state key="selected" image="tappedRankButtonIcon"/>
-                                        <connections>
-                                            <action selector="setBottomViewStatus:" destination="Asy-w4-d5S" eventType="touchUpInside" id="IFx-NC-Src"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bbL-FT-FN9">
                                         <rect key="frame" x="206.99999999999997" y="0.0" width="103.66666666666666" height="80"/>
@@ -111,9 +102,6 @@
                                         <state key="normal" image="addButtonIcon">
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
-                                        <connections>
-                                            <action selector="addNewReviewButtonTapped:" destination="Asy-w4-d5S" eventType="touchUpInside" id="ifw-Wo-3fh"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WNk-JG-Zyw">
                                         <rect key="frame" x="310.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
@@ -123,9 +111,6 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
                                         </state>
                                         <state key="selected" image="tappedmyButtonIcon"/>
-                                        <connections>
-                                            <action selector="setBottomViewStatus:" destination="Asy-w4-d5S" eventType="touchUpInside" id="25e-5c-PTU"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -262,10 +247,10 @@
                                         <nil key="textColor"/>
                                         <nil key="highlightedColor"/>
                                     </label>
-                                    <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Jb2-oa-4Rr" userLabel="Star View">
+                                    <stackView opaque="NO" contentMode="scaleToFill" ambiguous="YES" alignment="center" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="Jb2-oa-4Rr" userLabel="Star View">
                                         <rect key="frame" x="119" y="396" width="176" height="28"/>
                                         <subviews>
-                                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="BzQ-bX-TBJ" customClass="CosmosView" customModule="Cosmos">
+                                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="BzQ-bX-TBJ" customClass="CosmosView" customModule="Cosmos">
                                                 <rect key="frame" x="0.0" y="2" width="138" height="24"/>
                                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                                 <constraints>
@@ -285,7 +270,7 @@
                                                     </userDefinedRuntimeAttribute>
                                                 </userDefinedRuntimeAttributes>
                                             </view>
-                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fmc-q0-2du">
+                                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" usesAttributedText="YES" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fmc-q0-2du">
                                                 <rect key="frame" x="148" y="2" width="28" height="24"/>
                                                 <constraints>
                                                     <constraint firstAttribute="width" constant="28" id="xZc-yH-lUA"/>
@@ -401,9 +386,6 @@
                                         <state key="normal" image="backButtonIcon">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="cAg-qp-xcJ" eventType="touchUpInside" id="Ual-b2-Ew3"/>
-                                        </connections>
                                     </button>
                                     <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="249" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="mFf-gI-wOW">
                                         <rect key="frame" x="53" y="8" width="311" height="34"/>
@@ -418,9 +400,6 @@
                                         </constraints>
                                         <state key="normal" image="searchIcon"/>
                                         <state key="disabled" title="X"/>
-                                        <connections>
-                                            <action selector="searchButtonTapped:" destination="cAg-qp-xcJ" eventType="touchUpInside" id="9SX-u9-5h5"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

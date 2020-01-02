@@ -24,6 +24,7 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     
     @IBOutlet var testScrollView: UIScrollView!
     @IBOutlet var testLogin: UIButton!
+    private var myCustomTestLoginButton: AllReviewLoginButton!
     @IBOutlet var signUpButton: UIButton!
     
     override func viewDidLoad() {
@@ -65,7 +66,21 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
         
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
         
+        myCustomTestLoginButton = AllReviewLoginButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0) , color: .yellow, logo: "KaKao")
+        view.addSubview(myCustomTestLoginButton)
+        myCustomTestLoginButton.translatesAutoresizingMaskIntoConstraints = false
+        myCustomTestLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        myCustomTestLoginButton.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
+        myCustomTestLoginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        myCustomTestLoginButton.topAnchor.constraint(equalTo: self.testLogin.bottomAnchor, constant: 10).isActive = true
+        
+        myCustomTestLoginButton.addTarget(self, action: #selector(customButtonTapped), for: .touchUpInside)
+        
         setUpScrollView()
+    }
+    
+    @objc func customButtonTapped() {
+        myCustomTestLoginButton.shake()
     }
     
     func setUpScrollView() {
@@ -112,16 +127,15 @@ class LoginViewController: UIViewController, OneLineReviewViewProtocol {
                 self.view.isUserInteractionEnabled = true
             })
             .disposed(by: self.viewModel.disposeBag)
-    }
         
-    @IBAction func testLogin(_ sender: Any) {
-        self.view.isUserInteractionEnabled = false
-        viewModel.testLoginTapped()
+        self.testLogin.rx.tap
+            .bind{ [weak self] in
+                self?.view.isUserInteractionEnabled = false
+                self?.viewModel.testLoginTapped()
+        }.disposed(by: self.viewModel.disposeBag)
+        
     }
     
-    @IBAction func signUpButtonTapped(_ sender: Any) {
-        router.naviPush("signUp", ["":""])
-    }
 }
 
 extension UIColor {

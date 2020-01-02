@@ -61,6 +61,10 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         }
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+    }
+    
     override func viewDidLayoutSubviews() {
         
         if #available(iOS 11.0, *) {
@@ -98,6 +102,20 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
         self.webSearchView.rx.decidePolicyNavigationAction
             .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: self.viewModel.disposeBag)
+        
+        self.searchButton.rx.tap.bind{ [weak self] in
+            self?.searchBar.resignFirstResponder()
+            self?.viewModel.searchKeywordBindResultPage(.searchMovie, (self?.searchBar.text)!)
+        }.disposed(by: self.viewModel.disposeBag)
+        
+        self.cancelButton.rx.tap.bind{ [weak self] in
+            if ((self?.webSearchView.canGoBack)!) {
+                self?.webSearchView.goBack()
+                return
+            } else {
+                self?.navi.popViewController(animated: true)
+            }
+        }.disposed(by: self.viewModel.disposeBag)
     
     }
     
@@ -122,32 +140,6 @@ class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     
     func reloadWebView() {
         self.webSearchView.reload()
-        let superView = self.navi.children[self.navi.children.count-3] as! NonBottomViewController
-        let mainView = superView.childViewController as! MainViewController
-        mainView.reloadWebView()
-    }
-    
-    @IBAction func searchButtonTapped(_ sender: Any) {
-        self.searchBar.resignFirstResponder()
-        self.viewModel.searchKeywordBindResultPage(.searchMovie, self.searchBar.text!)
-    }
-    
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        if (self.webSearchView.canGoBack) {
-            print("cangoback")
-            for item in self.webSearchView.backForwardList.backList {
-                print(item.url)
-            }
-            self.webSearchView.goBack()
-            return
-        } else {
-            if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-                self.navi.popViewController(animated: true)
-            }
-            else {
-                print("View Load Fail")
-            }
-        }
     }
     
 }

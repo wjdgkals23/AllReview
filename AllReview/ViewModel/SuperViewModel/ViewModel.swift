@@ -27,6 +27,8 @@ class ViewModel: NSObject, WKNavigationDelegate {
     
     var searchResultSubject:BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
     
+    var reloadRequestSubject: PublishSubject<Void> = PublishSubject<Void>()
+    
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
     
