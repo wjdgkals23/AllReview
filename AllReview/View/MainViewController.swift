@@ -149,10 +149,8 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
-//        self.tempViewButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)/
         self.myViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.myViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.backButton.rx.tap.bind{ [weak self] in self?.backButtonTapped() }.disposed(by: self.viewModel.disposeBag)
-//        self.parentView.searchButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {

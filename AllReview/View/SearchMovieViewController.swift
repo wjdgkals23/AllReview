@@ -44,21 +44,6 @@ class SearchMovieViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-//        if let navi = catchNavigation() {
-//            self.navi = navi
-//            viewModel = SearchMovieViewModel()
-//            router = SearchMovieViewRouter(navigation: navi)
-//            searchBar.changeDefaultColor()
-//            setUpWebView()
-//            setUpRx()
-//            if rankedSearchWord != nil && rankedSearchWord != "" {
-//                self.viewModel.searchKeywordBindResultPage(.searchMovie, rankedSearchWord)
-//                self.searchBar.text = rankedSearchWord
-//            }
-//        } else {
-//            self.viewDidLoad()
-//        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -89,7 +74,7 @@ class SearchMovieViewController: UIViewController {
         
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
-                self.router.viewPresent(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
+//                self.router.viewPresent(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
