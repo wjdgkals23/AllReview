@@ -16,7 +16,6 @@ import RxSwift
 class LoginViewController: UIViewController, OneLineReviewViewProtocol {
     
     var viewModel: LoginViewModel!
-    private var router: LoginRouter!
     
     private let disposeBag = DisposeBag()
 //    var router: Router! 화면 전환 객체

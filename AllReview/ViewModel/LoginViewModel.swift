@@ -31,7 +31,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
             "password": "alfkzmf1!"
         ]
         
-        self.request.rxTestLogin(userData: data).observeOn(self.backgroundScheduler)
+        self.request.rxTestLogin(userData: data).observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] res in
                 self?.loginResultCodeParse(resultCode: LoginErrResponse(rawValue: res.resultCode)!, userData: res)
                 }, onError: { [weak self] err in
@@ -54,7 +54,9 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         switch resultCode {
         case .success:
             UserLoginSession.sharedInstance.setRxLoginData(data: userData)
-            
+            let mainVM = MainViewModel(sceneCoordinator: self.sceneCoordinator)
+            let mainScene = Scene.main(mainVM)
+            self.sceneCoordinator.transition(to: mainScene, using: .root, animated: false)
         default:
             self.didFailSignIn.onNext(resultCode.rawValue)
         }

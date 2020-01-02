@@ -64,7 +64,7 @@
         <!--MainViewController-->
         <scene sceneID="wh3-0n-TRj">
             <objects>
-                <viewController storyboardIdentifier="MainViewController" title="MainViewController" id="Asy-w4-d5S" customClass="MainViewController" customModule="AllReview" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="MainViewController" title="MainViewController" id="Asy-w4-d5S" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="EH8-ar-QLs">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -368,9 +368,8 @@
         <!--Navigation Controller-->
         <scene sceneID="nbZ-xh-ocz">
             <objects>
-                <navigationController storyboardIdentifier="MainNav" id="qnE-rE-Pz7" sceneMemberID="viewController">
+                <navigationController storyboardIdentifier="MainNav" navigationBarHidden="YES" id="qnE-rE-Pz7" sceneMemberID="viewController">
                     <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="e4O-Dg-hRi">
-                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <connections>
@@ -692,16 +691,16 @@
             </objects>
             <point key="canvasLocation" x="1986" y="-513"/>
         </scene>
-        <!--Non Bottom View Controller-->
+        <!--Main View Controller-->
         <scene sceneID="1le-xx-9Lm">
             <objects>
-                <viewController storyboardIdentifier="NonBottomViewController" id="faz-rJ-wV1" customClass="NonBottomViewController" customModule="AllReview" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="faz-rJ-wV1" customClass="MainViewController" customModule="AllReview" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Cpn-y0-c4w">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vl0-g6-nZX" userLabel="HeaderView">
-                                <rect key="frame" x="0.0" y="88" width="414" height="60"/>
+                                <rect key="frame" x="0.0" y="44" width="414" height="60"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="D0i-yf-Qy0">
                                         <rect key="frame" x="0.0" y="5" width="50" height="50"/>
@@ -745,19 +744,78 @@
                                     <constraint firstAttribute="width" secondItem="vl0-g6-nZX" secondAttribute="height" multiplier="69:10" id="qg0-bT-Xee"/>
                                 </constraints>
                             </view>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="1tj-Bg-zQc" userLabel="ViewContainer">
-                                <rect key="frame" x="0.0" y="148" width="414" height="748"/>
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="9Ai-DM-K5Z">
+                                <rect key="frame" x="0.0" y="104" width="414" height="712"/>
                                 <color key="backgroundColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             </view>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" alignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="YDT-Up-vp4">
+                                <rect key="frame" x="0.0" y="816" width="414" height="80"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="D9f-dU-zkG">
+                                        <rect key="frame" x="0.0" y="0.0" width="103.66666666666667" height="80"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="homeButtonIcon">
+                                            <attributedString key="attributedTitle"/>
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
+                                        </state>
+                                        <state key="selected" image="tappedhomeButtonIcon"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eV5-8n-tVF">
+                                        <rect key="frame" x="103.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="rankButtonIcon">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
+                                        </state>
+                                        <state key="selected" image="tappedRankButtonIcon"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="a2X-Zq-NJI">
+                                        <rect key="frame" x="206.99999999999997" y="0.0" width="103.66666666666666" height="80"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="addButtonIcon">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
+                                        </state>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hMo-eu-sh6">
+                                        <rect key="frame" x="310.66666666666669" y="0.0" width="103.33333333333331" height="80"/>
+                                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <color key="tintColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <state key="normal" image="myButtonIcon">
+                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="large" weight="regular"/>
+                                        </state>
+                                        <state key="selected" image="tappedmyButtonIcon"/>
+                                    </button>
+                                </subviews>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <constraints>
+                                    <constraint firstItem="hMo-eu-sh6" firstAttribute="top" secondItem="YDT-Up-vp4" secondAttribute="top" id="0Xq-7h-COl"/>
+                                    <constraint firstAttribute="height" constant="80" id="C50-Tf-pRd"/>
+                                    <constraint firstItem="D9f-dU-zkG" firstAttribute="top" secondItem="YDT-Up-vp4" secondAttribute="top" id="ICp-jx-9lI"/>
+                                    <constraint firstAttribute="bottom" secondItem="D9f-dU-zkG" secondAttribute="bottom" id="InP-S7-z2K"/>
+                                    <constraint firstItem="eV5-8n-tVF" firstAttribute="top" secondItem="YDT-Up-vp4" secondAttribute="top" id="T84-sW-UVu"/>
+                                    <constraint firstAttribute="width" secondItem="YDT-Up-vp4" secondAttribute="height" multiplier="207:40" id="fAU-zM-mMT"/>
+                                    <constraint firstAttribute="bottom" secondItem="eV5-8n-tVF" secondAttribute="bottom" id="h4l-3m-hHi"/>
+                                    <constraint firstAttribute="bottom" secondItem="a2X-Zq-NJI" secondAttribute="bottom" id="kHe-9f-Rfh"/>
+                                    <constraint firstAttribute="bottom" secondItem="hMo-eu-sh6" secondAttribute="bottom" id="n9Y-1R-E0k"/>
+                                    <constraint firstItem="a2X-Zq-NJI" firstAttribute="top" secondItem="YDT-Up-vp4" secondAttribute="top" id="zhO-c8-2te"/>
+                                </constraints>
+                            </stackView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                         <constraints>
-                            <constraint firstAttribute="bottom" secondItem="1tj-Bg-zQc" secondAttribute="bottom" id="Ilv-mX-ETo"/>
+                            <constraint firstItem="9Ai-DM-K5Z" firstAttribute="trailing" secondItem="Jy1-Ew-FtY" secondAttribute="trailing" id="1nK-jy-pTi"/>
+                            <constraint firstItem="YDT-Up-vp4" firstAttribute="width" secondItem="YDT-Up-vp4" secondAttribute="height" multiplier="207:40" id="25X-aF-9sm"/>
+                            <constraint firstItem="9Ai-DM-K5Z" firstAttribute="top" secondItem="vl0-g6-nZX" secondAttribute="bottom" id="G4t-Ml-v3c"/>
+                            <constraint firstItem="YDT-Up-vp4" firstAttribute="trailing" secondItem="Jy1-Ew-FtY" secondAttribute="trailing" id="IkK-bF-rJ9"/>
                             <constraint firstItem="vl0-g6-nZX" firstAttribute="top" secondItem="Jy1-Ew-FtY" secondAttribute="top" id="VZS-dl-Wa0"/>
-                            <constraint firstItem="Jy1-Ew-FtY" firstAttribute="trailing" secondItem="1tj-Bg-zQc" secondAttribute="trailing" id="ZeX-GR-TYy"/>
-                            <constraint firstItem="1tj-Bg-zQc" firstAttribute="top" secondItem="vl0-g6-nZX" secondAttribute="bottom" id="e2h-4v-MSp"/>
-                            <constraint firstItem="1tj-Bg-zQc" firstAttribute="leading" secondItem="Jy1-Ew-FtY" secondAttribute="leading" id="ox7-3m-s87"/>
+                            <constraint firstItem="YDT-Up-vp4" firstAttribute="bottom" secondItem="Cpn-y0-c4w" secondAttribute="bottom" id="eUY-xq-6Bl"/>
+                            <constraint firstItem="YDT-Up-vp4" firstAttribute="leading" secondItem="Jy1-Ew-FtY" secondAttribute="leading" id="flU-Iw-6Iv"/>
+                            <constraint firstItem="9Ai-DM-K5Z" firstAttribute="leading" secondItem="Jy1-Ew-FtY" secondAttribute="leading" id="iPl-AT-5Ux"/>
+                            <constraint firstItem="YDT-Up-vp4" firstAttribute="top" secondItem="9Ai-DM-K5Z" secondAttribute="bottom" id="n3s-Q0-dCg"/>
                             <constraint firstItem="Jy1-Ew-FtY" firstAttribute="trailing" secondItem="vl0-g6-nZX" secondAttribute="trailing" id="sKf-ia-nmo"/>
+                            <constraint firstItem="YDT-Up-vp4" firstAttribute="top" secondItem="9Ai-DM-K5Z" secondAttribute="bottom" id="ttY-Iz-jJK"/>
                             <constraint firstItem="vl0-g6-nZX" firstAttribute="leading" secondItem="Jy1-Ew-FtY" secondAttribute="leading" id="uVN-Vd-YBp"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="Jy1-Ew-FtY"/>
@@ -765,9 +823,14 @@
                     <navigationItem key="navigationItem" id="Zyd-7t-E0Y"/>
                     <connections>
                         <outlet property="backButton" destination="D0i-yf-Qy0" id="2JS-Lx-P9p"/>
-                        <outlet property="containerView" destination="1tj-Bg-zQc" id="UTh-lZ-Tz2"/>
+                        <outlet property="bottomView" destination="YDT-Up-vp4" id="hE6-Ku-47t"/>
+                        <outlet property="containerView" destination="9Ai-DM-K5Z" id="66p-c4-hhk"/>
                         <outlet property="headerView" destination="vl0-g6-nZX" id="27t-G4-jhQ"/>
+                        <outlet property="mainViewButton" destination="D9f-dU-zkG" id="vSW-U5-lfJ"/>
+                        <outlet property="myViewButton" destination="hMo-eu-sh6" id="vjU-Vc-NXv"/>
+                        <outlet property="rankViewButton" destination="eV5-8n-tVF" id="XbC-Zg-BVy"/>
                         <outlet property="searchButton" destination="JA1-Bf-vFd" id="aq2-5v-Y7L"/>
+                        <outlet property="tempViewButton" destination="a2X-Zq-NJI" id="5JU-Nb-3g6"/>
                         <outlet property="titleImageVIew" destination="ncv-z7-OB4" id="Phr-rc-VBy"/>
                     </connections>
                 </viewController>

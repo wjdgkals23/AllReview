@@ -22,7 +22,7 @@ extension Scene {
         
         switch self {
         case .login(let viewModel):
-            guard let nav = stoaryboard.instantiateViewController(withIdentifier: "MainNav") as? UINavigationController else {
+            guard let nav = stoaryboard.instantiateViewController(withIdentifier: "LoginNav") as? UINavigationController else {
                 fatalError()
             }
             guard var loginVC = nav.viewControllers.first as? LoginViewController else {
@@ -31,10 +31,15 @@ extension Scene {
             
             loginVC.bind(viewModel: viewModel)
             return nav
-        case .main(_):
+        case .main(let viewModel):
             guard let nav = stoaryboard.instantiateViewController(withIdentifier: "MainNav") as? UINavigationController else {
                 fatalError()
             }
+            guard var mainVC = nav.viewControllers.first as? MainViewController else {
+                fatalError()
+            }
+            
+            mainVC.bind(viewModel: viewModel)
             return nav
         case .signup(_):
             guard let nav = stoaryboard.instantiateViewController(withIdentifier: "MainNav") as? UINavigationController else {

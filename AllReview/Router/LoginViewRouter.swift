@@ -25,12 +25,6 @@ class LoginRouter: DefaultRouter {
     func naviPush(_ to: String, _ data: Dictionary<String,String>) {
 //        guard let src = source as? LoginViewController else { return }
         switch to {
-        case LoginRoute.login.rawValue:
-            let storyBoard = UIStoryboard(name: "Main", bundle: nil)
-            let vc = storyBoard.instantiateViewController(withIdentifier: "NonBottomViewController") as! NonBottomViewController
-            let childVC = storyBoard.instantiateViewController(withIdentifier: "MainViewController")
-            vc.childViewController = childVC
-            navigationController.pushViewController(vc, animated: true)
         case LoginRoute.signUp.rawValue:
             let storyBoard = UIStoryboard(name: "Main", bundle: nil)
             let vc = storyBoard.instantiateViewController(withIdentifier: "SignUpViewController")

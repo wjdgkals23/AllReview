@@ -1,26 +1,51 @@
 //
-//  MainViewController.swift
+//  NonBottomViewController.swift
 //  AllReview
 //
-//  Created by 정하민 on 2019/10/29.
+//  Created by 정하민 on 2019/12/16.
 //  Copyright © 2019 swift. All rights reserved.
 //
 
-import Foundation
 import UIKit
-import WebKit
-import RxWebKit
 import RxSwift
 import RxCocoa
+import WebKit
+import RxWebKit
 
-class MainViewController: UIViewController {
+
+protocol OneLineReviewViewProtocol {
     
-    private var disposeBag = DisposeBag()
+    associatedtype ViewModelType
     
-    private var viewModel: MainViewModel!
-    private var router: DefaultRouter!
+    var viewModel: ViewModelType! { get set }
     
-    private unowned var parentView: NonBottomViewController!
+    func setUpView()
+    func setUpRx()
+    func setUpWebView()
+    
+}
+
+extension OneLineReviewViewProtocol where Self: UIViewController {
+    mutating func bind(viewModel: Self.ViewModelType) {
+        self.viewModel = viewModel
+        loadViewIfNeeded()
+        setUpView()
+        setUpWebView()
+        setUpRx()
+    }
+}
+
+class MainViewController: UIViewController, OneLineReviewViewProtocol {
+    
+    var viewModel: MainViewModel!
+    var disposeBag = DisposeBag()
+    
+    @IBOutlet var headerView: UIView!
+    @IBOutlet var backButton: UIButton!
+    @IBOutlet var searchButton: UIButton!
+    @IBOutlet var titleImageVIew: UIImageView!
+    
+    @IBOutlet var containerView: UIView! // containerChange 함수 필요!
     
     private var webMainView: WKWebView!
     private var webRankView: WKWebView!
@@ -30,36 +55,37 @@ class MainViewController: UIViewController {
     
     @IBOutlet var bottomView: UIStackView!
     
-    @IBOutlet var webContainer: UIView!
-    
     @IBOutlet var mainViewButton: UIButton!
     @IBOutlet var rankViewButton: UIButton!
     @IBOutlet var tempViewButton: UIButton!
     @IBOutlet var myViewButton: UIButton!
     
+    var topSafeArea:CGFloat! {
+        willSet(newValue){
+            if(newValue != self.topSafeArea) {
+                let topTotalHeight = self.headerView.bounds.height + newValue
+                let webViewHeight = self.view.bounds.height - topTotalHeight
+                let beforeRect = self.containerView.frame
+                let cgRect = CGRect(x: beforeRect.origin.x, y: beforeRect.origin.y, width: beforeRect.width, height: webViewHeight)
+                self.containerView.frame = cgRect
+            }
+        }
+    }
+    var bottomSafeArea:CGFloat!
+    
+    override func viewDidLayoutSubviews() {
+        if #available(iOS 11.0, *) {
+            topSafeArea = self.view.safeAreaInsets.top
+            bottomSafeArea = self.view.safeAreaInsets.bottom
+        } else {
+            topSafeArea = topLayoutGuide.length
+            bottomSafeArea = bottomLayoutGuide.length
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.view.superview?.backgroundColor = .white
-        
-//        if let navi = catchNavigation() {
-//            viewModel = MainViewModel(sc)
-//            router = MainRouter(navigation: navi)
-//            navi.isNavigationBarHidden = true;
-//        } else {
-//            self.viewDidLoad()
-//        }
-        
-    }
-    
-    override func didMove(toParent parent: UIViewController?) {
-        if let `parent` = parent as! NonBottomViewController? {
-            self.parentView = parent
-            self.parentView.backButton.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
-            self.view.frame = self.parentView.containerView.bounds
-            setUpView()
-            setUpWebView()
-            setUpRx()
-        }
     }
     
     func setUpView() {
@@ -81,13 +107,7 @@ class MainViewController: UIViewController {
         
         self.viewModel.goToNewViewControllerReviewSubject
             .subscribe({ initData in
-                self.router.naviPush(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
-            }).disposed(by: self.viewModel.disposeBag)
-        
-        self.viewModel.reloadRequestSubject.asObservable()
-            .subscribe(onNext: { _ in
-                print("reloadRequestSubject")
-                self.reloadWebView()
+//                self.router.naviPush(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
             }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
@@ -129,10 +149,10 @@ class MainViewController: UIViewController {
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
-        self.tempViewButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)
+//        self.tempViewButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)/
         self.myViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.myViewButton) }.disposed(by: self.viewModel.disposeBag)
-        
-        self.parentView.searchButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)
+        self.backButton.rx.tap.bind{ [weak self] in self?.backButtonTapped() }.disposed(by: self.viewModel.disposeBag)
+//        self.parentView.searchButton.rx.tap.bind{ [weak self] in self?.router.naviPush("add", ["":""]) }.disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {
@@ -149,7 +169,7 @@ class MainViewController: UIViewController {
         self.viewList = [self.webMyView,self.webRankView,self.webMainView]
         
         for item in self.viewList {
-            self.webContainer.addSubview(item)
+            self.containerView.addSubview(item)
         }
         
         self.webMainView.navigationDelegate = self.viewModel
@@ -167,11 +187,6 @@ class MainViewController: UIViewController {
         self.webMainView.scrollView.bounces = false
     }
     
-    func reloadWebView() {
-        self.webMyView.reload()
-        self.webMainView.reload()
-    }
-    
     private func statusSettingFunc(_ sender: UIButton) {
         self.webMainView.isHidden = true
         self.webMyView.isHidden = true
@@ -179,7 +194,7 @@ class MainViewController: UIViewController {
         self.mainViewButton.isSelected = false
         self.rankViewButton.isSelected = false
         self.myViewButton.isSelected = false
-        self.parentView.titleImageVIew.image = #imageLiteral(resourceName: "title")
+        self.titleImageVIew.image = #imageLiteral(resourceName: "title")
         
         sender.isSelected = true
         
@@ -190,7 +205,7 @@ class MainViewController: UIViewController {
             self.webMyView.isHidden = false
         case self.rankViewButton:
             self.webRankView.isHidden = false
-            self.parentView.titleImageVIew.image = #imageLiteral(resourceName: "title2")
+            self.titleImageVIew.image = #imageLiteral(resourceName: "title2")
         default:
             return
         }
@@ -207,7 +222,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    @objc func backButtonTapped() {
+    func backButtonTapped() {
         if(self.webMainView.canGoBack && !self.webMainView.isHidden) {
             self.webMainView.goBack()
             return
@@ -223,4 +238,5 @@ class MainViewController: UIViewController {
         
         self.showToast(message: "로그인/로그아웃/리뷰등록 만 남았다!", font: UIFont.systemFont(ofSize: 18, weight: .semibold))
     }
+    
 }

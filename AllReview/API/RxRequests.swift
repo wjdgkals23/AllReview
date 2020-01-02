@@ -22,6 +22,7 @@ class OneLineReviewAPI {
     
     static let sharedInstance = OneLineReviewAPI()
 
+    private var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     private var disaposable = DisposeBag()
     
     private let decoder = JSONDecoder()
@@ -74,7 +75,8 @@ class OneLineReviewAPI {
     }
     
     private func myObservableFunc<T:Codable>(path: OneLineReview, data: [String:Any], type: T.Type, debugStr: String) -> Observable<T> {
-        self.urlMaker.rxMakeURLRequestObservable(path, data).flatMap { urlRequest -> Observable<T> in
+        self.urlMaker.rxMakeURLRequestObservable(path, data).observeOn(self.backgroundScheduler)
+            .flatMap { urlRequest -> Observable<T> in
             let dataTask = URLSession.shared.rx.response(request: urlRequest)
             return dataTask
                 .debug(debugStr)
