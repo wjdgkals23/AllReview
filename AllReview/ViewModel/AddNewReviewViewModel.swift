@@ -14,7 +14,7 @@ import WebKit
 
 class AddNewReviewViewModel: ViewModel{
     
-    var imageViewImageSubject: BehaviorSubject<UIImage?> = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+    var imageViewImageSubject: Observable<UIImage?>!
     var reviewTitleTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
     var reviewContentTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
     
@@ -32,18 +32,19 @@ class AddNewReviewViewModel: ViewModel{
     init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
         super.init(sceneCoordinator: sceneCoordinator)
         
-        print(initData)
+        print("addNewInit", initData)
         
-//        if let imageUrl = imgURL, imageUrl != "" {
-//            imageViewImageSubject = BehaviorSubject(value: nil)
-//            self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!)
-//                .bind(to: imageViewImageSubject)
-//                .disposed(by: disposeBag)
-//        } else {
-//            imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
-//        }
+        if let imageUrl = initData!["posterImage"], imageUrl != "" {
+            imageViewImageSubject = self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!).flatMap({ (image) -> Observable<UIImage?> in
+                return Observable.just(image)
+            })
+        } else {
+            imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+        }
         
-        uploadData = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable())
+        _ = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable()).subscribe(onNext: { a,b,c in
+            print(a,b,c)
+        }).disposed(by: disposeBag)
         
         _ = imageViewImageSubject.distinctUntilChanged()
             .map({ image in
@@ -60,7 +61,7 @@ class AddNewReviewViewModel: ViewModel{
             return content != "" && content!.count > 1
         }).bind(to: isContentValid)
         
-        imageViewDriver = imageViewImageSubject.distinctUntilChanged().asDriver(onErrorJustReturn: #imageLiteral(resourceName: "title"))
+        imageViewDriver = imageViewImageSubject.asDriver(onErrorJustReturn: #imageLiteral(resourceName: "title"))
     }
     
     func uploadReview(img: UIImage, data: [String:Any]) {

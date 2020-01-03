@@ -45,7 +45,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
-            Observable.just(resizedImage).bind(to: self.viewModel.imageViewImageSubject).disposed(by: self.viewModel.disposeBag)
+//            Observable.just(resizedImage).bind(to: self.viewModel.imageViewImageSubject).disposed(by: self.viewModel.disposeBag)
         }
     }
     
@@ -79,9 +79,14 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     
     func setUpRx() {
         
-        self.viewModel.imageViewDriver
-            .drive(self.imageViewPicker.rx.image)
+        self.viewModel.imageViewImageSubject
+            .bind(to: self.imageViewPicker.rx.image)
             .disposed(by: self.viewModel.disposeBag)
+//        self.viewModel.imageViewDriver
+//            .drive(self.imageViewPicker.rx.image)
+//            .disposed(by: self.viewModel.disposeBag)
+//
+//        self.imageViewPicker.rx.image.onNext(image)
         
         self.viewModel.didSuccessAddReview
             .observeOn(MainScheduler.instance)
