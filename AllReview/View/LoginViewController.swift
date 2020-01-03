@@ -13,7 +13,7 @@ import Firebase
 import RxSwift
 
 // facebook login logic 옮기기
-class LoginViewController: UIViewController, OneLineReviewViewProtocol {
+class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     
     var viewModel: LoginViewModel!
     

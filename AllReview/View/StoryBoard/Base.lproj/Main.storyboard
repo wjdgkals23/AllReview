@@ -214,9 +214,6 @@
                                         <state key="disabled" title="확인">
                                             <color key="titleColor" white="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </state>
-                                        <connections>
-                                            <action selector="uploadReview:" destination="MNu-eF-BAf" eventType="touchUpInside" id="1CW-xj-Yvw"/>
-                                        </connections>
                                     </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>

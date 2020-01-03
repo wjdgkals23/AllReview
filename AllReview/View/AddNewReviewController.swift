@@ -15,11 +15,9 @@ import RxSwift
 import Photos
 import Cosmos
 
-class AddNewReviewController: UIViewController {
+class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     
-    var initData: [String:String] = [String:String]()
-    
-    private var viewModel:AddNewReviewViewModel!
+    var viewModel:AddNewReviewViewModel!
     
     @IBOutlet var imageViewPicker: UIImageView!
     @IBOutlet var imageViewPickerWidth: NSLayoutConstraint!
@@ -55,17 +53,6 @@ class AddNewReviewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if let navi = catchNavigation() {
-//            self.navi = navi
-//            viewModel = AddNewReviewViewModel(imgURL: self.initData["posterImage"],)
-//            setUpRx()
-//            setUpView()
-//            NotificationCenter.default.addObserver(self, selector: #selector(willShowKeyboard), name: UIResponder.keyboardWillShowNotification , object: nil)
-//            NotificationCenter.default.addObserver(self, selector: #selector(willHideKeyboard), name: UIResponder.keyboardWillHideNotification , object: nil)
-//            print(initData)
-        } else {
-            self.viewDidLoad()
-        }
     }
     
     func setUpView() {
@@ -75,7 +62,7 @@ class AddNewReviewController: UIViewController {
         self.imageViewPicker.isUserInteractionEnabled = true
         self.imageViewPicker.contentMode = .scaleToFill
         
-        self.movieName.text = self.initData["movieKorName"]!.decodeUrl()
+//        self.movieName.text = self.viewModel.initData["movieKorName"]!.decodeUrl()
         
         self.starRatingView.didTouchCosmos = { rating in
             self.starPoint = Int(rating*2)
@@ -136,6 +123,10 @@ class AddNewReviewController: UIViewController {
             .disposed(by: viewModel.disposeBag)
     }
     
+    func setUpWebView() {
+        return
+    }
+    
     @objc private func willShowKeyboard(notification: Notification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
             if self.view.frame.origin.y == 0{
@@ -165,13 +156,6 @@ class AddNewReviewController: UIViewController {
             print("View Load Fail")
         }
     }
-    
-    @IBAction func uploadReview(_ sender: Any) {
-        let sendData = ["memberId": self.viewModel.userLoginSession.getLoginData()?.data?._id,
-                        "movieId": self.initData["naverMovieId"], "starPoint": self.starPoint, "oneLineReview": self.reviewTitle.text, "detailReview":self.reviewContent.text] as [String : Any]
-        self.viewModel.uploadReview(img: self.imageViewPicker.image!, data: sendData)
-    }
-    
     
 }
 

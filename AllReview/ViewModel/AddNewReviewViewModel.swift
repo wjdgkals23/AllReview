@@ -14,7 +14,7 @@ import WebKit
 
 class AddNewReviewViewModel: ViewModel{
     
-    var imageViewImageSubject: BehaviorSubject<UIImage?>!
+    var imageViewImageSubject: BehaviorSubject<UIImage?> = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
     var reviewTitleTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
     var reviewContentTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
     
@@ -29,17 +29,19 @@ class AddNewReviewViewModel: ViewModel{
     
     var uploadData: Observable<(UIImage?, String?, String?)>!
     
-    init(imgURL: String?, sceneCoordinator: SceneCoordinator) {
+    init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
         super.init(sceneCoordinator: sceneCoordinator)
         
-        if let imageUrl = imgURL, imageUrl != "" {
-            imageViewImageSubject = BehaviorSubject(value: nil)
-            self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!)
-                .bind(to: imageViewImageSubject)
-                .disposed(by: disposeBag)
-        } else {
-            imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
-        }
+        print(initData)
+        
+//        if let imageUrl = imgURL, imageUrl != "" {
+//            imageViewImageSubject = BehaviorSubject(value: nil)
+//            self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!)
+//                .bind(to: imageViewImageSubject)
+//                .disposed(by: disposeBag)
+//        } else {
+//            imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+//        }
         
         uploadData = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable())
         

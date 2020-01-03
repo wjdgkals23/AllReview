@@ -50,7 +50,12 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self?.goToNewViewControllerReviewSubject.on(.next(("add", queryDict)))
+//                self?.goToNewViewControllerReviewSubject.on(.next(("add", queryDict)))
+                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+                let addNewVM = AddNewReviewViewModel(sceneCoordinator: coordinator, initData: queryDict)
+                let addNewScene = Scene.addnew(addNewVM)
+                
+                coordinator.transition(to: addNewScene, using: .push, animated: false)
                 return
             }
             else if((url?.contains("app://ExternalBrowser"))!) {

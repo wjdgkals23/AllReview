@@ -46,11 +46,12 @@ extension Scene {
                 fatalError()
             }
             return nav
-        case .addnew(_):
-            guard let nav = stoaryboard.instantiateViewController(withIdentifier: "MainNav") as? UINavigationController else {
+        case .addnew(let viewModel):
+            guard var addNewVC = stoaryboard.instantiateViewController(withIdentifier: "AddNewReviewController") as? AddNewReviewController else {
                 fatalError()
             }
-            return nav
+            addNewVC.bind(viewModel: viewModel)
+            return addNewVC
         case .search(let viewModel):
             guard var searchVC = stoaryboard.instantiateViewController(withIdentifier: "SearchMovieViewController") as? SearchMovieViewController else {
                 fatalError()

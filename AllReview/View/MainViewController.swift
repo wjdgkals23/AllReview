@@ -12,30 +12,7 @@ import RxCocoa
 import WebKit
 import RxWebKit
 
-
-protocol OneLineReviewViewProtocol {
-    
-    associatedtype ViewModelType
-    
-    var viewModel: ViewModelType! { get set }
-    
-    func setUpView()
-    func setUpRx()
-    func setUpWebView()
-    
-}
-
-extension OneLineReviewViewProtocol where Self: UIViewController {
-    mutating func bind(viewModel: Self.ViewModelType) {
-        self.viewModel = viewModel
-        loadViewIfNeeded()
-        setUpView()
-        setUpWebView()
-        setUpRx()
-    }
-}
-
-class MainViewController: UIViewController, OneLineReviewViewProtocol {
+class MainViewController: UIViewController, OneLineRevieViewControllerType {
     
     var viewModel: MainViewModel!
     var disposeBag = DisposeBag()
@@ -203,17 +180,6 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             self.titleImageVIew.image = #imageLiteral(resourceName: "title2")
         default:
             return
-        }
-    }
-    
-    private func buttonflatMap(webView: WKWebView) -> Observable<[Bool]> {
-        return Observable.create { (obs) -> Disposable in
-            if (!webView.isHidden) {
-                obs.on(.next([webView.isHidden, !webView.isHidden]))
-            } else {
-                obs.on(.next([!webView.isHidden, webView.isHidden]))
-            }
-            return Disposables.create()
         }
     }
     

@@ -12,7 +12,7 @@ import RxCocoa
 import WebKit
 import RxWebKit
 
-class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
+class SearchMovieViewController: UIViewController, OneLineRevieViewControllerType {
     
     var viewModel: SearchMovieViewModel!
 //    private var router: SearchMovieViewRouter!

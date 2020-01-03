@@ -42,7 +42,6 @@ class SearchMovieViewModel: ViewModel {
             }
         }
         
-        
         keywordTextDriver = keywordTextSubject.asDriver(onErrorJustReturn: "")
         searchButtonEnabledDriver = searchButtonEnabledObservable.asDriver(onErrorJustReturn: false)
         
