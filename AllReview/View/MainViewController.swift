@@ -105,11 +105,6 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
             .subscribe(onNext: self.viewModel.urlParserContext!)
             .disposed(by: disposeBag)
         
-        self.viewModel.goToNewViewControllerReviewSubject
-            .subscribe({ initData in
-//                self.router.naviPush(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
-            }).disposed(by: self.viewModel.disposeBag)
-        
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
@@ -151,6 +146,8 @@ class MainViewController: UIViewController, OneLineReviewViewProtocol {
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.myViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.myViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.backButton.rx.tap.bind{ [weak self] in self?.backButtonTapped() }.disposed(by: self.viewModel.disposeBag)
+        self.tempViewButton.rx.tap.bind{ [weak self] in self?.viewModel.pushSearchView() }.disposed(by: self.viewModel.disposeBag)
+        self.searchButton.rx.tap.bind{ [weak self] in self?.viewModel.pushSearchView() }.disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {

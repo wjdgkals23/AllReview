@@ -17,11 +17,17 @@ class SearchMovieViewModel: ViewModel {
     var keywordTextSubject:BehaviorSubject<String?>!
     var searchBarSubject:BehaviorSubject<Bool>!
     var searchButtonEnabledDriver:Driver<Bool>!
+    var keywordTextDriver:Driver<String?>!
     
-    init(sceneCoordinator: SceneCoordinator) {
+    init(sceneCoordinator: SceneCoordinator, keyword: String?) {
         super.init(sceneCoordinator: sceneCoordinator)
         
-        keywordTextSubject = BehaviorSubject(value: "")
+        if keyword != nil {
+            keywordTextSubject = BehaviorSubject(value: keyword?.decodeUrl())
+            self.searchKeywordBindResultPage(.searchMovie, (keyword?.decodeUrl())!)
+        } else {
+            keywordTextSubject = BehaviorSubject(value: "")
+        }
         
         let searchButtonEnabledObservable:Observable<Bool> = keywordTextSubject.distinctUntilChanged().flatMap { (keyword) -> Observable<Bool> in
             return Observable.create { (obs) -> Disposable in
@@ -35,7 +41,9 @@ class SearchMovieViewModel: ViewModel {
                 }
             }
         }
-
+        
+        
+        keywordTextDriver = keywordTextSubject.asDriver(onErrorJustReturn: "")
         searchButtonEnabledDriver = searchButtonEnabledObservable.asDriver(onErrorJustReturn: false)
         
     }

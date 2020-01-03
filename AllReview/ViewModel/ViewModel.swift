@@ -35,9 +35,9 @@ class ViewModel: NSObject, WKNavigationDelegate {
     let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
     
     init(sceneCoordinator: SceneCoordinatorType) {
-        self.sceneCoordinator = sceneCoordinator as! SceneCoordinator
+        self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
         super.init()
-        self.urlParserContext = {(webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
+        self.urlParserContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
             
             let url = response.request.url?.absoluteString
             
@@ -50,7 +50,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.goToNewViewControllerReviewSubject.on(.next(("add", queryDict)))
+                self?.goToNewViewControllerReviewSubject.on(.next(("add", queryDict)))
                 return
             }
             else if((url?.contains("app://ExternalBrowser"))!) {
@@ -69,24 +69,32 @@ class ViewModel: NSObject, WKNavigationDelegate {
             }
             else if((url?.contains("app://SearchMovie"))!) {
                 handler(.allow)
-                guard let index = url?.firstIndex(of: "?") ?? url?.endIndex, index != url!.endIndex else { return self.goToNewViewControllerReviewSubject.onNext(("search", ["movieNm":""])) }
-                let temp = String((url?[index...])!)
-                let queryDict = temp.parseQueryString()
-                self.goToNewViewControllerReviewSubject.onNext(("search", ["movieNm":queryDict["movieNm"]!]))
+                var searchKeyword: String? = nil
+                if let index = url?.firstIndex(of: "?") ?? url?.endIndex, index != url!.endIndex {
+                    let temp = String((url?[index...])!)
+                    let queryDict = temp.parseQueryString()
+                    searchKeyword = queryDict["movieNm"]
+                }
+                
+                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+                let seachVM = SearchMovieViewModel(sceneCoordinator: coordinator, keyword: searchKeyword)
+                let searchScene = Scene.search(seachVM)
+                
+                coordinator.transition(to: searchScene, using: .push, animated: false)
             }
             else if((url?.contains("app://MemberContents"))!) {
                 handler(.allow)
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.makePageURLRequest(.showMembersContents, queryDict, (self.mainViewRequestSubject))
+                self?.makePageURLRequest(.showMembersContents, queryDict, (self!.mainViewRequestSubject))
             }
             else if((url?.contains("app://MyContents"))!) {
                 handler(.allow)
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
                 let queryDict = temp.parseQueryString()
-                self.makePageURLRequest(.mainMyView, queryDict, (self.mainViewRequestSubject))
+                self?.makePageURLRequest(.mainMyView, queryDict, (self!.mainViewRequestSubject))
             }
             else {
                 handler(.allow)

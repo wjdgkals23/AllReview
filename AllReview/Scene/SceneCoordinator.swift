@@ -1,4 +1,4 @@
-//
+
 //  SceneCoordinator.swift
 //  AllReview
 //
@@ -33,7 +33,7 @@ class SceneCoordinator: SceneCoordinatorType {
             window.rootViewController = target
             subject.onCompleted()
         case .push:
-            guard let nav = currentVC.navigationController else {
+            guard let nav = currentVC as? UINavigationController else {
                 subject.onError(TransitionError.navigationControllerMissing)
                 break
             }
@@ -53,20 +53,22 @@ class SceneCoordinator: SceneCoordinatorType {
     @discardableResult
     func close(animated: Bool) -> Completable {
         return Completable.create { [unowned self] completable in
-            if let presentingVC = self.currentVC.presentingViewController { // presentingViewController : modal형식[present:]이면 view를 띄운 viewCon을 보내주고 modal형식X 면 화면을 부른 부모의 부모가 잡히고 그외에는 nil => present를 한 VC를 찾는다!!
-                self.currentVC.dismiss(animated: animated) {
-                    self.currentVC = presentingVC
-                    completable(.completed)
-                }
-            } else if let nav = self.currentVC.navigationController {
+            if let nav = self.currentVC.navigationController {
                 guard nav.popViewController(animated: animated) != nil else {
                     completable(.error(TransitionError.cannotPop))
                     return Disposables.create()
                 }
                 self.currentVC = nav.viewControllers.last!
                 completable(.completed)
-            } else {
+            } else if let presentingVC = self.currentVC.presentingViewController { // presentingViewController : modal형식[present:]이면 view를 띄운 viewCon을 보내주고 modal형식X 면 화면을 부른 부모의 부모가 잡히고 그외에는 nil => present를 한 VC를 찾는다!!
+                self.currentVC.dismiss(animated: animated) {
+                    self.currentVC = presentingVC
+                    completable(.completed)
+                }
+            }
+            else {
                 completable(.error(TransitionError.unknown))
+                return Disposables.create()
             }
             return Disposables.create()
         }

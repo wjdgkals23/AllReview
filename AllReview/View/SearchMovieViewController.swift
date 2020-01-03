@@ -12,10 +12,10 @@ import RxCocoa
 import WebKit
 import RxWebKit
 
-class SearchMovieViewController: UIViewController {
+class SearchMovieViewController: UIViewController, OneLineReviewViewProtocol {
     
-    private var viewModel: SearchMovieViewModel!
-    private var router: SearchMovieViewRouter!
+    var viewModel: SearchMovieViewModel!
+//    private var router: SearchMovieViewRouter!
     
     private var webSearchView: WKWebView!
     
@@ -64,6 +64,11 @@ class SearchMovieViewController: UIViewController {
     func setUpView() {}
     
     func setUpRx() {
+        
+        self.viewModel.keywordTextDriver
+        .drive(self.searchBar.rx.text)
+        .disposed(by: self.viewModel.disposeBag)
+        
         self.searchBar.rx.text.distinctUntilChanged()
             .bind(to: viewModel.keywordTextSubject)
             .disposed(by: self.viewModel.disposeBag)
@@ -71,11 +76,6 @@ class SearchMovieViewController: UIViewController {
         self.viewModel.searchButtonEnabledDriver
             .drive(self.searchButton.rx.isEnabled)
             .disposed(by: self.viewModel.disposeBag)
-        
-        self.viewModel.goToNewViewControllerReviewSubject
-            .subscribe({ initData in
-//                self.router.viewPresent(initData.element!.0, initData.element!.1 as! Dictionary<String, String>)
-            }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
             guard let req = request else { return }
@@ -98,7 +98,11 @@ class SearchMovieViewController: UIViewController {
                 self?.webSearchView.goBack()
                 return
             } else {
-                self?.navi.popViewController(animated: true)
+                self?.viewModel.sceneCoordinator.close(animated: false).asObservable().subscribe(onError: { err in
+                    self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .semibold))
+                }, onCompleted: {
+                    print("completed")
+                })
             }
         }.disposed(by: self.viewModel.disposeBag)
     
@@ -122,9 +126,5 @@ class SearchMovieViewController: UIViewController {
         
         self.webSearchView.scrollView.bounces = false
     }
-    
-    func reloadWebView() {
-        self.webSearchView.reload()
-    }
-    
+
 }

@@ -38,7 +38,7 @@ extension Scene {
             guard var mainVC = nav.viewControllers.first as? MainViewController else {
                 fatalError()
             }
-            
+
             mainVC.bind(viewModel: viewModel)
             return nav
         case .signup(_):
@@ -51,11 +51,12 @@ extension Scene {
                 fatalError()
             }
             return nav
-        case .search(_):
-            guard let nav = stoaryboard.instantiateViewController(withIdentifier: "MainNav") as? UINavigationController else {
+        case .search(let viewModel):
+            guard var searchVC = stoaryboard.instantiateViewController(withIdentifier: "SearchMovieViewController") as? SearchMovieViewController else {
                 fatalError()
             }
-            return nav
+            searchVC.bind(viewModel: viewModel)
+            return searchVC
         }
     }
 }

@@ -23,4 +23,12 @@ class MainViewModel: ViewModel{
             .disposed(by: disposeBag)
     }
     
+    public func pushSearchView() {
+        let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+        let seachVM = SearchMovieViewModel(sceneCoordinator: coordinator, keyword: nil)
+        let searchScene = Scene.search(seachVM)
+        
+        coordinator.transition(to: searchScene, using: .push, animated: false)
+    }
+    
 }
