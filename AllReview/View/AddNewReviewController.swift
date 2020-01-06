@@ -121,10 +121,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
         
         self.uploadButton.rx.tap.bind{ [weak self] in
             Observable.combineLatest((self?.viewModel.reviewContentTextSubject.asObservable())!, (self?.viewModel.reviewTitleTextSubject.asObservable())!, (self?.viewModel.imageViewImageSubject.asObservable())!, (self?.viewModel.starPointIntSubject.asObservable())!, resultSelector: { a,b,c,d in
-                print(a)
-                print(b)
-                print(c)
-                print(d)
+                print(a,b,c,d)
             }).subscribe().disposed(by: (self?.viewModel.disposeBag)!)
         }.disposed(by: self.viewModel.disposeBag)
         

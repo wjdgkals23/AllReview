@@ -39,6 +39,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
     }
     
     func setUpView() {
