@@ -37,32 +37,8 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     @IBOutlet var tempViewButton: UIButton!
     @IBOutlet var myViewButton: UIButton!
     
-    var topSafeArea:CGFloat! {
-        willSet(newValue){
-            if(newValue != self.topSafeArea) {
-                let topTotalHeight = self.headerView.bounds.height + newValue
-                let webViewHeight = self.view.bounds.height - topTotalHeight - bottomView.frame.height
-                let beforeRect = self.containerView.frame
-                let cgRect = CGRect(x: beforeRect.origin.x, y: beforeRect.origin.y, width: beforeRect.width, height: webViewHeight)
-                self.containerView.frame = cgRect
-            }
-        }
-    }
-    var bottomSafeArea:CGFloat!
-    
-    override func viewDidLayoutSubviews() {
-        if #available(iOS 11.0, *) {
-            topSafeArea = self.view.safeAreaInsets.top
-            bottomSafeArea = self.view.safeAreaInsets.bottom
-        } else {
-            topSafeArea = topLayoutGuide.length
-            bottomSafeArea = bottomLayoutGuide.length
-        }
-    }
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view.superview?.backgroundColor = .white
     }
     
     func setUpView() {

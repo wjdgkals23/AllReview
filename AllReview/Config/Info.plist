@@ -74,5 +74,7 @@
 	<string>TEST</string>
 	<key>ROOT_URL</key>
 	<string>$(ROOT_URL)</string>
+	<key>UIViewControllerBasedStatusBarAppearance</key>
+	<false/>
 </dict>
 </plist>
