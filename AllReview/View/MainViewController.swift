@@ -41,7 +41,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
         willSet(newValue){
             if(newValue != self.topSafeArea) {
                 let topTotalHeight = self.headerView.bounds.height + newValue
-                let webViewHeight = self.view.bounds.height - topTotalHeight
+                let webViewHeight = self.view.bounds.height - topTotalHeight - bottomView.frame.height
                 let beforeRect = self.containerView.frame
                 let cgRect = CGRect(x: beforeRect.origin.x, y: beforeRect.origin.y, width: beforeRect.width, height: webViewHeight)
                 self.containerView.frame = cgRect

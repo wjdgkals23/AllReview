@@ -151,7 +151,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cqf-HU-b0u" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3296" y="-514"/>
+            <point key="canvasLocation" x="3296" y="-548"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="kp8-nv-uac">
@@ -202,9 +202,6 @@
                                         <state key="normal" image="backButtonIcon">
                                             <color key="titleColor" cocoaTouchSystemColor="darkTextColor"/>
                                         </state>
-                                        <connections>
-                                            <action selector="cancelButtonTapped:" destination="MNu-eF-BAf" eventType="touchUpInside" id="sD0-pa-cE1"/>
-                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Nxa-j6-0Rx" userLabel="send">
                                         <rect key="frame" x="374" y="20" width="30" height="30"/>
@@ -346,6 +343,7 @@
                         <viewLayoutGuide key="safeArea" id="K1o-lp-CVu"/>
                     </view>
                     <connections>
+                        <outlet property="closeButton" destination="J6z-UQ-tAF" id="DjI-Mx-hY0"/>
                         <outlet property="imageViewPicker" destination="uyN-76-r7D" id="uh5-Uu-ii5"/>
                         <outlet property="imageViewPickerHeight" destination="jkb-D0-zWx" id="lw4-0x-qMA"/>
                         <outlet property="imageViewPickerWidth" destination="1j9-Aa-80m" id="g8c-aX-Wby"/>
@@ -360,7 +358,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="9l5-kd-7nf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3298" y="137"/>
+            <point key="canvasLocation" x="3297" y="137"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="nbZ-xh-ocz">
@@ -452,7 +450,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Scp-C5-bBF" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="3297" y="803"/>
+            <point key="canvasLocation" x="3297" y="819"/>
         </scene>
         <!--SignUpViewController-->
         <scene sceneID="J4b-Jq-gLB">
@@ -686,7 +684,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jOM-QH-d32" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1986" y="-513"/>
+            <point key="canvasLocation" x="1986" y="-548"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="1le-xx-9Lm">

@@ -12,13 +12,21 @@ import RxCocoa
 import UIKit
 import WebKit
 
+enum ImageLoadError: Error {
+    case imageNotExisting
+    case failLoadData
+    case unknown
+}
+
 class AddNewReviewViewModel: ViewModel{
     
-    var imageViewImageSubject: Observable<UIImage?>!
+    var imageViewImageSubject: BehaviorSubject<UIImage?> = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
     var reviewTitleTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
     var reviewContentTextSubject: BehaviorSubject<String?> = BehaviorSubject(value: "")
+    var starPointIntSubject: BehaviorSubject<Int> = BehaviorSubject(value: 5)
     
     var imageViewDriver: Driver<UIImage?>!
+    var movieNameTextDriver: Driver<String?>!
     
     var isImageValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     var isTitleValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
@@ -28,23 +36,30 @@ class AddNewReviewViewModel: ViewModel{
     let didFailAddReview = PublishSubject<String>()
     
     var uploadData: Observable<(UIImage?, String?, String?)>!
+    private var firstImage: UIImage!
     
     init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
         super.init(sceneCoordinator: sceneCoordinator)
         
         print("addNewInit", initData)
         
-        if let imageUrl = initData!["posterImage"], imageUrl != "" {
-            imageViewImageSubject = self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!).flatMap({ (image) -> Observable<UIImage?> in
-                return Observable.just(image)
-            })
-        } else {
+        guard let imageUrl = initData!["posterImage"], imageUrl != "" else {
             imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+            return
         }
         
-        _ = Observable.combineLatest(imageViewImageSubject.asObservable(), reviewTitleTextSubject.asObservable(), reviewContentTextSubject.asObservable()).subscribe(onNext: { a,b,c in
-            print(a,b,c)
-        }).disposed(by: disposeBag)
+        self.request.commomImageLoad(url: URL(string: imageUrl.decodeUrl()!)!).flatMap { (image) -> Completable in
+            return Completable.create { [unowned self] com -> Disposable in
+                guard let img = image else {
+                    com(.error(ImageLoadError.imageNotExisting))
+                    return Disposables.create()
+                }
+                self.firstImage = img
+                self.imageViewImageSubject = BehaviorSubject(value: img)
+                com(.completed)
+                return Disposables.create()
+            }
+        }.subscribe().disposed(by: self.disposeBag)
         
         _ = imageViewImageSubject.distinctUntilChanged()
             .map({ image in
@@ -52,16 +67,19 @@ class AddNewReviewViewModel: ViewModel{
             }).bind(to: isImageValid)
         
         _ = reviewTitleTextSubject.distinctUntilChanged()
-        .map({ title in
-            return title != "" && title!.count > 1
-        }).bind(to: isTitleValid)
+            .map({ title in
+                return title != "" && title!.count > 1
+            }).bind(to: isTitleValid)
         
         _ = reviewContentTextSubject.distinctUntilChanged()
-        .map({ content in
-            return content != "" && content!.count > 1
-        }).bind(to: isContentValid)
+            .map({ content in
+                return content != "" && content!.count > 1
+            }).bind(to: isContentValid)
+    
+    }
+    
+    func showUploadData() {
         
-        imageViewDriver = imageViewImageSubject.asDriver(onErrorJustReturn: #imageLiteral(resourceName: "title"))
     }
     
     func uploadReview(img: UIImage, data: [String:Any]) {

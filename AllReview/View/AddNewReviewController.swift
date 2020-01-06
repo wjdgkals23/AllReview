@@ -31,11 +31,14 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     @IBOutlet var reviewTextView: UIView!
     @IBOutlet var reviewTitle: UITextField!
     @IBOutlet var reviewContent: UITextField!
+    
     @IBOutlet var uploadButton: UIButton!
+    @IBOutlet var closeButton: UIButton!
     
     private var starPoint: Int = 0 {
         willSet {
             self.starRatingLabel.text = String(newValue)
+            self.viewModel.starPointIntSubject = BehaviorSubject(value: newValue)
         }
     }
     
@@ -45,11 +48,9 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
-//            Observable.just(resizedImage).bind(to: self.viewModel.imageViewImageSubject).disposed(by: self.viewModel.disposeBag)
+            self.viewModel.imageViewImageSubject = BehaviorSubject(value: resizedImage)
         }
     }
-    
-    private var navi:UINavigationController!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -62,7 +63,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
         self.imageViewPicker.isUserInteractionEnabled = true
         self.imageViewPicker.contentMode = .scaleToFill
         
-//        self.movieName.text = self.viewModel.initData["movieKorName"]!.decodeUrl()
+        //        self.movieName.text = self.viewModel.initData["movieKorName"]!.decodeUrl()
         
         self.starRatingView.didTouchCosmos = { rating in
             self.starPoint = Int(rating*2)
@@ -79,27 +80,11 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     
     func setUpRx() {
         
-        self.viewModel.imageViewImageSubject
-            .bind(to: self.imageViewPicker.rx.image)
-            .disposed(by: self.viewModel.disposeBag)
-//        self.viewModel.imageViewDriver
-//            .drive(self.imageViewPicker.rx.image)
-//            .disposed(by: self.viewModel.disposeBag)
-//
-//        self.imageViewPicker.rx.image.onNext(image)
-        
         self.viewModel.didSuccessAddReview
             .observeOn(MainScheduler.instance)
             .subscribe({ [weak self] _ in
-//                self?.viewModel.reloadRequestSubject.onNext(())
                 do {
-                    let mainSubjectValue = try self?.viewModel.mainViewRequestSubject.value()
-                    self?.viewModel.mainViewRequestSubject.onNext(mainSubjectValue)
-                    let mySubjectValue = try self?.viewModel.myViewRequestSubject.value()
-                    self?.viewModel.myViewRequestSubject.onNext(mySubjectValue)
-                    let searchSubjectValue = try self?.viewModel.searchResultSubject.value()
-                    self?.viewModel.searchResultSubject.onNext(searchSubjectValue)
-                    self?.navi.popViewController(animated: true)
+                    // 화면 이동
                 } catch {
                     self?.showToast(message: "리로딩 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold))
                 }
@@ -113,19 +98,36 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             })
             .disposed(by: self.viewModel.disposeBag)
         
-        self.reviewTitle.rx.text
+        self.viewModel.imageViewImageSubject
+            .bind(to: self.imageViewPicker.rx.image)
+            .disposed(by: self.viewModel.disposeBag)
+        
+        self.reviewTitle.rx.text.orEmpty
             .bind(to: self.viewModel.reviewTitleTextSubject)
             .disposed(by: self.viewModel.disposeBag)
         
-        self.reviewContent.rx.text
+        self.reviewContent.rx.text.orEmpty
             .bind(to: self.viewModel.reviewContentTextSubject)
             .disposed(by: self.viewModel.disposeBag)
         
-        Observable.combineLatest(viewModel.isImageValid, viewModel.isTitleValid, viewModel.isContentValid) {
-            $0 && ($1 && $2)
-        }
-            .bind(to: self.uploadButton.rx.isEnabled)
-            .disposed(by: viewModel.disposeBag)
+        self.closeButton.rx.tap
+            .bind{ [weak self] _ in self!.viewModel.closeViewController(animated: false) }
+            .disposed(by: self.viewModel.disposeBag)
+        
+        Observable.combineLatest(self.viewModel.isTitleValid, self.viewModel.isContentValid) {
+            $0 && $1
+        }.bind(to: self.uploadButton.rx.isEnabled)
+        .disposed(by: self.viewModel.disposeBag)
+        
+        self.uploadButton.rx.tap.bind{ [weak self] in
+            Observable.combineLatest((self?.viewModel.reviewContentTextSubject.asObservable())!, (self?.viewModel.reviewTitleTextSubject.asObservable())!, (self?.viewModel.imageViewImageSubject.asObservable())!, (self?.viewModel.starPointIntSubject.asObservable())!, resultSelector: { a,b,c,d in
+                print(a)
+                print(b)
+                print(c)
+                print(d)
+            }).subscribe().disposed(by: (self?.viewModel.disposeBag)!)
+        }.disposed(by: self.viewModel.disposeBag)
+        
     }
     
     func setUpWebView() {
@@ -153,15 +155,6 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
         imageViewPickerHeight.constant = size.height
     }
     
-    @IBAction func cancelButtonTapped(_ sender: Any) {
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            navigationController.popViewController(animated: false)
-        }
-        else {
-            print("View Load Fail")
-        }
-    }
-    
 }
 
 extension AddNewReviewController: YPImagePickerDelegate {
@@ -186,7 +179,6 @@ extension AddNewReviewController: YPImagePickerDelegate {
         
         picker.didFinishPicking { [unowned picker, weak self] items, cancel in //unowned 자신보다 먼저 해지될 타겟
             if cancel {
-                print("picekr cancel")
                 picker?.dismiss(animated: true, completion: nil)
                 return
             }

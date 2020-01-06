@@ -14,3 +14,5 @@ ROOT_URL = https:/$()/www.teammiracle.be
 
 APP_NAME = OneLineReview (dev)
 APP_BUNDLE_ID = com.teammiracle.OneLineReview.dev
+
+UPLOAD_IMAGE_DEFAULT1 = htt

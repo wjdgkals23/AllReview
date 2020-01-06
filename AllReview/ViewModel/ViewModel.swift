@@ -112,4 +112,10 @@ class ViewModel: NSObject, WKNavigationDelegate {
         self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
     }
     
+    public func closeViewController(animated: Bool) {
+        self.sceneCoordinator.close(animated: animated).subscribe(onCompleted: nil) { (err) in
+            print(err.localizedDescription)
+        }.disposed(by: self.disposeBag)
+    }
+    
 }
