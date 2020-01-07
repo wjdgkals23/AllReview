@@ -37,13 +37,28 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     @IBOutlet var tempViewButton: UIButton!
     @IBOutlet var myViewButton: UIButton!
     
+    private var topMargin:CGFloat! = 0 {
+        willSet(newValue) {
+            self.viewList.forEach { (webView) in
+                webView.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.view.bounds.height - self.bottomView.bounds.height - self.headerView.bounds.height - newValue)
+            }
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+    }
+    
+    override func viewDidLayoutSubviews() {
+        if #available(iOS 11.0, *){
+            topMargin = self.view.safeAreaInsets.top
+        } else {
+            topMargin = self.topLayoutGuide.length
+        }
     }
     
     func setUpView() {
-        
+        return
     }
     
     func setUpRx() {
@@ -109,8 +124,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
         let webRankViewWebConfigure = WKWebViewConfiguration()
         let webMyViewWebConfigure = WKWebViewConfiguration()
         
-        let cgRect = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width, height: self.view.bounds.height - self.bottomView.bounds.height) // frame 자체도 빼고
-        
+        let cgRect = CGRect(x: 0, y: 0, width: 0, height: 0)
         self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
         self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
         self.webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)

@@ -18,21 +18,13 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     var viewModel: LoginViewModel!
     
     private let disposeBag = DisposeBag()
-//    var router: Router! 화면 전환 객체
-//    뷰에 보여질 데이터와 비즈니스 로직 포함 객체
     
-    @IBOutlet var testScrollView: UIScrollView!
     @IBOutlet var testLogin: UIButton!
     private var myCustomTestLoginButton: AllReviewLoginButton!
     @IBOutlet var signUpButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(moveToNextPage), userInfo: nil, repeats: true)
     }
     
     func setUpView() {
@@ -48,9 +40,9 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         let leadingConstraint = NSLayoutConstraint(item: loginButton, attribute: NSLayoutConstraint.Attribute.leading,
                                                    relatedBy: .equal, toItem: self.view, attribute: .leading, multiplier: 1, constant: 10)
         let trailingConstraint = NSLayoutConstraint(item: loginButton, attribute: .trailing,
-        relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -10)
+                                                    relatedBy: .equal, toItem: self.view, attribute: .trailing, multiplier: 1, constant: -10)
         let topConstraint = NSLayoutConstraint(item: loginButton, attribute: .top,
-            relatedBy: .equal, toItem: self.testLogin, attribute: .bottom, multiplier: 1, constant: 10)
+                                               relatedBy: .equal, toItem: self.testLogin, attribute: .bottom, multiplier: 1, constant: 10)
         
         NSLayoutConstraint.activate([heightConstraint,leadingConstraint,trailingConstraint,topConstraint])
         
@@ -63,50 +55,13 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         myCustomTestLoginButton.topAnchor.constraint(equalTo: self.testLogin.bottomAnchor, constant: 10).isActive = true
         
         myCustomTestLoginButton.addTarget(self, action: #selector(customButtonTapped), for: .touchUpInside)
-        
-        setUpScrollView()
     }
     
     @objc func customButtonTapped() {
         myCustomTestLoginButton.shake()
     }
     
-    func setUpScrollView() {
-        let frameSize = self.testScrollView.frame.size
-        self.testScrollView.isPagingEnabled = true
-        self.testScrollView.contentSize = CGSize(width: frameSize.width*3, height: frameSize.height)
-        
-        for ind in 0..<3 {
-            let x = frameSize.width * CGFloat(integerLiteral: ind)
-            let temp_frame = CGRect(x: x, y: 0, width: frameSize.width, height: frameSize.height)
-            let temp = UIView(frame: temp_frame)
-            temp.backgroundColor = UIColor.random
-            self.testScrollView.addSubview(temp)
-            self.testScrollView.isUserInteractionEnabled = false
-        }
-    }
-    
-    @objc func moveToNextPage() {
-        let pageWidth:CGFloat = self.testScrollView.frame.width
-        let maxWidth:CGFloat = pageWidth * 3
-        let contentOffset:CGFloat = self.testScrollView.contentOffset.x
-                
-        var slideToX = contentOffset + pageWidth
-                
-        if  contentOffset + pageWidth == maxWidth
-        {
-              slideToX = 0
-        }
-        self.testScrollView.scrollRectToVisible(CGRect(x:slideToX, y:0, width:pageWidth, height:self.testScrollView.frame.height), animated: true)
-    }
-    
     func setUpRx() {
-//        self.viewModel.didSignIn
-//            .observeOn(MainScheduler.instance)
-//            .subscribe({ [weak self] _ in
-//                self?.view.isUserInteractionEnabled = true
-//                self?.router.naviPush("login", ["":""])
-//            }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
@@ -128,13 +83,4 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         print("setupwebView")
     }
     
-}
-
-extension UIColor {
-    static var random: UIColor {
-        return UIColor(red: .random(in: 0...1),
-                       green: .random(in: 0...1),
-                       blue: .random(in: 0...1),
-                       alpha: 1.0)
-    }
 }
