@@ -12,6 +12,7 @@ import Foundation
 import AVFoundation
 import AVKit
 import RxSwift
+import RxCocoa
 import Photos
 import Cosmos
 
@@ -44,11 +45,10 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     
     private var picker:YPImagePicker!
     
-    private var image: UIImage! {
+    private var image: UIImage! = #imageLiteral(resourceName: "title") {
         willSet {
             let resizedImage = UIImage.resizeImage(image: newValue, targetSize: self.view.bounds.width)
             self.imageViewPicker.image = resizedImage
-            self.viewModel.imageViewImageSubject = BehaviorSubject(value: resizedImage)
         }
     }
     
@@ -98,8 +98,12 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             })
             .disposed(by: self.viewModel.disposeBag)
         
-        self.viewModel.imageViewImageSubject
-            .bind(to: self.imageViewPicker.rx.image)
+        self.viewModel.imageViewImageSubject.asDriver(onErrorJustReturn: #imageLiteral(resourceName: "title"))
+            .drive(self.imageViewPicker.rx.image)
+            .disposed(by: self.viewModel.disposeBag)
+        
+        self.imageViewPicker.rx.observe(UIImage.self, "image")
+            .bind(to: self.viewModel.imageViewImageSubject)
             .disposed(by: self.viewModel.disposeBag)
         
         self.reviewTitle.rx.text.orEmpty
@@ -114,17 +118,18 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             .bind{ [weak self] _ in self!.viewModel.closeViewController(animated: false) }
             .disposed(by: self.viewModel.disposeBag)
         
-        Observable.combineLatest(self.viewModel.isTitleValid, self.viewModel.isContentValid) {
-            $0 && $1
+        self.viewModel.movieNameTextDriver
+            .drive(self.movieName.rx.text)
+            .disposed(by: self.viewModel.disposeBag)
+        
+        Observable.combineLatest(self.viewModel.isImageValid, self.viewModel.isTitleValid, self.viewModel.isContentValid) {
+            $0 && $1 && $2
         }.bind(to: self.uploadButton.rx.isEnabled)
-        .disposed(by: self.viewModel.disposeBag)
+            .disposed(by: self.viewModel.disposeBag)
         
-        self.uploadButton.rx.tap.bind{ [weak self] in
-            Observable.combineLatest((self?.viewModel.reviewContentTextSubject.asObservable())!, (self?.viewModel.reviewTitleTextSubject.asObservable())!, (self?.viewModel.imageViewImageSubject.asObservable())!, (self?.viewModel.starPointIntSubject.asObservable())!, resultSelector: { a,b,c,d in
-                print(a,b,c,d)
-            }).subscribe().disposed(by: (self?.viewModel.disposeBag)!)
-        }.disposed(by: self.viewModel.disposeBag)
-        
+        self.uploadButton.rx.tap
+            .bind{ [weak self] _ in self!.viewModel.showUploadData() }
+            .disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {
