@@ -79,21 +79,21 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
         self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
         
         self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold)) }
+            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webMainView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
         self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold)) }
+            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webRankView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
         self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold)) }
+            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webMyView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
@@ -108,7 +108,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
                 self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.rankViewRequestSubject)!))
             }
             }, onError: { [weak self] err in
-                self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
+                self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
         })
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
@@ -188,7 +188,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             return
         }
         
-        self.showToast(message: "로그인/로그아웃/리뷰등록 만 남았다!", font: UIFont.systemFont(ofSize: 18, weight: .semibold))
+        self.showToast(message: "로그인/로그아웃/리뷰등록 만 남았다!", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil)
     }
     
 }

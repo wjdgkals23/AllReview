@@ -66,7 +66,7 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { errMessage in
-                self.showToast(message: errMessage, font: UIFont.systemFont(ofSize: 17, weight: .semibold))
+                self.showToast(message: errMessage, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
                 self.view.isUserInteractionEnabled = true
             })
             .disposed(by: self.viewModel.disposeBag)

@@ -41,7 +41,7 @@ extension UIViewController {
         }
     }
     
-    func showToast(message : String, font: UIFont) {
+    func showToast(message : String, font: UIFont, completion: (() -> Void)?) {
         let toastLabel = UILabel()
         toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
         toastLabel.textColor = UIColor.white
@@ -56,10 +56,15 @@ extension UIViewController {
         let frame = toastLabel.frame
         toastLabel.frame = CGRect(x: self.view.frame.width/2 - frame.width/2 - 5, y: self.view.frame.height - 130, width: frame.width + 10, height: 30)
         self.view.addSubview(toastLabel)
-        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+        UIView.animate(withDuration: 1.0, delay: 0.1, options: .curveEaseOut, animations: {
             toastLabel.alpha = 0.0
         }, completion: {(isCompleted) in
+            guard let completion = completion else {
+                toastLabel.removeFromSuperview()
+                return
+            }
             toastLabel.removeFromSuperview()
+            completion()
         })
     }
 }

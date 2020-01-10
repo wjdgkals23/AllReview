@@ -86,7 +86,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
                 do {
                     // 화면 이동
                 } catch {
-                    self?.showToast(message: "리로딩 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold))
+                    self?.showToast(message: "리로딩 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil)
                 }
             }).disposed(by: self.viewModel.disposeBag)
         
@@ -115,8 +115,14 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             .disposed(by: self.viewModel.disposeBag)
         
         self.closeButton.rx.tap
-            .bind{ [weak self] _ in self!.viewModel.closeViewController(animated: false) }
+            .bind{ [weak self] _ in self!.viewModel.closeViewController() }
             .disposed(by: self.viewModel.disposeBag)
+        
+        self.viewModel.movieNameTextDriver.asObservable().subscribe(onNext: { text in
+            if text == "" {
+                self.showToast(message: "영화 정보 조회 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: {self.viewModel.closeViewController()} )
+            }
+        }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.movieNameTextDriver
             .drive(self.movieName.rx.text)
@@ -170,7 +176,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
 extension AddNewReviewController: YPImagePickerDelegate {
     
     func noPhotos() {
-        self.showToast(message: "사진이없습니다.", font: UIFont.systemFont(ofSize: 17, weight: .semibold))
+        self.showToast(message: "사진이없습니다.", font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
     }
     
     @objc func imagePickerOpen() {

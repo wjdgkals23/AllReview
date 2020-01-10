@@ -42,29 +42,27 @@ class AddNewReviewViewModel: ViewModel{
     init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
         super.init(sceneCoordinator: sceneCoordinator)
         
-        guard let imageUrl = initData!["posterImage"], imageUrl != "", let movieName = initData!["movieKorName"], let movieId = initData!["naverMovieId"] else {
-            self.sceneCoordinator.close(animated: false)
-            return
-        }
-        
-        
-        firstImageUrl = imageUrl.decodeUrl()!
-        uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": movieId, "starPoint": 5, "imageUrl": firstImageUrl, "oneLineReview": "", "detailReview": ""]
-        
-        self.movieNameTextDriver = BehaviorSubject(value: movieName.decodeUrl()!).asDriver(onErrorJustReturn: "")
-        
-        self.request.commomImageLoad(url: URL(string: firstImageUrl)!).flatMap { (image) -> Completable in
-            return Completable.create { [unowned self] com -> Disposable in
-                guard let img = image else {
-                    com(.error(ImageLoadError.imageNotExisting))
+        if let imageUrl = initData!["posterImage"]?.decodeUrl(), imageUrl != "", let movieName = initData!["movieKorName"]?.decodeUrl(), let movieId = initData!["naverMovieId"] {
+            firstImageUrl = imageUrl
+            uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": movieId, "starPoint": 5, "imageUrl": firstImageUrl, "oneLineReview": "", "detailReview": ""]
+            self.movieNameTextDriver = BehaviorSubject(value: movieName).asDriver(onErrorJustReturn: "")
+            self.request.commomImageLoad(url: URL(string: firstImageUrl)!).flatMap { (image) -> Completable in
+                return Completable.create { [unowned self] com -> Disposable in
+                    guard let img = image else {
+                        self.imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
+                        com(.completed)
+                        return Disposables.create()
+                    }
+                    self.firstImage = img
+                    self.imageViewImageSubject = BehaviorSubject(value: img)
+                    com(.completed)
                     return Disposables.create()
                 }
-                self.firstImage = img
-                self.imageViewImageSubject = BehaviorSubject(value: img)
-                com(.completed)
-                return Disposables.create()
-            }
-        }.subscribe().disposed(by: self.disposeBag)
+            }.subscribe().disposed(by: self.disposeBag)
+        } else {
+            uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": "", "starPoint": 5, "imageUrl": "", "oneLineReview": "", "detailReview": ""]
+            self.movieNameTextDriver = BehaviorSubject(value: "").asDriver(onErrorJustReturn: "")
+        }
         
         _ = imageViewImageSubject.distinctUntilChanged()
             .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
