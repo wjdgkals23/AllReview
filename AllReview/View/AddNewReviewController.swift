@@ -122,14 +122,22 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             .drive(self.movieName.rx.text)
             .disposed(by: self.viewModel.disposeBag)
         
-        Observable.combineLatest(self.viewModel.isImageValid, self.viewModel.isTitleValid, self.viewModel.isContentValid) {
+        let uploadButotnObs = Observable.combineLatest(self.viewModel.isImageValid, self.viewModel.isTitleValid, self.viewModel.isContentValid) {
             $0 && $1 && $2
-        }.bind(to: self.uploadButton.rx.isEnabled)
+        }
+        
+        uploadButotnObs
+            .bind(to: self.uploadButton.rx.isEnabled)
             .disposed(by: self.viewModel.disposeBag)
         
+        uploadButotnObs
+        .bind(to: self.uploadButton.rx.isUserInteractionEnabled)
+        .disposed(by: self.viewModel.disposeBag)
+        
         self.uploadButton.rx.tap
-            .bind{ [weak self] _ in self!.viewModel.showUploadData() }
+            .bind{ [weak self] _ in self!.viewModel.upload() }
             .disposed(by: self.viewModel.disposeBag)
+        
     }
     
     func setUpWebView() {

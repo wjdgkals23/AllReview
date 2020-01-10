@@ -44,16 +44,16 @@ class OneLineReviewAPI {
         return self.myObservableFunc(path: OneLineReview.contentAdd, data: reviewData, type: UploadReviewResponse.self, debugStr: "TEST UPLOAD")
     }
     
-    public func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Observable<URL?> {
+    public func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Single<URL?> {
         let targetRef = self.storageRef.child(movieId).child("\(userId)/\(String.timeString())")
         settingMeta.contentType = "image/png"
-        return Observable.create { obs in
+        return Single<URL?>.create { single in
             DispatchQueue.global().async {
                 targetRef.putData(image.pngData()!, metadata: self.settingMeta) { [weak targetRef,self] metadata, err in
-                    guard let metadata = metadata else { return obs.onError(err!) }
+                    guard let metadata = metadata else { return single(.error(OneLineReviewError.parsing(description: "upload image firebase url parse error"))) }
                     targetRef?.downloadURL(completion: { (url, err) in
-                        guard let url = url else { return obs.onError(err!) }
-                        obs.onNext(url)
+                        guard let url = url else { return single(.error(OneLineReviewError.parsing(description: "upload image firebase url parse error"))) }
+                        single(.success(url))
                     })
                 }
             }
