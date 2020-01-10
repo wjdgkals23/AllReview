@@ -139,8 +139,8 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             .disposed(by: self.viewModel.disposeBag)
         
         uploadButotnObs
-        .bind(to: self.uploadButton.rx.isUserInteractionEnabled)
-        .disposed(by: self.viewModel.disposeBag)
+            .bind(to: self.uploadButton.rx.isUserInteractionEnabled)
+            .disposed(by: self.viewModel.disposeBag)
         
         self.uploadButton.rx.tap
             .bind{ [weak self] _ in self!.viewModel.upload() }
