@@ -21,7 +21,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ApplicationDelegate.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
         
         let coordinator = SceneCoordinator(window: window!)
-//        let gitRepoListViewModel = GitRepoListViewModel(title: "GitRepo 검색 APP", sceneCoordinator: coordinator, storage: storage)
         let loginVM = LoginViewModel(sceneCoordinator: coordinator)
         let loginScene = Scene.login(loginVM)
         
