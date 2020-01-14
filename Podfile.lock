@@ -1,45 +1,36 @@
 PODS:
   - Cosmos (20.0.1)
-  - FBSDKCoreKit (5.10.0):
-    - FBSDKCoreKit/Basics (= 5.10.0)
-    - FBSDKCoreKit/Core (= 5.10.0)
-  - FBSDKCoreKit/Basics (5.10.0)
-  - FBSDKCoreKit/Core (5.10.0):
+  - FBSDKCoreKit (5.10.1):
+    - FBSDKCoreKit/Basics (= 5.10.1)
+    - FBSDKCoreKit/Core (= 5.10.1)
+  - FBSDKCoreKit/Basics (5.10.1)
+  - FBSDKCoreKit/Core (5.10.1):
     - FBSDKCoreKit/Basics
   - FBSDKLoginKit (5.8.0):
     - FBSDKLoginKit/Login (= 5.8.0)
   - FBSDKLoginKit/Login (5.8.0):
     - FBSDKCoreKit (~> 5.0)
-  - Firebase/Analytics (6.6.0):
+  - Firebase/Analytics (6.11.0):
     - Firebase/Core
-  - Firebase/Auth (6.6.0):
+  - Firebase/Core (6.11.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 6.2.2)
-  - Firebase/Core (6.6.0):
+    - FirebaseAnalytics (= 6.1.3)
+  - Firebase/CoreOnly (6.11.0):
+    - FirebaseCore (= 6.3.2)
+  - Firebase/Storage (6.11.0):
     - Firebase/CoreOnly
-    - FirebaseAnalytics (= 6.1.0)
-  - Firebase/CoreOnly (6.6.0):
-    - FirebaseCore (= 6.2.0)
-  - Firebase/Storage (6.6.0):
-    - Firebase/CoreOnly
-    - FirebaseStorage (~> 3.4.0)
-  - FirebaseAnalytics (6.1.0):
-    - FirebaseCore (~> 6.2)
+    - FirebaseStorage (~> 3.4.1)
+  - FirebaseAnalytics (6.1.3):
+    - FirebaseCore (~> 6.3)
     - FirebaseInstanceID (~> 4.2)
-    - GoogleAppMeasurement (= 6.1.0)
+    - GoogleAppMeasurement (= 6.1.3)
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
-    - nanopb (~> 0.3)
-  - FirebaseAuth (6.2.3):
-    - FirebaseAuthInterop (~> 1.0)
-    - FirebaseCore (~> 6.2)
-    - GoogleUtilities/AppDelegateSwizzler (~> 6.2)
-    - GoogleUtilities/Environment (~> 6.2)
-    - GTMSessionFetcher/Core (~> 1.1)
+    - nanopb (~> 0.3.901)
   - FirebaseAuthInterop (1.0.0)
-  - FirebaseCore (6.2.0):
+  - FirebaseCore (6.3.2):
     - FirebaseCoreDiagnostics (~> 1.0)
     - FirebaseCoreDiagnosticsInterop (~> 1.0)
     - GoogleUtilities/Environment (~> 6.2)
@@ -51,20 +42,20 @@ PODS:
     - GoogleUtilities/Logger (~> 6.2)
     - nanopb (~> 0.3.901)
   - FirebaseCoreDiagnosticsInterop (1.0.0)
-  - FirebaseInstanceID (4.2.5):
+  - FirebaseInstanceID (4.2.6):
     - FirebaseCore (~> 6.0)
     - GoogleUtilities/Environment (~> 6.0)
     - GoogleUtilities/UserDefaults (~> 6.0)
-  - FirebaseStorage (3.4.2):
+  - FirebaseStorage (3.4.3):
     - FirebaseAuthInterop (~> 1.0)
     - FirebaseCore (~> 6.0)
     - GTMSessionFetcher/Core (~> 1.1)
-  - GoogleAppMeasurement (6.1.0):
+  - GoogleAppMeasurement (6.1.3):
     - GoogleUtilities/AppDelegateSwizzler (~> 6.0)
     - GoogleUtilities/MethodSwizzler (~> 6.0)
     - GoogleUtilities/Network (~> 6.0)
     - "GoogleUtilities/NSData+zlib (~> 6.0)"
-    - nanopb (~> 0.3)
+    - nanopb (~> 0.3.901)
   - GoogleDataTransport (3.0.1)
   - GoogleDataTransportCCTSupport (1.2.1):
     - GoogleDataTransport (~> 3.0)
@@ -87,19 +78,19 @@ PODS:
     - GoogleUtilities/Logger
   - GoogleUtilities/UserDefaults (6.3.1):
     - GoogleUtilities/Logger
-  - GTMSessionFetcher/Core (1.2.2)
-  - nanopb (0.3.901):
-    - nanopb/decode (= 0.3.901)
-    - nanopb/encode (= 0.3.901)
-  - nanopb/decode (0.3.901)
-  - nanopb/encode (0.3.901)
+  - GTMSessionFetcher/Core (1.3.0)
+  - nanopb (0.3.904):
+    - nanopb/decode (= 0.3.904)
+    - nanopb/encode (= 0.3.904)
+  - nanopb/decode (0.3.904)
+  - nanopb/encode (0.3.904)
   - PryntTrimmerView (4.0.0)
-  - RxCocoa (5.0.0):
+  - RxCocoa (5.0.1):
     - RxRelay (~> 5)
     - RxSwift (~> 5)
-  - RxRelay (5.0.0):
+  - RxRelay (5.0.1):
     - RxSwift (~> 5)
-  - RxSwift (5.0.0)
+  - RxSwift (5.0.1)
   - RxWebKit (1.0.0):
     - RxCocoa (~> 5.0)
     - RxSwift (~> 5.0)
@@ -109,16 +100,15 @@ PODS:
     - SteviaLayout (~> 4.7.3)
 
 DEPENDENCIES:
-  - Cosmos (~> 20.0)
-  - FBSDKCoreKit
-  - FBSDKLoginKit
-  - Firebase/Analytics (= 6.6.0)
-  - Firebase/Auth
+  - Cosmos (~> 20.0.0)
+  - FBSDKCoreKit (~> 5.10.0)
+  - FBSDKLoginKit (~> 5.8.0)
+  - Firebase/Analytics
   - Firebase/Storage
-  - RxCocoa (~> 5)
-  - RxSwift (~> 5)
-  - RxWebKit
-  - YPImagePicker
+  - RxCocoa (~> 5.0.0)
+  - RxSwift (~> 5.0.0)
+  - RxWebKit (~> 1.0.0)
+  - YPImagePicker (~> 4.1.3)
 
 SPEC REPOS:
   trunk:
@@ -127,7 +117,6 @@ SPEC REPOS:
     - FBSDKLoginKit
     - Firebase
     - FirebaseAnalytics
-    - FirebaseAuth
     - FirebaseAuthInterop
     - FirebaseCore
     - FirebaseCoreDiagnostics
@@ -150,31 +139,30 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
-  FBSDKCoreKit: f9bae468a078f20c05c73450825ccd54cfafbbb7
+  FBSDKCoreKit: aa8887f21898ac5bcf07bef4fb253aa41c91be04
   FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
-  Firebase: a2b5951f30ff38fd3b3bdae9c7d340f940fd3c51
-  FirebaseAnalytics: 48414ae5cbf6976d8a2f7177e0466540e5ab33ce
-  FirebaseAuth: e7f86c2dfc57281cd01f7da5e4b40e01e4510a4a
+  Firebase: bc9cfc7a96c73268656d5aaab453ff1b4b530e0e
+  FirebaseAnalytics: 0e3ecff2c5d86070f7d4325e21f1edabfbd558dc
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
-  FirebaseCore: 8c9e08bce0c72a3affd83927d8184cf244918bc8
+  FirebaseCore: beeff42c07c30ea94702471d99db2089b594fbbd
   FirebaseCoreDiagnostics: af29e43048607588c050889d19204f4d7b758c9f
   FirebaseCoreDiagnosticsInterop: 6829da2b8d1fc795ff1bd99df751d3788035d2cb
-  FirebaseInstanceID: 550df9be1f99f751d8fcde3ac342a1e21a0e6c42
-  FirebaseStorage: 046abe9ac4e2a1a0e47d72f536490ffa50896632
-  GoogleAppMeasurement: 47285fa897e5a125df56b9ef8750a1d81e4598a8
+  FirebaseInstanceID: d0eafcd8bdbd3447cd694594734078c3e3e77d8b
+  FirebaseStorage: 93fe2f8190a01bfb2b2c4932df7d679744c4ef1d
+  GoogleAppMeasurement: 434cc7be25e71dc04b8d0e3079125127b330e84a
   GoogleDataTransport: 166f9b9f82cbf60a204e8fe2daa9db3e3ec1fb15
   GoogleDataTransportCCTSupport: f6ab1962e9dc05ab1fb938b795e5b310209edeec
   GoogleUtilities: f895fde57977df4e0233edda0dbeac490e3703b6
-  GTMSessionFetcher: 61bb0f61a4cb560030f1222021178008a5727a23
-  nanopb: 2901f78ea1b7b4015c860c2fdd1ea2fee1a18d48
+  GTMSessionFetcher: 43b8b64263023d4f32caa0b40f4c8bfa3c5f36d8
+  nanopb: 06f6030d554e6473f5e172460173fcf80f5548f4
   PryntTrimmerView: 67e67573ffd4c073f1308effa66aefd0cfa667a0
-  RxCocoa: fcf32050ac00d801f34a7f71d5e8e7f23026dcd8
-  RxRelay: 4f7409406a51a55cd88483f21ed898c234d60f18
-  RxSwift: 8b0671caa829a763bbce7271095859121cbd895f
+  RxCocoa: e741b9749968e8a143e2b787f1dfbff2b63d0a5c
+  RxRelay: 89d54507f4fd4d969e6ec1d4bd7f3673640b4640
+  RxSwift: e2dc62b366a3adf6a0be44ba9f405efd4c94e0c4
   RxWebKit: 9ff7ea0780a093450defc7ff13e218678ebe6e4a
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: 7a34eabd0ef544ae8fbf9785c3df9ec5bbf242e3
 
-PODFILE CHECKSUM: c22733ea79e8482aeba3ce51706ea380afcddbe6
+PODFILE CHECKSUM: 49236e75aa664a8e0fbadb1642828dd2147a65ae
 
 COCOAPODS: 1.8.4

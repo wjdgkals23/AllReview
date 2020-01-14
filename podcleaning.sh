@@ -1,6 +1,4 @@
- #!/bin/bash
-pod deintegrate
-sudo gem install cocoapods-clean
+#!/bin/bash
 pod clean
-pod setup
+rm -rf Pods *.xcworkspace Podfile.lock
 pod install
