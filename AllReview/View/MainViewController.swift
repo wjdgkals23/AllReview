@@ -109,7 +109,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             }
             }, onError: { [weak self] err in
                 self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
-        })
+        }).disposed(by: disposeBag)
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
