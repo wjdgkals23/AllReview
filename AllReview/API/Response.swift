@@ -81,9 +81,7 @@ struct LoginInfo: Codable {
 //"memberEmail": "shjo@naver.com",
 //"deviceCheckId": "macos-yond"
 
-protocol myResponse {}
-
-struct UserLoginSessionResponse: Codable,myResponse {
+struct UserLoginSessionResponse: Codable {
     let resultCode:String
     let resultMsg:String
     let data:LoginInfo?
@@ -91,7 +89,7 @@ struct UserLoginSessionResponse: Codable,myResponse {
     let connectionId:String
 }
 
-struct UploadReviewResponse: Codable,myResponse {
+struct UploadReviewResponse: Codable {
     let resultCode:String
     let resultMsg:String
     let data:UploadedItemData?

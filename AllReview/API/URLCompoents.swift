@@ -57,6 +57,25 @@ class OneLineReviewURL { // 기본 url 셋팅
         }
     }
     
+    func makeURLRequest(_ path: OneLineReview, _ userData: [String:Any]) -> URLRequest? {
+        if let url = URL(string: Environment.rootURL + path.rawValue) {
+            var request = self.makeRequest(url)
+            do {
+                let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)
+                request.httpBody = jsonData
+                return request
+            } catch {
+                let error = err.makeurl(description: "rxMakeLoginURLComponents MAKE JSON ERR")
+                print(error.localizedDescription)
+                return nil
+            }
+        } else {
+            let error = err.makeurl(description: "rxMakeLoginURLComponents MAKE ERR")
+            print(error.localizedDescription)
+            return nil
+        }
+    }
+    
     func rxMakeUrlToRequest(_ url: String) -> Observable<URLRequest> {
         return Observable.create { observer in
             if let url = URL(string: url) {

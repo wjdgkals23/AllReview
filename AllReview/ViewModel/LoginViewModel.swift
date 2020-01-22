@@ -22,6 +22,10 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
     let didSignIn = PublishSubject<Void>()
     let didFailSignIn = PublishSubject<String>()
     
+    override init(sceneCoordinator: SceneCoordinatorType) {
+        super.init(sceneCoordinator: sceneCoordinator)
+    }
+    
     public func testLoginTapped() {
         let data = [
             "memberId": "5dfb37ca2ecde240f922da80",
@@ -31,15 +35,16 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
             "password": "alfkzmf1!"
         ]
         
-        self.request.rxTestLogin(userData: data).observeOn(MainScheduler.instance)
-            .subscribe(onNext: { [weak self] res in
-                self?.loginResultCodeParse(resultCode: LoginErrResponse(rawValue: res.resultCode)!, userData: res)
-                }, onError: { [weak self] err in
-                    self?.didFailSignIn.onNext(err.localizedDescription)
-                }, onDisposed: { () -> Void in
-                    print("Test Login Disposed")
-            }).disposed(by: disposeBag)
-        
+        self.request.testLogin(userData: data) { [weak self] (userData, error) in
+            DispatchQueue.main.async {
+                if let error = error {
+                    self?.didFailSignIn.onNext(error.localizedDescription)
+                } else {
+                    self?.loginResultCodeParse(resultCode: (LoginErrResponse(rawValue: (userData?.resultCode)!)!), userData: userData!)
+                }
+            }
+            
+        }
     }
     
     public func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {

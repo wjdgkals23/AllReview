@@ -19,7 +19,7 @@ class ViewModel: NSObject, WKNavigationDelegate {
     var userLoginSession = UserLoginSession.sharedInstance
     let request = OneLineReviewAPI.sharedInstance
     var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    let disposeBag = DisposeBag()
+    var disposeBag = DisposeBag()
     var urlMaker = OneLineReviewURL()
     var urlParserContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     

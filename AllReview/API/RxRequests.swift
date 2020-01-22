@@ -36,8 +36,20 @@ class OneLineReviewAPI {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
     
-    public func rxTestLogin(userData: [String:String]) -> Observable<UserLoginSessionResponse> {
-        return self.myObservableFunc(path: OneLineReview.login, data: userData, type: UserLoginSessionResponse.self, debugStr: "TEST LOGIN")
+    public func testLogin(userData: [String:String], completionHandler: @escaping (UserLoginSessionResponse?, OneLineReviewError?) -> Void) {
+        guard let request = self.urlMaker.makeURLRequest(.login, userData) else {
+            completionHandler(nil, OneLineReviewError.makeurl(description: "MAKE LOGIN REQUEST ERROR"))
+            return
+        }
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error -> Void in
+            do {
+                let userLoginSessionResponse = try self?.decoder.decode(UserLoginSessionResponse.self, from: data!)
+                completionHandler(userLoginSessionResponse, nil)
+            } catch {
+                completionHandler(nil, OneLineReviewError.parsing(description: "DECODE LOGIN ERROR"))
+            }
+        }
+        task.resume()
     }
     
     public func uploadReviewData(reviewData: [String:Any]) -> Observable<UploadReviewResponse> {
