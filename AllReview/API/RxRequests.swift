@@ -52,67 +52,55 @@ class OneLineReviewAPI {
         task.resume()
     }
     
-    public func uploadReviewData(reviewData: [String:Any]) -> Observable<UploadReviewResponse> {
-        return self.myObservableFunc(path: OneLineReview.contentAdd, data: reviewData, type: UploadReviewResponse.self, debugStr: "TEST UPLOAD")
+    public func uploadReviewData(uploadData: [String:Any], completionHandler: @escaping (UploadReviewResponse?, OneLineReviewError?) -> Void) {
+        guard let request = self.urlMaker.makeURLRequest(.contentAdd, uploadData) else {
+            completionHandler(nil, OneLineReviewError.makeurl(description: "MAKE UPLOAD REQUEST ERROR"))
+            return
+        }
+        let task = URLSession.shared.dataTask(with: request) { [weak self] data, response, error -> Void in
+            do {
+                let uploadReviewResponse = try self?.decoder.decode(UploadReviewResponse.self, from: data!)
+                completionHandler(uploadReviewResponse, nil)
+            } catch {
+                completionHandler(nil, OneLineReviewError.parsing(description: "DECODE UPLOAD RESPONSE ERROR"))
+            }
+        }
+        task.resume()
     }
     
-    public func uploadImageToFireBase(userId:String, movieId:String, image: UIImage) -> Single<URL?> {
+    public func uploadImageToFireBase(userId:String, movieId:String, image: UIImage, completionHandler: @escaping (URL?, OneLineReviewError?) -> Void){
         let targetRef = self.storageRef.child(movieId).child("\(userId)/\(String.timeString())")
         settingMeta.contentType = "image/png"
-        return Single<URL?>.create { single in
-            DispatchQueue.global().async {
-                targetRef.putData(image.pngData()!, metadata: self.settingMeta) { [weak targetRef,self] metadata, err in
-                    guard let metadata = metadata else { return single(.error(OneLineReviewError.parsing(description: "upload image firebase url parse error"))) }
+        DispatchQueue.global().async {
+            targetRef.putData(image.pngData()!, metadata: self.settingMeta) { [weak targetRef,self] metadata, err in
+                if let err = err {
+                    completionHandler(nil, OneLineReviewError.network(description: "upload image to firebase error : \(err.localizedDescription)"))
+                } else {
                     targetRef?.downloadURL(completion: { (url, err) in
-                        guard let url = url else { return single(.error(OneLineReviewError.parsing(description: "upload image firebase url parse error"))) }
-                        single(.success(url))
+                        if let err = err {
+                            completionHandler(nil, OneLineReviewError.network(description: "get image url from firebase error : \(err.localizedDescription)"))
+                        } else {
+                            completionHandler(url, nil)
+                        }
                     })
                 }
             }
-            return Disposables.create()
         }
     }
     
-    public func commomImageLoad(url: URL) -> Observable<UIImage?> {
-        if let data = try? Data(contentsOf: url) {
-            if let image = UIImage(data: data) {
-                return Observable.just(image)
+    public func urlDataLoad(url: URL, completionHandler: @escaping (UIImage?, OneLineReviewError?) -> Void) {
+        DispatchQueue.global().async {
+            if let data = try? Data(contentsOf: url) {
+                if let image = UIImage(data: data) {
+                    completionHandler(image, nil)
+                } else {
+                    completionHandler(nil, OneLineReviewError.parsing(description: "data parse to UIImage error"))
+                }
+            } else {
+                completionHandler(nil, OneLineReviewError.parsing(description: "data networking error"))
             }
         }
-        return Observable.just(nil)
     }
-    
-    private func getImageUrlFromFireBase() -> Observable<String> {
-        return Observable.just("")
-    }
-    
-    private func myObservableFunc<T:Codable>(path: OneLineReview, data: [String:Any], type: T.Type, debugStr: String) -> Observable<T> {
-        self.urlMaker.rxMakeURLRequestObservable(path, data).observeOn(self.backgroundScheduler)
-            .flatMap { urlRequest -> Observable<T> in
-            let dataTask = URLSession.shared.rx.response(request: urlRequest)
-            return dataTask
-                .debug(debugStr)
-                .flatMap { (response: HTTPURLResponse, data: Data) -> Observable<T> in
-                    if 200 ..< 300 ~= response.statusCode {
-                        do {
-                            let savedData = try self.decoder.decode(T.self, from: data)
-                            print(savedData)
-                            return Observable.create { observer -> Disposable in
-                                observer.on(.next(savedData))
-                                return Disposables.create()
-                            }
-                        } catch {
-                            return Observable.error(err.parsing(description: "RESPONSE PARSE ERROR \(error)"))
-                        }
-                    }
-                    else {
-                        return Observable.error(err.network(description: "NETWORK ERROR"))
-                    }
-                }
-        }
-    }
-    
-     
 
 }
 

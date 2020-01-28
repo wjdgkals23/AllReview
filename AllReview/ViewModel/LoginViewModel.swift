@@ -19,7 +19,6 @@ enum SocialType:String {
 
 class LoginViewModel: ViewModel, LoginButtonDelegate {
     
-    let didSignIn = PublishSubject<Void>()
     let didFailSignIn = PublishSubject<String>()
     
     override init(sceneCoordinator: SceneCoordinatorType) {

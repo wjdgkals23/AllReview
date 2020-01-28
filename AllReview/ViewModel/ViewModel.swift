@@ -31,6 +31,8 @@ class ViewModel: NSObject, WKNavigationDelegate {
     
     var reloadRequestSubject: PublishSubject<Void> = PublishSubject<Void>()
     
+    let errorHandleSubject: PublishSubject<String> = PublishSubject<String>()
+    
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     let goToMyContentDetailViewSubject = PublishSubject<[String:String]>()
     

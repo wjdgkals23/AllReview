@@ -46,19 +46,16 @@ class AddNewReviewViewModel: ViewModel{
             firstImageUrl = imageUrl
             uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": movieId, "starPoint": 5, "imageUrl": firstImageUrl, "oneLineReview": "", "detailReview": ""]
             self.movieNameTextDriver = BehaviorSubject(value: movieName).asDriver(onErrorJustReturn: "")
-            self.request.commomImageLoad(url: URL(string: firstImageUrl)!).flatMap { (image) -> Completable in
-                return Completable.create { [unowned self] com -> Disposable in
-                    guard let img = image else {
-                        self.imageViewImageSubject = BehaviorSubject(value: #imageLiteral(resourceName: "title"))
-                        com(.completed)
-                        return Disposables.create()
-                    }
-                    self.firstImage = img
-                    self.imageViewImageSubject = BehaviorSubject(value: img)
-                    com(.completed)
-                    return Disposables.create()
+            
+            self.request.urlDataLoad(url: URL(string: firstImageUrl)!) { [weak self] (image, err) in
+                if let err = err {
+                    self?.errorHandleSubject.onNext(err.localizedDescription)
+                } else {
+                    self?.firstImage = image
+                    self?.imageViewImageSubject.onNext(image)
                 }
-            }.subscribe().disposed(by: self.disposeBag)
+            }
+            
         } else {
             uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": "", "starPoint": 5, "imageUrl": "", "oneLineReview": "", "detailReview": ""]
             self.movieNameTextDriver = BehaviorSubject(value: "").asDriver(onErrorJustReturn: "")
@@ -71,18 +68,24 @@ class AddNewReviewViewModel: ViewModel{
             }).bind(to: isImageValid)
         
         _ = reviewTitleTextSubject.distinctUntilChanged()
-            .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .map({ title in
                 self.uploadData["oneLineReview"] = title
                 return title != "" && title.count > 1
             }).bind(to: isTitleValid)
         
         _ = reviewContentTextSubject.distinctUntilChanged()
-            .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
             .map({ content in
                 self.uploadData["detailReview"] = content
                 return content != "" && content.count > 1
             }).bind(to: isContentValid)
+        
+        starPointIntSubject.distinctUntilChanged()
+            .throttle(.milliseconds(500), scheduler: MainScheduler.instance)
+            .subscribe(onNext: { point in
+                self.uploadData["starPoint"] = point
+            }).disposed(by: self.disposeBag)
         
     }
     
@@ -91,68 +94,45 @@ class AddNewReviewViewModel: ViewModel{
             return
         }
         if image != self.firstImage {
-            uploadChangeImageFunc(uploadData: self.uploadData, img: image).subscribe(onSuccess: { (data) in
-                self.uploadCommonFunc(uploadData: data).observeOn(MainScheduler.instance).subscribe(onCompleted: {  [weak self] in
-                    self?.rootMainView()
-                }, onError: { (err) in
-                    print(err.localizedDescription)
-                    return
-                }).disposed(by: self.disposeBag)
-            }, onError: { (err) in
-                print(err.localizedDescription)
-                return
-            }).disposed(by: self.disposeBag)
-        } else {
-            uploadCommonFunc(uploadData: self.uploadData).observeOn(MainScheduler.instance).subscribe(onCompleted: { [weak self] in
-                self?.rootMainView()
-            }, onError: { (err) in
-                print(err.localizedDescription)
-                return
-            }).disposed(by: self.disposeBag)
-        }
-    }
-    
-    private func uploadChangeImageFunc(uploadData: [String:Any], img: UIImage) -> Single<[String:Any]> {
-        return Single.create { single in
-            self.uploadPhoto(img: img, movieId: uploadData["movieId"] as! String).subscribe { event in
-                switch event {
-                case .success(let url):
-                    var tempData = uploadData
-                    tempData["imageUrl"] = url?.absoluteString
-                    single(.success(tempData))
-                case .error(let error):
-                    single(.error(OneLineReviewError.network(description: error.localizedDescription)))
+            self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data!._id)!, movieId: self.uploadData!["movieId"] as! String, image: image) { [weak self] (url, err) in
+                if let err = err {
+                    self?.errorHandleSubject.onNext(err.localizedDescription)
+                } else {
+                    self?.uploadData["imageUrl"] = url?.absoluteString
+                    self?.request.uploadReviewData(uploadData: self!.uploadData, completionHandler: { [weak self] (res, err) in
+                        if let err = err {
+                            self?.errorHandleSubject.onNext(err.localizedDescription)
+                        } else {
+                            self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: (res?.resultCode)!)!, userData: res!)
+                        }
+                    })
                 }
-            }.disposed(by: self.disposeBag)
-            return Disposables.create()
-        }
-    }
-    
-    private func uploadPhoto(img: UIImage, movieId: String) -> Single<URL?> {
-        return self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data?._id)!, movieId: movieId, image: img)
-    }
-    
-    private func uploadCommonFunc(uploadData: [String:Any]) -> Completable {
-        let completeSubject = PublishSubject<Void>()
-        self.request.uploadReviewData(reviewData: uploadData).subscribe(onNext: { [weak self] res in
-            if (self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: res.resultCode)!, userData: res))! {
-                completeSubject.onCompleted()
-            } else {
-                completeSubject.onError(OneLineReviewError.parsing(description: "upload response parse Error"))
             }
-            }, onError: { (err) in
-                completeSubject.onError(OneLineReviewError.network(description: "fail upload request"))
-        }).disposed(by: self.disposeBag)
-        return completeSubject.ignoreElements()
+        } else {
+            self.request.uploadReviewData(uploadData: self.uploadData, completionHandler: { [weak self] (res, err) in
+                if let err = err {
+                    self?.errorHandleSubject.onNext(err.localizedDescription)
+                } else {
+                    self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: (res?.resultCode)!)!, userData: res!)
+                }
+            })
+        }
     }
     
-    private func uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) -> Bool {
-        switch resultCode {
-        case .success:
-            return true
-        default:
-            return false
+    private func uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {
+        DispatchQueue.main.async {
+            switch resultCode {
+            case .success:
+                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+                let mainNewVM = MainViewModel(sceneCoordinator: coordinator)
+                let mainNewScene = Scene.main(mainNewVM)
+                
+                coordinator.transition(to: mainNewScene, using: .root, animated: false)
+            default:
+                self.didFailAddReview.onNext(resultCode.rawValue)
+            }
         }
+        
     }
     
     private func rootMainView() {

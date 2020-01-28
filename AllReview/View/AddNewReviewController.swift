@@ -39,7 +39,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     private var starPoint: Int = 0 {
         willSet {
             self.starRatingLabel.text = String(newValue)
-            self.viewModel.starPointIntSubject = BehaviorSubject(value: newValue)
+            self.viewModel.starPointIntSubject.onNext(newValue)
         }
     }
     
@@ -81,6 +81,11 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpRx() {
+        
+        self.viewModel.errorHandleSubject.distinctUntilChanged()
+            .subscribe(onNext: { [weak self] (string) in
+                self?.showToast(message: string, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
+            }).disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.didSuccessAddReview
             .observeOn(MainScheduler.instance)
