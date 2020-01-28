@@ -9,37 +9,7 @@
 import Foundation
 import UIKit
 
-extension UIApplication {
-    var statusBarView: UIView? {
-        if #available(iOS 13.0, *) {
-            let tag = 3333333
-            if let statusBar = self.keyWindow?.viewWithTag(tag) {
-                return statusBar
-            } else {
-                let registerBar = UIView(frame: self.statusBarFrame)
-                registerBar.tag = tag
-                self.keyWindow?.addSubview(registerBar)
-                return registerBar
-            }
-        } else {
-            if responds(to: Selector(("statusBar"))) {
-                return value(forKey: "statusBar") as? UIView
-            }
-            return nil
-        }
-    }
-}
-
 extension UIViewController {
-    
-    func catchNavigation() -> UINavigationController? {
-        if let navigationController = UIApplication.shared.keyWindow?.rootViewController as? UINavigationController {
-            return navigationController
-        }
-        else {
-            return nil
-        }
-    }
     
     func showToast(message : String, font: UIFont, completion: (() -> Void)?) {
         let toastLabel = UILabel()
