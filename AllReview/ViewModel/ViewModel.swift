@@ -46,65 +46,66 @@ class ViewModel: NSObject, WKNavigationDelegate {
             if((url?.contains("https://www.teammiracle.be"))!) {
                 handler(.allow)
                 return
-            }
-            else if((url?.contains("app://WriteContent"))!) {
-                handler(.allow)
+            } else {
                 let index = url?.firstIndex(of: "?") ?? url?.endIndex
                 let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
-                let addNewVM = AddNewReviewViewModel(sceneCoordinator: coordinator, initData: queryDict)
-                let addNewScene = Scene.addnew(addNewVM)
-                
-                coordinator.transition(to: addNewScene, using: .push, animated: false)
-                return
-            }
-            else if((url?.contains("app://ExternalBrowser"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                
-                let externalUrl = URL(string: ((queryDict["url"])!.decodeUrl())!)
-                if #available(iOS 10.0, *) {
-                    UIApplication.shared.open(externalUrl!)
-                } else {
-                    // Fallback on earlier versions
+                var queryDict:[String: String] = [:]
+                if temp != "" {
+                    queryDict = temp.parseQueryString()
+                }
+                if((url?.contains("app://WriteContent"))!) {
+                    handler(.allow)
+                    let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+                    let addNewVM = AddNewReviewViewModel(sceneCoordinator: coordinator, initData: queryDict)
+                    let addNewScene = Scene.addnew(addNewVM)
+                    
+                    coordinator.transition(to: addNewScene, using: .push, animated: false)
                     return
                 }
-            }
-            else if((url?.contains("app://SearchMovie"))!) {
-                handler(.allow)
-                var searchKeyword: String? = nil
-                if let index = url?.firstIndex(of: "?") ?? url?.endIndex, index != url!.endIndex {
-                    let temp = String((url?[index...])!)
-                    let queryDict = temp.parseQueryString()
-                    searchKeyword = queryDict["movieNm"]
+                else if((url?.contains("app://ExternalBrowser"))!) {
+                    handler(.allow)
+                    
+                    let externalUrl = URL(string: ((queryDict["url"])!.decodeUrl())!)
+                    if #available(iOS 10.0, *) {
+                        UIApplication.shared.open(externalUrl!)
+                    } else {
+                        // Fallback on earlier versions
+                        return
+                    }
                 }
-                
-                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
-                let seachVM = SearchMovieViewModel(sceneCoordinator: coordinator, keyword: searchKeyword)
-                let searchScene = Scene.search(seachVM)
-                
-                coordinator.transition(to: searchScene, using: .push, animated: false)
-            }
-            else if((url?.contains("app://MemberContents"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                self?.makePageURLRequest(.showMembersContents, queryDict, (self!.mainViewRequestSubject))
-            }
-            else if((url?.contains("app://MyContents"))!) {
-                handler(.allow)
-                let index = url?.firstIndex(of: "?") ?? url?.endIndex
-                let temp = String((url?[index!...])!)
-                let queryDict = temp.parseQueryString()
-                self?.makePageURLRequest(.mainMyView, queryDict, (self!.mainViewRequestSubject))
-            }
-            else {
-                handler(.allow)
-                return
+                else if((url?.contains("app://SearchMovie"))!) {
+                    handler(.allow)
+                    var searchKeyword: String? = nil
+                    if let ind = index, ind != url!.endIndex {
+                        searchKeyword = queryDict["movieNm"]
+                    }
+                    
+                    let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+                    let seachVM = SearchMovieViewModel(sceneCoordinator: coordinator, keyword: searchKeyword)
+                    let searchScene = Scene.search(seachVM)
+                    
+                    coordinator.transition(to: searchScene, using: .push, animated: false)
+                }
+                else if((url?.contains("app://MemberContents"))!) {
+                    handler(.allow)
+                    self?.makePageURLRequest(.showMembersContents, queryDict, (self!.mainViewRequestSubject))
+                }
+                else if((url?.contains("app://MyContents"))!) {
+                    handler(.allow)
+                    self?.makePageURLRequest(.mainMyView, queryDict, (self!.mainViewRequestSubject))
+                }
+                else if((url?.contains("app://ShareContent"))!) {
+                    handler(.allow)
+                    print(queryDict["url"]?.decodeUrl())
+                }
+                else if((url?.contains("app://ShareScreenshot"))!) {
+                    handler(.allow)
+                    print("ScreenShot!")
+                }
+                else {
+                    handler(.allow)
+                    return
+                }
             }
         }
     }
