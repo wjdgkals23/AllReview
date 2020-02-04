@@ -85,7 +85,7 @@ class SearchMovieViewController: UIViewController, OneLineRevieViewControllerTyp
         }).disposed(by: self.viewModel.disposeBag)
         
         self.webSearchView.rx.decidePolicyNavigationAction
-            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: self.viewModel.disposeBag)
         
         self.searchButton.rx.tap.bind{ [weak self] in

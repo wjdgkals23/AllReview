@@ -63,15 +63,15 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     
     func setUpRx() {
         self.webMainView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
         self.webMyView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
         self.webRankView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParserContext!)
+            .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
         self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
