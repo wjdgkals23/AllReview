@@ -14,6 +14,7 @@ enum Scene {
     case signup(SignUpViewModel)
     case addnew(AddNewReviewViewModel)
     case search(SearchMovieViewModel)
+    case modal(ImageModalViewModel)
 }
 
 extension Scene {
@@ -58,6 +59,12 @@ extension Scene {
             }
             searchVC.bind(viewModel: viewModel)
             return searchVC
+        case .modal(let viewModel):
+            guard var modalVC = stoaryboard.instantiateViewController(withIdentifier: "ImageModalViewController") as? ImageModalViewController else {
+                fatalError()
+            }
+            modalVC.bind(viewModel: viewModel)
+            return modalVC
         }
     }
 }
