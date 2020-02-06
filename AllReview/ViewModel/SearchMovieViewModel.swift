@@ -12,17 +12,7 @@ import RxSwift
 import RxCocoa
 import WebKit
 
-protocol SearchMovieViewModelType {
-    var keywordTextSubject:BehaviorSubject<String?>! { get set }
-    var searchBarSubject:BehaviorSubject<Bool>! { get set }
-    var searchButtonEnabledDriver:Driver<Bool>! { get set }
-    var keywordTextDriver:Driver<String?>! { get set }
-    var searchResultSubject:BehaviorSubject<URLRequest?> { get set }
-    
-    var urlParseContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)? { get set }
-}
-
-class SearchMovieViewModel: ViewModel, SearchMovieViewModelType, WKNavigationDelegate {
+class SearchMovieViewModel: ViewModel, WKNavigationDelegate {
     
     var keywordTextSubject: BehaviorSubject<String?>!
     var searchBarSubject: BehaviorSubject<Bool>!
@@ -58,8 +48,24 @@ class SearchMovieViewModel: ViewModel, SearchMovieViewModelType, WKNavigationDel
         
         keywordTextDriver = keywordTextSubject.asDriver(onErrorJustReturn: "")
         searchButtonEnabledDriver = searchButtonEnabledObservable.asDriver(onErrorJustReturn: false)
+    
+    }
+    
+    public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
+        let searchData = ["queryMovieName":keyWord, "userId":(userLoginSession.getLoginData()?.data?._id)!]
+        self.urlMaker.rxMakeURLRequestObservable(.searchMovie, searchData)
+            .bind(to: (self.searchResultSubject))
+            .disposed(by: disposeBag)
+    }
+}
+
+extension SearchMovieViewModel: WebNavigationDelegateType {
+    convenience init(keyword: String?) {
         
-        self.urlParseContext = { (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
+        let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+        self.init(sceneCoordinator: coordinator, keyword: keyword)
+        
+        self.urlParseContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
             
             let url = response.request.url?.absoluteString
             
@@ -80,7 +86,7 @@ class SearchMovieViewModel: ViewModel, SearchMovieViewModelType, WKNavigationDel
                     let addNewVM = AddNewReviewViewModel(sceneCoordinator: coordinator, initData: queryDict)
                     let addNewScene = Scene.addnew(addNewVM)
                     
-                    coordinator.transition(to: addNewScene, using: .push, animated: false)
+                    self?.sceneCoordinator.transition(to: addNewScene, using: .push, animated: false)
                     return
                 }
                 else if((url?.contains("app://ExternalBrowser"))!) {
@@ -100,12 +106,5 @@ class SearchMovieViewModel: ViewModel, SearchMovieViewModelType, WKNavigationDel
                 }
             }
         }
-    }
-    
-    public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {
-        let searchData = ["queryMovieName":keyWord, "userId":(userLoginSession.getLoginData()?.data?._id)!]
-        self.urlMaker.rxMakeURLRequestObservable(.searchMovie, searchData)
-            .bind(to: (self.searchResultSubject))
-            .disposed(by: disposeBag)
     }
 }

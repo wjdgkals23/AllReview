@@ -127,7 +127,7 @@ class AddNewReviewViewModel: ViewModel{
                 let mainNewVM = MainViewModel(sceneCoordinator: coordinator)
                 let mainNewScene = Scene.main(mainNewVM)
                 
-                coordinator.transition(to: mainNewScene, using: .root, animated: false)
+                self.sceneCoordinator.transition(to: mainNewScene, using: .root, animated: false)
             default:
                 self.didFailAddReview.onNext(resultCode.rawValue)
             }
@@ -140,7 +140,7 @@ class AddNewReviewViewModel: ViewModel{
         let mainNewVM = MainViewModel(sceneCoordinator: coordinator)
         let mainNewScene = Scene.main(mainNewVM)
         
-        coordinator.transition(to: mainNewScene, using: .root, animated: false)
+        self.sceneCoordinator.transition(to: mainNewScene, using: .root, animated: false)
     }
     
     

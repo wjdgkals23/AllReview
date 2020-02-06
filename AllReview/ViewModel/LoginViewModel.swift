@@ -58,7 +58,7 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         switch resultCode {
         case .success:
             UserLoginSession.sharedInstance.setRxLoginData(data: userData)
-            let mainVM = MainViewModel(sceneCoordinator: self.sceneCoordinator)
+            let mainVM = MainViewModel()
             let mainScene = Scene.main(mainVM)
             self.sceneCoordinator.transition(to: mainScene, using: .root, animated: false)
         default:

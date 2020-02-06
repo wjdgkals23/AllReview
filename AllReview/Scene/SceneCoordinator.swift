@@ -31,7 +31,7 @@ class SceneCoordinator: SceneCoordinatorType {
             window.rootViewController = target
             subject.onCompleted()
         case .push:
-            guard let nav = currentVC as? UINavigationController else {
+            guard let nav = window.rootViewController as? UINavigationController else {
                 subject.onError(TransitionError.navigationControllerMissing)
                 break
             }
@@ -39,7 +39,11 @@ class SceneCoordinator: SceneCoordinatorType {
             currentVC = target
             subject.onCompleted()
         case .modal:
-            currentVC.present(target, animated: animated) {
+            guard let nav = window.rootViewController as? UINavigationController else {
+                subject.onError(TransitionError.navigationControllerMissing)
+                break
+            }
+            nav.present(target, animated: false) {
                 subject.onCompleted()
             }
             currentVC = target
@@ -51,7 +55,7 @@ class SceneCoordinator: SceneCoordinatorType {
     @discardableResult
     func close(animated: Bool) -> Completable {
         return Completable.create { [unowned self] completable in
-            if let nav = self.currentVC.navigationController {
+            if let nav = self.window.rootViewController as? UINavigationController {
                 guard nav.popViewController(animated: animated) != nil else {
                     completable(.error(TransitionError.cannotPop))
                     return Disposables.create()

@@ -11,6 +11,8 @@
 		90474CFD23658DCF00C48C4A /* URLCompoents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90474CFC23658DCF00C48C4A /* URLCompoents.swift */; };
 		90474CFF2365CC8500C48C4A /* RxRequests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90474CFE2365CC8500C48C4A /* RxRequests.swift */; };
 		90474D012365CDD000C48C4A /* Response.swift in Sources */ = {isa = PBXBuildFile; fileRef = 90474D002365CDD000C48C4A /* Response.swift */; };
+		9051B69923EC0239000B2EF9 /* ImageModalViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9051B69823EC0239000B2EF9 /* ImageModalViewController.swift */; };
+		9051B69C23EC0347000B2EF9 /* ImageModalViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9051B69B23EC0347000B2EF9 /* ImageModalViewModel.swift */; };
 		F44A1B0623BDB8D20002A3C2 /* AllReviewLoginButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A1B0523BDB8D20002A3C2 /* AllReviewLoginButton.swift */; };
 		F44A1B0B23BDCB9B0002A3C2 /* TransitionStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A1B0A23BDCB9B0002A3C2 /* TransitionStyle.swift */; };
 		F44A1B0D23BDCBCF0002A3C2 /* Scene.swift in Sources */ = {isa = PBXBuildFile; fileRef = F44A1B0C23BDCBCF0002A3C2 /* Scene.swift */; };
@@ -53,6 +55,8 @@
 		90474CFC23658DCF00C48C4A /* URLCompoents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = URLCompoents.swift; sourceTree = "<group>"; };
 		90474CFE2365CC8500C48C4A /* RxRequests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxRequests.swift; sourceTree = "<group>"; };
 		90474D002365CDD000C48C4A /* Response.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Response.swift; sourceTree = "<group>"; };
+		9051B69823EC0239000B2EF9 /* ImageModalViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModalViewController.swift; sourceTree = "<group>"; };
+		9051B69B23EC0347000B2EF9 /* ImageModalViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageModalViewModel.swift; sourceTree = "<group>"; };
 		9E78278DE4E7BAF10A5FF0A0 /* Pods-AllReview.release (development).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllReview.release (development).xcconfig"; path = "Target Support Files/Pods-AllReview/Pods-AllReview.release (development).xcconfig"; sourceTree = "<group>"; };
 		D1057545E71E8D3E9B85B2BA /* Pods-AllReview.dev debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllReview.dev debug.xcconfig"; path = "Target Support Files/Pods-AllReview/Pods-AllReview.dev debug.xcconfig"; sourceTree = "<group>"; };
 		F20800BBD5ABBEE2C30EECAB /* Pods-AllReview.release (production).xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-AllReview.release (production).xcconfig"; path = "Target Support Files/Pods-AllReview/Pods-AllReview.release (production).xcconfig"; sourceTree = "<group>"; };
@@ -233,6 +237,7 @@
 				F4F0D63B237D213200A869A0 /* AddNewReviewController.swift */,
 				F4D4D82F237E36A700905117 /* SearchMovieViewController.swift */,
 				F4D4D841238625EE00905117 /* SignUpViewController.swift */,
+				9051B69823EC0239000B2EF9 /* ImageModalViewController.swift */,
 				F44A1B1723BEF6EE0002A3C2 /* OneLineRevieViewControllerType.swift */,
 			);
 			path = View;
@@ -247,6 +252,7 @@
 				F4D4D82D237E366800905117 /* AddNewReviewViewModel.swift */,
 				F4D4D831237E36BB00905117 /* SearchMovieViewModel.swift */,
 				F4D4D8432386260200905117 /* SignUpViewModel.swift */,
+				9051B69B23EC0347000B2EF9 /* ImageModalViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -381,6 +387,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				F4F0D63C237D213300A869A0 /* AddNewReviewController.swift in Sources */,
+				9051B69C23EC0347000B2EF9 /* ImageModalViewModel.swift in Sources */,
 				90474CFF2365CC8500C48C4A /* RxRequests.swift in Sources */,
 				F44A1B0D23BDCBCF0002A3C2 /* Scene.swift in Sources */,
 				F44A1B1123BDCCA20002A3C2 /* SceneCoordinator.swift in Sources */,
@@ -398,6 +405,7 @@
 				90474D012365CDD000C48C4A /* Response.swift in Sources */,
 				F4D4D830237E36A700905117 /* SearchMovieViewController.swift in Sources */,
 				F465137A2366B736004CFBFC /* UserLoginSession.swift in Sources */,
+				9051B69923EC0239000B2EF9 /* ImageModalViewController.swift in Sources */,
 				F4F0D638237CE25100A869A0 /* StringExtension.swift in Sources */,
 				F44A1B1823BEF6EE0002A3C2 /* OneLineRevieViewControllerType.swift in Sources */,
 				F44A1B0B23BDCB9B0002A3C2 /* TransitionStyle.swift in Sources */,

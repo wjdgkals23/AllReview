@@ -12,6 +12,10 @@ import RxCocoa
 import WebKit
 import UIKit
 
+protocol WebNavigationDelegateType {
+    var urlParseContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)? { get }
+}
+
 class ViewModel: NSObject {
     
     let sceneCoordinator: SceneCoordinator!
