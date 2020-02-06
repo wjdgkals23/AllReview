@@ -606,6 +606,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="d0l-ag-CYx"/>
                     </view>
+                    <connections>
+                        <outlet property="imageView" destination="0AV-rT-gDU" id="WNd-3i-TRg"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="po5-WR-rQp" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>

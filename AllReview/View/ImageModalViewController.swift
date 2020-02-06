@@ -7,11 +7,14 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class ImageModalViewController: UIViewController, OneLineRevieViewControllerType {
     
     var viewModel: ImageModalViewModel!
     
+    @IBOutlet weak var imageView: UIImageView!
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -23,7 +26,8 @@ class ImageModalViewController: UIViewController, OneLineRevieViewControllerType
     }
     
     func setUpRx() {
-        return
+        self.viewModel.capturedImageSubject.distinctUntilChanged().asDriver(onErrorJustReturn: nil)
+            .drive(self.imageView.rx.image).disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {

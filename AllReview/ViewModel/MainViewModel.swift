@@ -41,6 +41,19 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
         
         self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
     }
+    
+    public func takeScreenShot() -> UIImage? {
+        var image :UIImage?
+        let currentLayer = UIApplication.shared.keyWindow!.layer
+        let currentScale = UIScreen.main.scale
+        UIGraphicsBeginImageContextWithOptions(currentLayer.frame.size, false, currentScale);
+        guard let currentContext = UIGraphicsGetCurrentContext() else { return nil }
+        currentLayer.render(in: currentContext)
+        image = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+        guard let img = image else { return nil }
+        return img
+    }
 }
 
 extension MainViewModel: WebNavigationDelegateType {
@@ -84,16 +97,17 @@ extension MainViewModel: WebNavigationDelegateType {
                 }
                 else if((url?.contains("app://ShareContent"))!) {
                     handler(.allow)
-                    
-                    let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
-                    let modalVM = ImageModalViewModel(sceneCoordinator: coordinator)
-                    let modalScene = Scene.modal(modalVM)
-                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false)
                     print(queryDict["url"]?.decodeUrl())
                 }
                 else if((url?.contains("app://ShareScreenshot"))!) {
                     handler(.allow)
-                    print("ScreenShot!")
+                    let capturedImage = self?.takeScreenShot()
+                    
+                    let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+                    let modalVM = ImageModalViewModel(sceneCoordinator: coordinator, image: capturedImage)
+                    let modalScene = Scene.modal(modalVM)
+                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false)
+                    
                 }
                 else {
                     handler(.allow)

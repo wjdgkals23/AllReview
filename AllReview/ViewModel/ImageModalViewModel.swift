@@ -7,11 +7,16 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 class ImageModalViewModel: ViewModel {
     
-    override init(sceneCoordinator: SceneCoordinatorType) {
+    var capturedImageSubject:BehaviorSubject<UIImage?> = BehaviorSubject<UIImage?>(value: nil)
+    
+    init(sceneCoordinator: SceneCoordinatorType, image: UIImage?) {
         super.init(sceneCoordinator: sceneCoordinator)
+        self.capturedImageSubject.onNext(image)
     }
 }
 
