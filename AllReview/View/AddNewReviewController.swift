@@ -82,28 +82,11 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     
     func setUpRx() {
         
-        self.viewModel.errorHandleSubject.distinctUntilChanged()
+        self.viewModel.errorHandleSubject
+            .observeOn(MainScheduler.instance)
             .subscribe(onNext: { [weak self] (string) in
                 self?.showToast(message: string, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
             }).disposed(by: self.viewModel.disposeBag)
-        
-        self.viewModel.didSuccessAddReview
-            .observeOn(MainScheduler.instance)
-            .subscribe({ [weak self] _ in
-                do {
-                    // 화면 이동
-                } catch {
-                    self?.showToast(message: "리로딩 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil)
-                }
-            }).disposed(by: self.viewModel.disposeBag)
-        
-        self.viewModel.didFailAddReview
-            .observeOn(MainScheduler.instance)
-            .subscribe(onNext: { errMessage in
-                print(errMessage)
-                self.uploadButton.isEnabled = false
-            })
-            .disposed(by: self.viewModel.disposeBag)
         
         self.viewModel.imageViewImageSubject.asDriver(onErrorJustReturn: #imageLiteral(resourceName: "title"))
             .drive(self.imageViewPicker.rx.image)
@@ -154,6 +137,7 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpWebView() {
+        
         return
     }
     

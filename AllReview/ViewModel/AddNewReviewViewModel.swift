@@ -31,9 +31,6 @@ class AddNewReviewViewModel: ViewModel{
     var isTitleValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     var isContentValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     
-    let didSuccessAddReview = PublishSubject<Void>()
-    let didFailAddReview = PublishSubject<String>()
-    
     var uploadData: [String:Any]!
     private var firstImage: UIImage!
     private var firstImageUrl: String!
@@ -129,7 +126,7 @@ class AddNewReviewViewModel: ViewModel{
                 
                 self.sceneCoordinator.transition(to: mainNewScene, using: .root, animated: false)
             default:
-                self.didFailAddReview.onNext(resultCode.rawValue)
+                self.errorHandleSubject.onNext(userData.resultMsg)
             }
         }
         

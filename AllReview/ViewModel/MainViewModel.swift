@@ -57,6 +57,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
 }
 
 extension MainViewModel: WebNavigationDelegateType {
+    
     convenience init() {
         let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
         self.init(sceneCoordinator: coordinator)

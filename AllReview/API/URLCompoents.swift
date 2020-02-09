@@ -24,7 +24,7 @@ enum OneLineReview: String {
     case contentDetailView = "/mainList/showContentDetail"
     case searchMovie = "/naverapi/searchedMovieList"
     case showMembersContents = "/mainList/showMemberPage"
-    case contentAdd = "/content/add"
+    case contentAdd = "/content/ad"
 }
 
 class OneLineReviewURL { // 기본 url 셋팅
