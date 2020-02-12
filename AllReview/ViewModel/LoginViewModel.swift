@@ -8,8 +8,6 @@
 
 import Foundation
 import RxSwift
-import FBSDKCoreKit
-import FBSDKLoginKit
 
 enum SocialType:String {
     case face
@@ -17,7 +15,7 @@ enum SocialType:String {
     case kakao
 }
 
-class LoginViewModel: ViewModel, LoginButtonDelegate {
+class LoginViewModel: ViewModel {
     
     let didFailSignIn = PublishSubject<String>()
     
@@ -46,14 +44,6 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         }
     }
     
-    public func loginButton(_ loginButton: FBLoginButton, didCompleteWith result: LoginManagerLoginResult?, error: Error?) {
-        guard let result = result else {
-            print(error!.localizedDescription)
-            return
-        }
-        print(result.grantedPermissions)
-    }
-    
     private func loginResultCodeParse(resultCode: LoginErrResponse, userData: UserLoginSessionResponse) {
         switch resultCode {
         case .success:
@@ -66,7 +56,4 @@ class LoginViewModel: ViewModel, LoginButtonDelegate {
         }
     }
     
-    func loginButtonDidLogOut(_ loginButton: FBLoginButton) {
-        AccessToken.current = nil
-    }
 }
