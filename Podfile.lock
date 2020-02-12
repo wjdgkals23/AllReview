@@ -1,15 +1,5 @@
 PODS:
   - Cosmos (20.0.1)
-  - FBSDKCoreKit (5.10.1):
-    - FBSDKCoreKit/Basics (= 5.10.1)
-    - FBSDKCoreKit/Core (= 5.10.1)
-  - FBSDKCoreKit/Basics (5.10.1)
-  - FBSDKCoreKit/Core (5.10.1):
-    - FBSDKCoreKit/Basics
-  - FBSDKLoginKit (5.8.0):
-    - FBSDKLoginKit/Login (= 5.8.0)
-  - FBSDKLoginKit/Login (5.8.0):
-    - FBSDKCoreKit (~> 5.0)
   - Firebase/Analytics (6.11.0):
     - Firebase/Core
   - Firebase/Core (6.11.0):
@@ -101,8 +91,6 @@ PODS:
 
 DEPENDENCIES:
   - Cosmos (~> 20.0.0)
-  - FBSDKCoreKit (~> 5.10.0)
-  - FBSDKLoginKit (~> 5.8.0)
   - Firebase/Analytics
   - Firebase/Storage
   - RxCocoa (~> 5.0.0)
@@ -113,8 +101,6 @@ DEPENDENCIES:
 SPEC REPOS:
   trunk:
     - Cosmos
-    - FBSDKCoreKit
-    - FBSDKLoginKit
     - Firebase
     - FirebaseAnalytics
     - FirebaseAuthInterop
@@ -139,8 +125,6 @@ SPEC REPOS:
 
 SPEC CHECKSUMS:
   Cosmos: b47fddf2102bb48580cd3025d9ce0a5c658a65da
-  FBSDKCoreKit: aa8887f21898ac5bcf07bef4fb253aa41c91be04
-  FBSDKLoginKit: 1b0cf04df0370b37404213157b060d6666ede814
   Firebase: bc9cfc7a96c73268656d5aaab453ff1b4b530e0e
   FirebaseAnalytics: 0e3ecff2c5d86070f7d4325e21f1edabfbd558dc
   FirebaseAuthInterop: 0ffa57668be100582bb7643d4fcb7615496c41fc
@@ -163,6 +147,6 @@ SPEC CHECKSUMS:
   SteviaLayout: c2ecdcff57d44e38fd2f65e54ad52aeae28ca0c4
   YPImagePicker: 7a34eabd0ef544ae8fbf9785c3df9ec5bbf242e3
 
-PODFILE CHECKSUM: 49236e75aa664a8e0fbadb1642828dd2147a65ae
+PODFILE CHECKSUM: 5928b8d9dc1f33c9c3c3bce441d2eae8884d93e6
 
 COCOAPODS: 1.8.4

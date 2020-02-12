@@ -7,8 +7,6 @@
 //
 
 import UIKit
-import FBSDKCoreKit
-import FBSDKLoginKit
 import Firebase
 import RxSwift
 
@@ -21,7 +19,6 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     
     @IBOutlet var testLogin: UIButton!
     private var myCustomTestLoginButton: AllReviewLoginButton!
-//    @IBOutlet var signUpButton: UIButton!
     
     override func viewDidLoad() {
         super.viewDidLoad()

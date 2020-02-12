@@ -11,8 +11,6 @@ pod 'RxCocoa', '~> 5.0.0'
 pod 'RxWebKit', '~> 1.0.0'
 pod 'Firebase/Analytics'
 pod 'Firebase/Storage'
-pod 'FBSDKCoreKit', '~> 5.10.0'
-pod 'FBSDKLoginKit', '~> 5.8.0'
 pod 'YPImagePicker', '~> 4.1.3'
 pod 'Cosmos', '~> 20.0.0'
 end
