@@ -15,9 +15,7 @@
 - Model에 대한 변환 로직 구현
 - ViewModel에게 변환 이벤트 전달
 
-## Router
-- DefaultRouter를 통해 기초동작 설정
-- 화면전환 요청에 대한 로직 구현
+## SceneCoordinator
 
 ## API
 - RxSwift Request(Network)
