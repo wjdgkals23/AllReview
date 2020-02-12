@@ -36,7 +36,7 @@ class ViewModel: NSObject {
         super.init()
     }
     
-    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: BehaviorSubject<URLRequest?>) {
+    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: PublishSubject<URLRequest?>) {
         self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
     }
     

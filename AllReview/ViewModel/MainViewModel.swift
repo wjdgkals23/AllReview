@@ -14,9 +14,9 @@ import WebKit
 
 class MainViewModel: ViewModel, WKNavigationDelegate {
     
-    var mainViewRequestSubject: BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
-    var rankViewRequestSubject: BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
-    var myViewRequestSubject: BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
+    var mainViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
+    var rankViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
+    var myViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
     
     var goToMyContentDetailViewSubject: PublishSubject<[String : String]> = PublishSubject<[String:String]>()
     
@@ -26,7 +26,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
         super.init(sceneCoordinator: sceneCoordinator)
     }
     
-    public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:BehaviorSubject<URLRequest?>) {
+    public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:PublishSubject<URLRequest?>) {
         userLoginSession.getRxLoginData()?.flatMap({ [weak self] user -> Observable<URLRequest> in
             let userData = ["memberId":user.data!._id, "userId":user.data!._id]
             let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!

@@ -62,6 +62,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpRx() {
+
         self.webMainView.rx.decidePolicyNavigationAction.asObservable()
             .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
@@ -74,30 +75,30 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
-        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel.mainViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel.rankViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel.myViewRequestSubject)
-        
-        self.viewModel.mainViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.mainViewRequestSubject.subscribe(onNext: { (request) in
             guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webMainView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.rankViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.rankViewRequestSubject.subscribe(onNext: { (request) in
             guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webRankView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.myViewRequestSubject.asObservable().subscribe(onNext: { (request) in
+        self.viewModel.myViewRequestSubject.subscribe(onNext: { (request) in
             guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webMyView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
+        
+        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel!.mainViewRequestSubject)
+        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel!.rankViewRequestSubject)
+        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel!.myViewRequestSubject)
         
         self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
             if (!(self?.webMyView.isHidden)!) {
