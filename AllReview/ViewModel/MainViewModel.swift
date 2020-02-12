@@ -107,7 +107,7 @@ extension MainViewModel: WebNavigationDelegateType {
                     let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
                     let modalVM = ImageModalViewModel(sceneCoordinator: coordinator, image: capturedImage)
                     let modalScene = Scene.modal(modalVM)
-                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false)
+                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false).subscribe().disposed(by: self!.disposeBag)
                     
                 }
                 else {
