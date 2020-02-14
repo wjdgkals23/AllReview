@@ -116,8 +116,8 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.myViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.myViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.backButton.rx.tap.bind{ [weak self] in self?.backButtonTapped() }.disposed(by: self.viewModel.disposeBag)
-        self.tempViewButton.rx.tap.bind{ [weak self] in self?.viewModel.pushSearchView() }.disposed(by: self.viewModel.disposeBag)
-        self.searchButton.rx.tap.bind{ [weak self] in self?.viewModel.pushSearchView() }.disposed(by: self.viewModel.disposeBag)
+        self.tempViewButton.rx.tap.bind(to: self.viewModel.pushSearchViewSubject).disposed(by: self.viewModel.disposeBag)
+        self.searchButton.rx.tap.bind(to: self.viewModel.pushSearchViewSubject).disposed(by: self.viewModel.disposeBag)
     }
     
     func setUpWebView() {

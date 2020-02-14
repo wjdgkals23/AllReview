@@ -17,6 +17,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     var mainViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
     var rankViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
     var myViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
+    var pushSearchViewSubject: PublishSubject<Void> = PublishSubject<Void>()
     
     var goToMyContentDetailViewSubject: PublishSubject<[String : String]> = PublishSubject<[String:String]>()
     
@@ -24,6 +25,13 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     
     override init(sceneCoordinator: SceneCoordinatorType) {
         super.init(sceneCoordinator: sceneCoordinator)
+        
+        pushSearchViewSubject.subscribe(onNext: { _ in
+            let searchVM = SearchMovieViewModel(keyword: nil)
+            let searchScene = Scene.search(searchVM)
+            
+            self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
+        }).disposed(by: disposeBag)
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:PublishSubject<URLRequest?>) {
@@ -36,10 +44,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     }
     
     public func pushSearchView() {
-        let searchVM = SearchMovieViewModel(keyword: nil)
-        let searchScene = Scene.search(searchVM)
         
-        self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
     }
     
     public func takeScreenShot() -> UIImage? {
