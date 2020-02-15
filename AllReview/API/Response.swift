@@ -130,4 +130,8 @@ struct UserLoginRequestData: Codable {
     let platformCode:String
     let deviceCheckId:String
     let password:String
+    
+    var dic: [String:String] {
+        return ["memberId":memberId, "memberEmail":memberEmail, "platformCode":platformCode, "deviceCheckId":deviceCheckId, "password":password]
+    }
 }
