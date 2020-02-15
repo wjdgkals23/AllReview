@@ -48,9 +48,16 @@ class LoginViewModel: ViewModel {
         switch resultCode {
         case .success:
             UserLoginSession.sharedInstance.setRxLoginData(data: userData)
+            
             let mainVM = MainViewModel()
             let mainScene = Scene.main(mainVM)
+            
             self.sceneCoordinator.transition(to: mainScene, using: .root, animated: false)
+//                .debug()
+                .subscribe(onError: { err in
+                    self.errorHandleSubject.onNext(err.localizedDescription)
+                }).disposed(by: disposeBag)
+            
         default:
             self.didFailSignIn.onNext(resultCode.rawValue)
         }

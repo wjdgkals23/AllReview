@@ -30,7 +30,13 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
             let searchVM = SearchMovieViewModel(keyword: nil)
             let searchScene = Scene.search(searchVM)
             
-            self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
+            self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false)
+                .debug()
+                .subscribe(onError: { err in
+                    self.errorHandleSubject.onNext(err.localizedDescription)
+                })
+                .disposed(by: self.disposeBag)
+            
         }).disposed(by: disposeBag)
     }
     
@@ -92,6 +98,9 @@ extension MainViewModel: WebNavigationDelegateType {
                     let searchScene = Scene.search(searchVM)
                     
                     self?.sceneCoordinator.transition(to: searchScene, using: .push, animated: false)
+                        .subscribe(onError: { err in
+                            self?.errorHandleSubject.onNext(err.localizedDescription)
+                        }).disposed(by: self!.disposeBag)
                 }
                 else if((url?.contains("app://MemberContents"))!) {
                     handler(.allow)
@@ -112,7 +121,10 @@ extension MainViewModel: WebNavigationDelegateType {
                     let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
                     let modalVM = ImageModalViewModel(sceneCoordinator: coordinator, image: capturedImage)
                     let modalScene = Scene.modal(modalVM)
-                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false).subscribe().disposed(by: self!.disposeBag)
+                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false)
+                        .subscribe(onError: { err in
+                            self?.errorHandleSubject.onNext(err.localizedDescription)
+                        }).disposed(by: self!.disposeBag)
                     
                 }
                 else {

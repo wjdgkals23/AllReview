@@ -87,6 +87,9 @@ extension SearchMovieViewModel: WebNavigationDelegateType {
                     let addNewScene = Scene.addnew(addNewVM)
                     
                     self?.sceneCoordinator.transition(to: addNewScene, using: .push, animated: false)
+                        .subscribe(onError: { err in
+                            self?.errorHandleSubject.onNext(err.localizedDescription)
+                        }).disposed(by: self!.disposeBag)
                     return
                 }
                 else if((url?.contains("app://ExternalBrowser"))!) {
