@@ -30,7 +30,8 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
             let searchVM = SearchMovieViewModel(keyword: nil)
             let searchScene = Scene.search(searchVM)
             
-            self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
+            self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).debug().subscribe()
+                .disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)
     }
     
