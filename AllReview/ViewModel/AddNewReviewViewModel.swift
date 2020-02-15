@@ -39,25 +39,6 @@ class AddNewReviewViewModel: ViewModel{
     init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
         super.init(sceneCoordinator: sceneCoordinator)
         
-        if let imageUrl = initData!["posterImage"]?.decodeUrl(), imageUrl != "", let movieName = initData!["movieKorName"]?.decodeUrl(), let movieId = initData!["naverMovieId"] {
-            firstImageUrl = imageUrl
-            uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": movieId, "starPoint": 5, "imageUrl": firstImageUrl, "oneLineReview": "", "detailReview": ""]
-            self.movieNameTextDriver = BehaviorSubject(value: movieName).asDriver(onErrorJustReturn: "")
-            
-            self.request.urlDataLoad(url: URL(string: firstImageUrl)!) { [weak self] (image, err) in
-                if let err = err {
-                    self?.errorHandleSubject.onNext(err.localizedDescription)
-                } else {
-                    self?.firstImage = image
-                    self?.imageViewImageSubject.onNext(image)
-                }
-            }
-            
-        } else {
-            uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": "", "starPoint": 5, "imageUrl": "", "oneLineReview": "", "detailReview": ""]
-            self.movieNameTextDriver = BehaviorSubject(value: "").asDriver(onErrorJustReturn: "")
-        }
-        
         _ = imageViewImageSubject.distinctUntilChanged()
             .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
             .map({ image in
@@ -87,33 +68,7 @@ class AddNewReviewViewModel: ViewModel{
     }
     
     func upload() {
-        guard let image = try? self.imageViewImageSubject.value() else {
-            return
-        }
-        if image != self.firstImage {
-            self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data!._id)!, movieId: self.uploadData!["movieId"] as! String, image: image) { [weak self] (url, err) in
-                if let err = err {
-                    self?.errorHandleSubject.onNext(err.localizedDescription)
-                } else {
-                    self?.uploadData["imageUrl"] = url?.absoluteString
-                    self?.request.uploadReviewData(uploadData: self!.uploadData, completionHandler: { [weak self] (res, err) in
-                        if let err = err {
-                            self?.errorHandleSubject.onNext(err.localizedDescription)
-                        } else {
-                            self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: (res?.resultCode)!)!, userData: res!)
-                        }
-                    })
-                }
-            }
-        } else {
-            self.request.uploadReviewData(uploadData: self.uploadData, completionHandler: { [weak self] (res, err) in
-                if let err = err {
-                    self?.errorHandleSubject.onNext(err.localizedDescription)
-                } else {
-                    self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: (res?.resultCode)!)!, userData: res!)
-                }
-            })
-        }
+        
     }
     
     private func uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {

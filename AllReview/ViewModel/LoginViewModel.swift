@@ -47,9 +47,11 @@ class LoginViewModel: ViewModel {
     private func loginResultCodeParse(resultCode: LoginErrResponse, userData: UserLoginSessionResponse) {
         switch resultCode {
         case .success:
-            UserLoginSession.sharedInstance.setRxLoginData(data: userData)
+            UserLoginSession.sharedInstance.rxloginData.onNext(userData)
+            
             let mainVM = MainViewModel()
             let mainScene = Scene.main(mainVM)
+            
             self.sceneCoordinator.transition(to: mainScene, using: .root, animated: false)
         default:
             self.didFailSignIn.onNext(resultCode.rawValue)
