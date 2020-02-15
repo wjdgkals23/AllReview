@@ -18,7 +18,7 @@ protocol WebNavigationDelegateType {
 
 class ViewModel: NSObject {
     
-    let sceneCoordinator: SceneCoordinator!
+    var sceneCoordinator: SceneCoordinator!
     
     var userLoginSession = UserLoginSession.sharedInstance
     let request = OneLineReviewAPI.sharedInstance

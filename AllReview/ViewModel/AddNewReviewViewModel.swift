@@ -138,6 +138,9 @@ class AddNewReviewViewModel: ViewModel{
         let mainNewScene = Scene.main(mainNewVM)
         
         self.sceneCoordinator.transition(to: mainNewScene, using: .root, animated: false)
+            .subscribe(onError: { err in
+                self.errorHandleSubject.onNext(err.localizedDescription)
+            }).disposed(by: self.disposeBag)
     }
     
     
