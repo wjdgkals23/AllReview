@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import RxSwift
 
-// facebook login logic 옮기기
 class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     
     var viewModel: LoginViewModel!
@@ -25,8 +24,6 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpView() {
-        
-//        myCustomTestLoginButton = AllReviewLoginButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0) , color: .yellow, logo: "KaKao")
         myCustomTestLoginButton = UITextField()
         view.addSubview(myCustomTestLoginButton)
         myCustomTestLoginButton.translatesAutoresizingMaskIntoConstraints = false
@@ -44,34 +41,25 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
                uiLabel.trailingAnchor.constraint(equalTo: self.myCustomTestLoginButton.trailingAnchor, constant: -5).isActive = true
                uiLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
                uiLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-//        myCustomTestLoginButton.addTarget(self, action: #selector(customButtonTapped), for: .touchUpInside)
+
     }
     
-//    @objc func customButtonTapped() {
-//        myCustomTestLoginButton.shake()
-//    }
-    
     func setUpRx() {
-        
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { errMessage in
                 self.showToast(message: errMessage, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
                 self.view.isUserInteractionEnabled = true
             })
-            .disposed(by: self.viewModel.disposeBag)
+            .disposed(by: self.disposeBag)
         
         self.testLogin.rx.tap
             .bind{ [weak self] in
                 self?.view.isUserInteractionEnabled = false
+                self?.myCustomTestLoginButton.rx.text.orEmpty.bind(to: (self!.viewModel.memberId))
                 self?.viewModel.testLoginTapped()
-        }.disposed(by: self.viewModel.disposeBag)
-        
-//        self.myCustomTestLoginButton.rx.controlEvent(.editingChanged).flatMap { () -> Observable<Void> in
-//            self.myCustomTestLoginButton.selectedTextRange = self.myCustomTestLoginButton.textRange(from: self.myCustomTestLoginButton.beginningOfDocument, to: self.myCustomTestLoginButton.position(from: self.myCustomTestLoginButton.endOfDocument, offset: -1)!)
-//            return Observable.just(())
-//            }.subscribe().disposed(by: disposeBag)
+                
+        }.disposed(by: self.disposeBag)
         
     }
     

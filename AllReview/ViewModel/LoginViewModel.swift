@@ -8,6 +8,7 @@
 
 import Foundation
 import RxSwift
+import RxCocoa
 
 enum SocialType:String {
     case face
@@ -18,13 +19,12 @@ enum SocialType:String {
 class LoginViewModel: ViewModel {
     
     let didFailSignIn = PublishSubject<String>()
+    
     let memberId = PublishSubject<String>()
     let memberEmail = PublishSubject<String>()
     let platformCode = PublishSubject<String>()
     let deviceCheckId = PublishSubject<String>()
     let password = PublishSubject<String>()
-    
-    let userRequestData = PublishSubject<UserLoginRequestData>()
     
     let requestLogin = PublishSubject<Void>()
     
@@ -52,7 +52,6 @@ class LoginViewModel: ViewModel {
                         self?.loginResultCodeParse(resultCode: (LoginErrResponse(rawValue: (userData?.resultCode)!)!), userData: userData!)
                     }
                 }
-                
             }
             }).disposed(by: disposeBag)
         
