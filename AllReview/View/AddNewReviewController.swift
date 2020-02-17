@@ -118,15 +118,11 @@ class AddNewReviewController: UIViewController, OneLineRevieViewControllerType {
             .drive(self.movieName.rx.text)
             .disposed(by: self.viewModel.disposeBag)
         
-        let uploadButotnObs = Observable.combineLatest(self.viewModel.isImageValid, self.viewModel.isTitleValid, self.viewModel.isContentValid) {
-            $0 && $1 && $2
-        }
-        
-        uploadButotnObs
+        self.viewModel.uploadButtonEnabled
             .bind(to: self.uploadButton.rx.isEnabled)
             .disposed(by: self.viewModel.disposeBag)
         
-        uploadButotnObs
+        self.viewModel.uploadButtonEnabled
             .bind(to: self.uploadButton.rx.isUserInteractionEnabled)
             .disposed(by: self.viewModel.disposeBag)
         

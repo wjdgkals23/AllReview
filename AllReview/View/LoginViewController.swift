@@ -17,31 +17,32 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     private let disposeBag = DisposeBag()
     
     @IBOutlet var testLogin: UIButton!
-    private var myCustomTestLoginButton: UITextField!
+    
+    private var emailTextField: UITextField!
+    private var pwTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     func setUpView() {
-        myCustomTestLoginButton = UITextField()
-        view.addSubview(myCustomTestLoginButton)
-        myCustomTestLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        myCustomTestLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        myCustomTestLoginButton.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
-        myCustomTestLoginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        myCustomTestLoginButton.topAnchor.constraint(equalTo: self.testLogin.bottomAnchor, constant: 10).isActive = true
+        pwTextField = UITextField()
+        pwTextField.borderStyle = .line
+        view.addSubview(pwTextField)
+        pwTextField.translatesAutoresizingMaskIntoConstraints = false
+        pwTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        pwTextField.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
+        pwTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        pwTextField.bottomAnchor.constraint(equalTo: self.testLogin.topAnchor, constant: -10).isActive = true
         
-        let uiLabel = UILabel()
-        uiLabel.text("%")
-        
-        view.addSubview(uiLabel)
-        uiLabel.translatesAutoresizingMaskIntoConstraints = false
-        uiLabel.topAnchor.constraint(equalTo: self.myCustomTestLoginButton.topAnchor, constant: 5).isActive = true
-               uiLabel.trailingAnchor.constraint(equalTo: self.myCustomTestLoginButton.trailingAnchor, constant: -5).isActive = true
-               uiLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
-               uiLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-
+        emailTextField = UITextField()
+        emailTextField.borderStyle = .line
+        view.addSubview(emailTextField)
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        emailTextField.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
+        emailTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        emailTextField.bottomAnchor.constraint(equalTo: self.pwTextField.topAnchor, constant: -10).isActive = true
     }
     
     func setUpRx() {
@@ -56,10 +57,22 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         self.testLogin.rx.tap
             .bind{ [weak self] in
                 self?.view.isUserInteractionEnabled = false
-                self?.myCustomTestLoginButton.rx.text.orEmpty.bind(to: (self!.viewModel.memberId))
+                self?.emailTextField
+                    .rx.text.orEmpty.bind(to: (self!.viewModel.memberId)).disposed(by: self!.disposeBag)
                 self?.viewModel.testLoginTapped()
-                
         }.disposed(by: self.disposeBag)
+        
+        self.emailTextField.rx.text
+            .bind(to: self.viewModel.memberEmail)
+            .disposed(by: self.disposeBag)
+        
+        self.pwTextField.rx.text
+            .bind(to: self.viewModel.password)
+            .disposed(by: self.disposeBag)
+        
+        self.viewModel.loginButtonEnabled
+            .bind(to: self.testLogin.rx.isEnabled)
+            .disposed(by: self.disposeBag)
         
     }
     

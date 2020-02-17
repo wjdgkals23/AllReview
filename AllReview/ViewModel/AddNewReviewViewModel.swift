@@ -31,6 +31,8 @@ class AddNewReviewViewModel: ViewModel{
     var isTitleValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     var isContentValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     
+    var uploadButtonEnabled: Observable<Bool>!
+    
     var uploadData: [String:Any]!
     private var firstImage: UIImage!
     private var firstImageUrl: String!
@@ -64,6 +66,10 @@ class AddNewReviewViewModel: ViewModel{
             .subscribe(onNext: { point in
                 self.uploadData["starPoint"] = point
             }).disposed(by: self.disposeBag)
+        
+        uploadButtonEnabled = Observable.combineLatest(self.isImageValid, self.isTitleValid, self.isContentValid) {
+            $0 && $1 && $2
+        }.share(replay: 1)
         
     }
     
