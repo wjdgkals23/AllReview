@@ -10,23 +10,30 @@ import Foundation
 import RxSwift
 
 class UserLoginSession {
-
-    private var rxloginData: Observable<UserLoginSessionResponse>?
-    private var loginData: UserLoginSessionResponse?
     
     static let sharedInstance = UserLoginSession()
     
-    public func setRxLoginData(data: UserLoginSessionResponse) {
-        loginData = data
-        rxloginData = Observable.just(data)
+    let rxloginData = ReplaySubject<UserLoginSessionResponse>.create(bufferSize: 1)
+    
+    let requestingUserData = PublishSubject<UserLoginRequestData>()
+    let parseResultResponseData = PublishSubject<UserLoginSessionResponse>()
+    
+    let requestModule = OneLineReviewAPI.sharedInstance
+    let disposeBag = DisposeBag()
+    
+    init() {
+        
+//        self.requestingUserData.subscribe({ event in
+//            switch event {
+//            case .next(let data):
+//                self.requestModule.testLogin(userData: data) { [weak self] (response, error) in
+//                    self!.parseResultResponseData.onNext(response!)
+//                }
+//            }
+//        }).disposed(by: DisposeBag())
     }
     
-    public func getRxLoginData() -> Observable<UserLoginSessionResponse>? {
+    public func getRxLoginData() -> ReplaySubject<UserLoginSessionResponse>? {
         return rxloginData
     }
-    
-    public func getLoginData() -> UserLoginSessionResponse? {
-        return loginData
-    }
-    
 }

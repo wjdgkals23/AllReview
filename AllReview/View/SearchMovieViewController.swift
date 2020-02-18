@@ -88,11 +88,11 @@ class SearchMovieViewController: UIViewController, OneLineRevieViewControllerTyp
             .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: self.viewModel.disposeBag)
         
-        self.searchButton.rx.tap.bind{ [weak self] in
-            self?.searchBar.resignFirstResponder()
-            self?.viewModel.searchKeywordBindResultPage(.searchMovie, (self?.searchBar.text)!)
-        }.disposed(by: self.viewModel.disposeBag)
-        
+//        self.searchButton.rx.tap.bind{ [weak self] in
+//            self?.searchBar.resignFirstResponder()
+//            self?.viewModel.searchKeywordBindResultPage(.searchMovie, (self?.searchBar.text)!)
+//        }.disposed(by: self.viewModel.disposeBag)
+//        
         self.cancelButton.rx.tap.bind{ [weak self] in
             if ((self?.webSearchView.canGoBack)!) {
                 self?.webSearchView.goBack()

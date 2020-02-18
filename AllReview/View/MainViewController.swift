@@ -75,21 +75,21 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
-        self.viewModel.mainViewRequestSubject.subscribe(onNext: { (request) in
+        self.viewModel.mainViewRequestSubject.debug("@@ : mainViewRequestSubject").subscribe(onNext: { (request) in
             guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webMainView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.rankViewRequestSubject.subscribe(onNext: { (request) in
+        self.viewModel.rankViewRequestSubject.debug("@@ : rankViewRequestSubject", trimOutput: true).subscribe(onNext: { (request) in
             guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webRankView.load(req)
         }, onError: { (err) in
             print("Err \(err)")
         }).disposed(by: disposeBag)
         
-        self.viewModel.myViewRequestSubject.subscribe(onNext: { (request) in
+        self.viewModel.myViewRequestSubject.debug("@@ : myViewRequestSubject").subscribe(onNext: { (request) in
             guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
             self.webMyView.load(req)
         }, onError: { (err) in

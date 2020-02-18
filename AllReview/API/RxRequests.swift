@@ -36,7 +36,7 @@ class OneLineReviewAPI {
         decoder.dateDecodingStrategy = .secondsSince1970
     }
     
-    public func testLogin(userData: [String:String], completionHandler: @escaping (UserLoginSessionResponse?, OneLineReviewError?) -> Void) {
+    public func testLogin(userData: UserLoginRequestData, completionHandler: @escaping (UserLoginSessionResponse?, OneLineReviewError?) -> Void) {
         guard let request = self.urlMaker.makeURLRequest(.login, userData) else {
             completionHandler(nil, OneLineReviewError.makeurl(description: "MAKE LOGIN REQUEST ERROR"))
             return
@@ -52,7 +52,7 @@ class OneLineReviewAPI {
         task.resume()
     }
     
-    public func uploadReviewData(uploadData: [String:Any], completionHandler: @escaping (UploadReviewResponse?, OneLineReviewError?) -> Void) {
+    public func uploadReviewData(uploadData: UserLoginRequestData, completionHandler: @escaping (UploadReviewResponse?, OneLineReviewError?) -> Void) {
         guard let request = self.urlMaker.makeURLRequest(.contentAdd, uploadData) else {
             completionHandler(nil, OneLineReviewError.makeurl(description: "MAKE UPLOAD REQUEST ERROR"))
             return

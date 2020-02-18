@@ -39,7 +39,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
             let userData = ["memberId":user.data!._id, "userId":user.data!._id]
             let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
             return req
-        }).bind(to: subject)
+        }).debug("@@ : loginDataBindFirstPage", trimOutput: true).bind(to: subject)
             .disposed(by: disposeBag)
     }
     

@@ -10,7 +10,6 @@ import UIKit
 import Firebase
 import RxSwift
 
-// facebook login logic 옮기기
 class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     
     var viewModel: LoginViewModel!
@@ -18,60 +17,61 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
     private let disposeBag = DisposeBag()
     
     @IBOutlet var testLogin: UIButton!
-    private var myCustomTestLoginButton: UITextField!
+    
+    private var emailTextField: UITextField!
+    private var pwTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     func setUpView() {
+        pwTextField = UITextField()
+        pwTextField.borderStyle = .line
+        view.addSubview(pwTextField)
+        pwTextField.translatesAutoresizingMaskIntoConstraints = false
+        pwTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        pwTextField.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
+        pwTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        pwTextField.bottomAnchor.constraint(equalTo: self.testLogin.topAnchor, constant: -10).isActive = true
         
-//        myCustomTestLoginButton = AllReviewLoginButton(frame: CGRect(x: 0, y: 0, width: 0, height: 0) , color: .yellow, logo: "KaKao")
-        myCustomTestLoginButton = UITextField()
-        view.addSubview(myCustomTestLoginButton)
-        myCustomTestLoginButton.translatesAutoresizingMaskIntoConstraints = false
-        myCustomTestLoginButton.heightAnchor.constraint(equalToConstant: 50).isActive = true
-        myCustomTestLoginButton.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
-        myCustomTestLoginButton.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
-        myCustomTestLoginButton.topAnchor.constraint(equalTo: self.testLogin.bottomAnchor, constant: 10).isActive = true
-        
-        let uiLabel = UILabel()
-        uiLabel.text("%")
-        
-        view.addSubview(uiLabel)
-        uiLabel.translatesAutoresizingMaskIntoConstraints = false
-        uiLabel.topAnchor.constraint(equalTo: self.myCustomTestLoginButton.topAnchor, constant: 5).isActive = true
-               uiLabel.trailingAnchor.constraint(equalTo: self.myCustomTestLoginButton.trailingAnchor, constant: -5).isActive = true
-               uiLabel.widthAnchor.constraint(equalToConstant: 20).isActive = true
-               uiLabel.heightAnchor.constraint(equalToConstant: 40).isActive = true
-        
-//        myCustomTestLoginButton.addTarget(self, action: #selector(customButtonTapped), for: .touchUpInside)
+        emailTextField = UITextField()
+        emailTextField.autocapitalizationType = .none
+        emailTextField.borderStyle = .line
+        view.addSubview(emailTextField)
+        emailTextField.translatesAutoresizingMaskIntoConstraints = false
+        emailTextField.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        emailTextField.widthAnchor.constraint(equalToConstant: self.view.bounds.width - 30).isActive = true
+        emailTextField.centerXAnchor.constraint(equalTo: self.view.centerXAnchor, constant: 0).isActive = true
+        emailTextField.bottomAnchor.constraint(equalTo: self.pwTextField.topAnchor, constant: -10).isActive = true
     }
     
-//    @objc func customButtonTapped() {
-//        myCustomTestLoginButton.shake()
-//    }
-    
     func setUpRx() {
-        
         self.viewModel.didFailSignIn
             .observeOn(MainScheduler.instance)
             .subscribe(onNext: { errMessage in
                 self.showToast(message: errMessage, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
                 self.view.isUserInteractionEnabled = true
             })
-            .disposed(by: self.viewModel.disposeBag)
+            .disposed(by: self.disposeBag)
         
         self.testLogin.rx.tap
             .bind{ [weak self] in
                 self?.view.isUserInteractionEnabled = false
                 self?.viewModel.testLoginTapped()
-        }.disposed(by: self.viewModel.disposeBag)
+        }.disposed(by: self.disposeBag)
         
-//        self.myCustomTestLoginButton.rx.controlEvent(.editingChanged).flatMap { () -> Observable<Void> in
-//            self.myCustomTestLoginButton.selectedTextRange = self.myCustomTestLoginButton.textRange(from: self.myCustomTestLoginButton.beginningOfDocument, to: self.myCustomTestLoginButton.position(from: self.myCustomTestLoginButton.endOfDocument, offset: -1)!)
-//            return Observable.just(())
-//            }.subscribe().disposed(by: disposeBag)
+        self.emailTextField.rx.text
+            .bind(to: self.viewModel.memberEmail)
+            .disposed(by: self.disposeBag)
+        
+        self.pwTextField.rx.text
+            .bind(to: self.viewModel.password)
+            .disposed(by: self.disposeBag)
+        
+//        self.viewModel.loginButtonEnabled
+//            .bind(to: self.testLogin.rx.isEnabled)
+//            .disposed(by: self.disposeBag)
         
     }
     

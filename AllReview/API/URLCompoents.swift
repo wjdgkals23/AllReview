@@ -29,6 +29,8 @@ enum OneLineReview: String {
 
 class OneLineReviewURL { // 기본 url 셋팅
     
+    private let encoder = JSONEncoder()
+    
     func makeRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
@@ -44,6 +46,7 @@ class OneLineReviewURL { // 기본 url 셋팅
                     let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)
                     request.httpBody = jsonData
                     observer.on(.next(request))
+                    observer.on(.completed)
                 } catch {
                     let error = err.makeurl(description: "rxMakeLoginURLComponents MAKE JSON ERR")
                     observer.on(.error(error))
@@ -57,11 +60,11 @@ class OneLineReviewURL { // 기본 url 셋팅
         }
     }
     
-    func makeURLRequest(_ path: OneLineReview, _ userData: [String:Any]) -> URLRequest? {
+    func makeURLRequest(_ path: OneLineReview, _ userData: UserLoginRequestData) -> URLRequest? {
         if let url = URL(string: Environment.rootURL + path.rawValue) {
             var request = self.makeRequest(url)
             do {
-                let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)
+                let jsonData = try encoder.encode(userData)
                 request.httpBody = jsonData
                 return request
             } catch {

@@ -31,6 +31,8 @@ class AddNewReviewViewModel: ViewModel{
     var isTitleValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     var isContentValid: BehaviorSubject<Bool> = BehaviorSubject(value: false)
     
+    var uploadButtonEnabled: Observable<Bool>!
+    
     var uploadData: [String:Any]!
     private var firstImage: UIImage!
     private var firstImageUrl: String!
@@ -38,25 +40,6 @@ class AddNewReviewViewModel: ViewModel{
     
     init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
         super.init(sceneCoordinator: sceneCoordinator)
-        
-        if let imageUrl = initData!["posterImage"]?.decodeUrl(), imageUrl != "", let movieName = initData!["movieKorName"]?.decodeUrl(), let movieId = initData!["naverMovieId"] {
-            firstImageUrl = imageUrl
-            uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": movieId, "starPoint": 5, "imageUrl": firstImageUrl, "oneLineReview": "", "detailReview": ""]
-            self.movieNameTextDriver = BehaviorSubject(value: movieName).asDriver(onErrorJustReturn: "")
-            
-            self.request.urlDataLoad(url: URL(string: firstImageUrl)!) { [weak self] (image, err) in
-                if let err = err {
-                    self?.errorHandleSubject.onNext(err.localizedDescription)
-                } else {
-                    self?.firstImage = image
-                    self?.imageViewImageSubject.onNext(image)
-                }
-            }
-            
-        } else {
-            uploadData = ["memberId": self.userLoginSession.getLoginData()?.data?._id, "movieId": "", "starPoint": 5, "imageUrl": "", "oneLineReview": "", "detailReview": ""]
-            self.movieNameTextDriver = BehaviorSubject(value: "").asDriver(onErrorJustReturn: "")
-        }
         
         _ = imageViewImageSubject.distinctUntilChanged()
             .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
@@ -84,36 +67,14 @@ class AddNewReviewViewModel: ViewModel{
                 self.uploadData["starPoint"] = point
             }).disposed(by: self.disposeBag)
         
+        uploadButtonEnabled = Observable.combineLatest(self.isImageValid, self.isTitleValid, self.isContentValid) {
+            $0 && $1 && $2
+        }.share(replay: 1)
+        
     }
     
     func upload() {
-        guard let image = try? self.imageViewImageSubject.value() else {
-            return
-        }
-        if image != self.firstImage {
-            self.request.uploadImageToFireBase(userId: (self.userLoginSession.getLoginData()?.data!._id)!, movieId: self.uploadData!["movieId"] as! String, image: image) { [weak self] (url, err) in
-                if let err = err {
-                    self?.errorHandleSubject.onNext(err.localizedDescription)
-                } else {
-                    self?.uploadData["imageUrl"] = url?.absoluteString
-                    self?.request.uploadReviewData(uploadData: self!.uploadData, completionHandler: { [weak self] (res, err) in
-                        if let err = err {
-                            self?.errorHandleSubject.onNext(err.localizedDescription)
-                        } else {
-                            self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: (res?.resultCode)!)!, userData: res!)
-                        }
-                    })
-                }
-            }
-        } else {
-            self.request.uploadReviewData(uploadData: self.uploadData, completionHandler: { [weak self] (res, err) in
-                if let err = err {
-                    self?.errorHandleSubject.onNext(err.localizedDescription)
-                } else {
-                    self?.uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse(rawValue: (res?.resultCode)!)!, userData: res!)
-                }
-            })
-        }
+        
     }
     
     private func uploadReviewResultCodeParse(resultCode: UploadReviewErrResponse, userData: UploadReviewResponse) {
