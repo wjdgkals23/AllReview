@@ -83,6 +83,8 @@ class LoginViewModel: ViewModel {
         self.memberId.onNext("5dfb37ca2ecde240f922da80")
         self.platformCode.onNext("EM")
         self.deviceCheckId.onNext("macos-yond")
+        self.password.onNext("alfkzmf1!")
+        self.memberEmail.onNext("ddd@naver.com")
     }
     
     private func loginResultCodeParse(resultCode: LoginErrResponse, userData: UserLoginSessionResponse) {

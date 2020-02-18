@@ -36,6 +36,7 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         pwTextField.bottomAnchor.constraint(equalTo: self.testLogin.topAnchor, constant: -10).isActive = true
         
         emailTextField = UITextField()
+        emailTextField.autocapitalizationType = .none
         emailTextField.borderStyle = .line
         view.addSubview(emailTextField)
         emailTextField.translatesAutoresizingMaskIntoConstraints = false
@@ -57,8 +58,6 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
         self.testLogin.rx.tap
             .bind{ [weak self] in
                 self?.view.isUserInteractionEnabled = false
-                self?.emailTextField
-                    .rx.text.orEmpty.bind(to: (self!.viewModel.memberId)).disposed(by: self!.disposeBag)
                 self?.viewModel.testLoginTapped()
         }.disposed(by: self.disposeBag)
         
@@ -70,9 +69,9 @@ class LoginViewController: UIViewController, OneLineRevieViewControllerType {
             .bind(to: self.viewModel.password)
             .disposed(by: self.disposeBag)
         
-        self.viewModel.loginButtonEnabled
-            .bind(to: self.testLogin.rx.isEnabled)
-            .disposed(by: self.disposeBag)
+//        self.viewModel.loginButtonEnabled
+//            .bind(to: self.testLogin.rx.isEnabled)
+//            .disposed(by: self.disposeBag)
         
     }
     

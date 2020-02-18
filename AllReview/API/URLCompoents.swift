@@ -46,6 +46,7 @@ class OneLineReviewURL { // 기본 url 셋팅
                     let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)
                     request.httpBody = jsonData
                     observer.on(.next(request))
+                    observer.on(.completed)
                 } catch {
                     let error = err.makeurl(description: "rxMakeLoginURLComponents MAKE JSON ERR")
                     observer.on(.error(error))

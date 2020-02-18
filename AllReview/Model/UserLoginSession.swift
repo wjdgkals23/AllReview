@@ -13,7 +13,7 @@ class UserLoginSession {
     
     static let sharedInstance = UserLoginSession()
     
-    let rxloginData = PublishSubject<UserLoginSessionResponse>()
+    let rxloginData = ReplaySubject<UserLoginSessionResponse>.create(bufferSize: 1)
     
     let requestingUserData = PublishSubject<UserLoginRequestData>()
     let parseResultResponseData = PublishSubject<UserLoginSessionResponse>()
@@ -33,7 +33,7 @@ class UserLoginSession {
 //        }).disposed(by: DisposeBag())
     }
     
-    public func getRxLoginData() -> PublishSubject<UserLoginSessionResponse>? {
+    public func getRxLoginData() -> ReplaySubject<UserLoginSessionResponse>? {
         return rxloginData
     }
 }
