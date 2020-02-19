@@ -20,24 +20,50 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     // mainURLRequest = Observable.combineLatest(mainURL, 로그인 데이터)
     // mainURL = 초기값[처음 로딩해야하는 화면에 대한 URL]을 가지고 있고, 자신이 발생한 navigation 메세지를 해석하는 구문에서 다음 URL을 받아야한다. => BehaviorSubject
     
-    var mainViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
-    var rankViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
-    var myViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
+    var mainURLRequest: Observable<URLRequest>?
+    var rankURLRequest: Observable<URLRequest>?
+    var myURLRequest: Observable<URLRequest>?
+    
+    let mainURL = BehaviorSubject<OneLineReview>(value: .mainMainView)
+    let rankURL = BehaviorSubject<OneLineReview>(value: .mainRankView)
+    let myURL = BehaviorSubject<OneLineReview>(value: .mainMyView)
+    
     var pushSearchViewSubject: PublishSubject<Void> = PublishSubject<Void>()
     
     var goToMyContentDetailViewSubject: PublishSubject<[String : String]> = PublishSubject<[String:String]>()
     
     var urlParseContext: ((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     
-    override init(sceneCoordinator: SceneCoordinatorType) {
-        super.init(sceneCoordinator: sceneCoordinator)
+    init(sceneCoordinator: SceneCoordinatorType) {
+        
+        super.init()
+        self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
+        
+        mainURLRequest = Observable.combineLatest(mainURL, self.userLoginSession.rxloginData)
+            .flatMap({ [weak self] (arg) -> Observable<URLRequest> in
+                let (url, userLoginData) = arg
+                return (self?.urlMaker.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id]) ?? Observable.empty())
+            })
+        
+        rankURLRequest = Observable.combineLatest(rankURL, self.userLoginSession.rxloginData)
+            .flatMap({ [weak self] (arg) -> Observable<URLRequest> in
+                let (url, userLoginData) = arg
+                return (self?.urlMaker.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id]) ?? Observable.empty())
+            })
+        
+        myURLRequest = Observable.combineLatest(myURL, self.userLoginSession.rxloginData)
+            .flatMap({ [weak self] (arg) -> Observable<URLRequest> in
+                let (url, userLoginData) = arg
+                return (self?.urlMaker.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id]) ?? Observable.empty())
+            })
         
         pushSearchViewSubject.subscribe(onNext: { _ in
             let searchVM = SearchMovieViewModel(keyword: nil)
             let searchScene = Scene.search(searchVM)
             
-            self.sceneCoordinator.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
+            self.sceneCoordinator?.transition(to: searchScene, using: .push, animated: false).subscribe().disposed(by: self.disposeBag)
         }).disposed(by: disposeBag)
+        
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:PublishSubject<URLRequest?>) {
@@ -69,7 +95,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
 
 extension MainViewModel: WebNavigationDelegateType {
     
-    convenience init() {
+    convenience init(value:String = "") {
         let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
         
         self.init(sceneCoordinator: coordinator)
@@ -99,15 +125,7 @@ extension MainViewModel: WebNavigationDelegateType {
                     let searchVM = SearchMovieViewModel(keyword: searchKeyword)
                     let searchScene = Scene.search(searchVM)
                     
-                    self?.sceneCoordinator.transition(to: searchScene, using: .push, animated: false)
-                }
-                else if((url?.contains("app://MemberContents"))!) {
-                    handler(.allow)
-                    self!.makePageURLRequest(.showMembersContents, queryDict, (self!.mainViewRequestSubject))
-                }
-                else if((url?.contains("app://MyContents"))!) {
-                    handler(.allow)
-                    self!.makePageURLRequest(.mainMyView, queryDict, (self!.mainViewRequestSubject))
+                    self?.sceneCoordinator?.transition(to: searchScene, using: .push, animated: false)
                 }
                 else if((url?.contains("app://ShareContent"))!) {
                     handler(.allow)
@@ -120,7 +138,7 @@ extension MainViewModel: WebNavigationDelegateType {
                     let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
                     let modalVM = ImageModalViewModel(sceneCoordinator: coordinator, image: capturedImage)
                     let modalScene = Scene.modal(modalVM)
-                    self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false).subscribe().disposed(by: self!.disposeBag)
+                    self?.sceneCoordinator?.transition(to: modalScene, using: .modal, animated: false).subscribe().disposed(by: self!.disposeBag)
                     
                 }
                 else {

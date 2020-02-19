@@ -75,42 +75,24 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
-        self.viewModel.mainViewRequestSubject.debug("@@ : mainViewRequestSubject").subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
-            self.webMainView.load(req)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
+        self.viewModel.mainURLRequest?.subscribe(onNext: { [weak self] request in
+            self?.webMainView.load(request)
+        }, onError: { [weak self] (error) in
+            self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
+        }).disposed(by: self.disposeBag)
         
-        self.viewModel.rankViewRequestSubject.debug("@@ : rankViewRequestSubject", trimOutput: true).subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
-            self.webRankView.load(req)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
+        self.viewModel.rankURLRequest?.subscribe(onNext: { [weak self] request in
+            self?.webRankView.load(request)
+        }, onError: { [weak self] (error) in
+            self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
+        }).disposed(by: self.disposeBag)
         
-        self.viewModel.myViewRequestSubject.debug("@@ : myViewRequestSubject").subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
-            self.webMyView.load(req)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel!.mainViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel!.rankViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel!.myViewRequestSubject)
-        
-        self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
-            if (!(self?.webMyView.isHidden)!) {
-                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
-            } else if(!(self?.webMainView.isHidden)!) {
-                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
-            } else {
-                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.rankViewRequestSubject)!))
-            }
-            }, onError: { [weak self] err in
-                self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
-        }).disposed(by: disposeBag)
+        self.viewModel.myURLRequest?.subscribe(onNext: { [weak self] request in
+            self?.webMyView.load(request)
+        }, onError: { [weak self] (error) in
+            self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
+        }).disposed(by: self.disposeBag)
+    
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
@@ -121,14 +103,9 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpWebView() {
-        let webMainViewWebConfigure = WKWebViewConfiguration()
-        let webRankViewWebConfigure = WKWebViewConfiguration()
-        let webMyViewWebConfigure = WKWebViewConfiguration()
-        
-        let cgRect = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
-        self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
-        self.webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
+        self.webMainView = WKWebView()
+        self.webRankView = WKWebView()
+        self.webMyView = WKWebView()
         
         self.viewList = [self.webMyView,self.webRankView,self.webMainView]
         
