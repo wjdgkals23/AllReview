@@ -24,7 +24,8 @@ class SearchMovieViewModel: ViewModel, WKNavigationDelegate {
     var urlParseContext: ((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     
     init(sceneCoordinator: SceneCoordinator, keyword: String?) {
-        super.init(sceneCoordinator: sceneCoordinator)
+        super.init()
+        self.sceneCoordinator = sceneCoordinator
         
         if keyword != nil {
             keywordTextSubject = BehaviorSubject(value: keyword?.decodeUrl())
@@ -86,7 +87,7 @@ extension SearchMovieViewModel: WebNavigationDelegateType {
                     let addNewVM = AddNewReviewViewModel(sceneCoordinator: coordinator, initData: queryDict)
                     let addNewScene = Scene.addnew(addNewVM)
                     
-                    self?.sceneCoordinator.transition(to: addNewScene, using: .push, animated: false)
+                    self?.sceneCoordinator?.transition(to: addNewScene, using: .push, animated: false)
                     return
                 }
                 else if((url?.contains("app://ExternalBrowser"))!) {

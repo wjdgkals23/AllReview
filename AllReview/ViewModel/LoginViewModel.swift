@@ -33,15 +33,16 @@ class LoginViewModel: ViewModel {
     
     let loginButtonEnabled: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     
-    override init(sceneCoordinator: SceneCoordinatorType) {
-        super.init(sceneCoordinator: sceneCoordinator)
+    init(sceneCoordinator: SceneCoordinatorType) {
+        super.init()
+        self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
         
         self.userLoginSession.rxloginData
             .subscribe { [weak self] (userData) in
                 let mainVM = MainViewModel()
                 let mainScene = Scene.main(mainVM)
                 
-                self?.sceneCoordinator.transition(to: mainScene, using: .root, animated: false)
+                self?.sceneCoordinator?.transition(to: mainScene, using: .root, animated: false)
         }.disposed(by: self.disposeBag)
         
         let loginDataObs = Observable.combineLatest(self.memberId, self.memberEmail, self.platformCode, self.deviceCheckId, self.password).flatMap { (memberId, memberEmail, platformCode, deviceCheckId, password) -> Observable<UserLoginRequestData> in

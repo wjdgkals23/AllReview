@@ -98,7 +98,7 @@ class SearchMovieViewController: UIViewController, OneLineRevieViewControllerTyp
                 self?.webSearchView.goBack()
                 return
             } else {
-                self?.viewModel.sceneCoordinator.close(animated: false).asObservable().subscribe(onError: { err in
+                self?.viewModel.sceneCoordinator?.close(animated: false).asObservable().subscribe(onError: { err in
                     self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil)
                 }, onCompleted: {
                     print("completed")

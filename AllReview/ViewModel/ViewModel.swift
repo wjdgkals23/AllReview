@@ -18,7 +18,7 @@ protocol WebNavigationDelegateType {
 
 class ViewModel: NSObject {
     
-    let sceneCoordinator: SceneCoordinator!
+    var sceneCoordinator: SceneCoordinator?
     
     var userLoginSession = UserLoginSession.sharedInstance
     let request = OneLineReviewAPI.sharedInstance
@@ -30,9 +30,7 @@ class ViewModel: NSObject {
     
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     
-    
-    init(sceneCoordinator: SceneCoordinatorType) {
-        self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
+    override init() {
         super.init()
     }
     
@@ -41,7 +39,7 @@ class ViewModel: NSObject {
     }
     
     public func closeViewController() {
-        self.sceneCoordinator.close(animated: false).subscribe(onCompleted: nil) { (err) in
+        self.sceneCoordinator?.close(animated: false).subscribe(onCompleted: nil) { (err) in
             print(err.localizedDescription)
         }.disposed(by: self.disposeBag)
     }

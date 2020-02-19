@@ -15,7 +15,8 @@ class ImageModalViewModel: ViewModel {
     var capturedImageSubject:BehaviorSubject<UIImage?> = BehaviorSubject<UIImage?>(value: nil)
     
     init(sceneCoordinator: SceneCoordinatorType, image: UIImage?) {
-        super.init(sceneCoordinator: sceneCoordinator)
+        super.init()
+        self.sceneCoordinator = sceneCoordinator as! SceneCoordinator
         self.capturedImageSubject.onNext(image)
     }
 }
