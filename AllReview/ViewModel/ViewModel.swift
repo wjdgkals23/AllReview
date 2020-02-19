@@ -26,7 +26,7 @@ class ViewModel: NSObject {
     var disposeBag = DisposeBag()
     var urlMaker = OneLineReviewURL()
 
-    let errorHandleSubject: PublishSubject<String> = PublishSubject<String>()
+    let errorHandleSubject = PublishSubject<String>()
     
     let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     

@@ -14,6 +14,12 @@ import WebKit
 
 class MainViewModel: ViewModel, WKNavigationDelegate {
     
+    // MainViewModel은 3가지의 웹뷰를 로딩해야한다.
+    // 웹뷰를 로딩하는 방식은 다음과 같이 설정한다. 예시로 mainWebView 설명
+    // mainURLReqeust = mainURL(수시로 변함) + 로그인 데이터(특정 이벤트 발생(로그아웃->로그인)전 까지 불변)
+    // mainURLRequest = Observable.combineLatest(mainURL, 로그인 데이터)
+    // mainURL = 초기값[처음 로딩해야하는 화면에 대한 URL]을 가지고 있고, 자신이 발생한 navigation 메세지를 해석하는 구문에서 다음 URL을 받아야한다. => BehaviorSubject
+    
     var mainViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
     var rankViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
     var myViewRequestSubject: PublishSubject<URLRequest?> = PublishSubject<URLRequest?>()
@@ -35,7 +41,7 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:PublishSubject<URLRequest?>) {
-        userLoginSession.getRxLoginData()?.flatMap({ [weak self] user -> Observable<URLRequest> in
+        userLoginSession.rxloginData.flatMap({ [weak self] user -> Observable<URLRequest> in
             let userData = ["memberId":user.data!._id, "userId":user.data!._id]
             let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
             return req
@@ -65,7 +71,9 @@ extension MainViewModel: WebNavigationDelegateType {
     
     convenience init() {
         let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+        
         self.init(sceneCoordinator: coordinator)
+        
         self.urlParseContext = { [weak self] (webView: WKWebView, response: WKNavigationAction, handler: (WKNavigationActionPolicy) -> Void) -> Void in
             
             let url = response.request.url?.absoluteString
