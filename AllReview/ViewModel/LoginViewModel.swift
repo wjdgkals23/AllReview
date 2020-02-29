@@ -37,7 +37,7 @@ class LoginViewModel: ViewModel {
         super.init()
         self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
         
-        self.userLoginSession.rxloginData
+        UserLoginSession.sharedInstance.rxloginData
             .subscribe { [weak self] (userData) in
                 let mainVM = MainViewModel()
                 let mainScene = Scene.main(mainVM)

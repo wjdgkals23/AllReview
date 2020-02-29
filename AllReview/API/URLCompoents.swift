@@ -27,19 +27,19 @@ enum OneLineReview: String {
     case contentAdd = "/content/ad"
 }
 
-class OneLineReviewURL { // 기본 url 셋팅
+struct OneLineReviewURL { // 기본 url 셋팅
     
-    private let encoder = JSONEncoder()
+    static private let encoder = JSONEncoder()
     
-    func makeRequest(_ url: URL) -> URLRequest {
+    static func makeRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         return request
     }
     
-    func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:Any]) -> Observable<URLRequest> {
-        return Observable.create { [unowned self] observer in
+    static func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:Any]) -> Observable<URLRequest> {
+        return Observable.create { observer in
             if let url = URL(string: Environment.rootURL + path.rawValue) {
                 var request = self.makeRequest(url)
                 do {
@@ -60,11 +60,11 @@ class OneLineReviewURL { // 기본 url 셋팅
         }
     }
     
-    func makeURLRequest(_ path: OneLineReview, _ userData: UserLoginRequestData) -> URLRequest? {
+    static func makeURLRequest(_ path: OneLineReview, _ userData: UserLoginRequestData) -> URLRequest? {
         if let url = URL(string: Environment.rootURL + path.rawValue) {
             var request = self.makeRequest(url)
             do {
-                let jsonData = try encoder.encode(userData)
+                let jsonData = try self.encoder.encode(userData)
                 request.httpBody = jsonData
                 return request
             } catch {
@@ -79,7 +79,7 @@ class OneLineReviewURL { // 기본 url 셋팅
         }
     }
     
-    func rxMakeUrlToRequest(_ url: String) -> Observable<URLRequest> {
+    static func rxMakeUrlToRequest(_ url: String) -> Observable<URLRequest> {
         return Observable.create { observer in
             if let url = URL(string: url) {
                 var request = self.makeRequest(url)

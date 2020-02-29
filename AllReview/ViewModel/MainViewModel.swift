@@ -20,13 +20,13 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     // mainURLRequest = Observable.combineLatest(mainURL, 로그인 데이터)
     // mainURL = 초기값[처음 로딩해야하는 화면에 대한 URL]을 가지고 있고, 자신이 발생한 navigation 메세지를 해석하는 구문에서 다음 URL을 받아야한다. => BehaviorSubject
     
-    var mainURLRequest: Observable<URLRequest>?
-    var rankURLRequest: Observable<URLRequest>?
-    var myURLRequest: Observable<URLRequest>?
+    var mainURLRequest: Observable<URLRequest>
+    var rankURLRequest: Observable<URLRequest>
+    var myURLRequest: Observable<URLRequest>
     
-    let mainURL = BehaviorSubject<OneLineReview>(value: .mainMainView)
-    let rankURL = BehaviorSubject<OneLineReview>(value: .mainRankView)
-    let myURL = BehaviorSubject<OneLineReview>(value: .mainMyView)
+    let mainURL = Observable<OneLineReview>.just(.mainMainView)
+    let rankURL = Observable<OneLineReview>.just(.mainRankView)
+    let myURL = Observable<OneLineReview>.just(.mainMyView)
     
     var pushSearchViewSubject: PublishSubject<Void> = PublishSubject<Void>()
     
@@ -35,27 +35,26 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     var urlParseContext: ((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     
     init(sceneCoordinator: SceneCoordinatorType) {
+        mainURLRequest = Observable.combineLatest(mainURL, UserLoginSession.sharedInstance.rxloginData)
+            .flatMap({ (arg) -> Observable<URLRequest> in
+                let (url, userLoginData) = arg
+                return OneLineReviewURL.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id])
+            })
+        
+        rankURLRequest = Observable.combineLatest(rankURL, UserLoginSession.sharedInstance.rxloginData)
+            .flatMap({ (arg) -> Observable<URLRequest> in
+                let (url, userLoginData) = arg
+                return OneLineReviewURL.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id])
+            })
+        
+        myURLRequest = Observable.combineLatest(myURL, UserLoginSession.sharedInstance.rxloginData)
+            .flatMap({ (arg) -> Observable<URLRequest> in
+                let (url, userLoginData) = arg
+                return OneLineReviewURL.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id])
+            })
         
         super.init()
         self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
-        
-        mainURLRequest = Observable.combineLatest(mainURL, self.userLoginSession.rxloginData)
-            .flatMap({ [weak self] (arg) -> Observable<URLRequest> in
-                let (url, userLoginData) = arg
-                return (self?.urlMaker.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id]) ?? Observable.empty())
-            })
-        
-        rankURLRequest = Observable.combineLatest(rankURL, self.userLoginSession.rxloginData)
-            .flatMap({ [weak self] (arg) -> Observable<URLRequest> in
-                let (url, userLoginData) = arg
-                return (self?.urlMaker.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id]) ?? Observable.empty())
-            })
-        
-        myURLRequest = Observable.combineLatest(myURL, self.userLoginSession.rxloginData)
-            .flatMap({ [weak self] (arg) -> Observable<URLRequest> in
-                let (url, userLoginData) = arg
-                return (self?.urlMaker.rxMakeURLRequestObservable(url, ["memberId": userLoginData.data?._id, "userId":userLoginData.data!._id]) ?? Observable.empty())
-            })
         
         pushSearchViewSubject.subscribe(onNext: { _ in
             let searchVM = SearchMovieViewModel(keyword: nil)
@@ -67,9 +66,9 @@ class MainViewModel: ViewModel, WKNavigationDelegate {
     }
     
     public func loginDataBindFirstPage(_ urlTarget:OneLineReview, _ subject:PublishSubject<URLRequest?>) {
-        userLoginSession.rxloginData.flatMap({ [weak self] user -> Observable<URLRequest> in
+        UserLoginSession.sharedInstance.rxloginData.flatMap({ user -> Observable<URLRequest> in
             let userData = ["memberId":user.data!._id, "userId":user.data!._id]
-            let req = (self?.urlMaker.rxMakeURLRequestObservable(urlTarget, userData))!
+            let req = OneLineReviewURL.rxMakeURLRequestObservable(urlTarget, userData)
             return req
         }).debug("@@ : loginDataBindFirstPage", trimOutput: true).bind(to: subject)
             .disposed(by: disposeBag)
@@ -112,9 +111,9 @@ extension MainViewModel: WebNavigationDelegateType {
                 let temp = String((url?[index!...])!)
                 var queryDict:[String: String] = [:]
                 if temp != "" {
-                    queryDict = temp.parseQueryString()
+                    queryDict = temp.parseQueryString() // queryDict가 Parse를 못하는 상황이 있을수도!!
                 }
-                    
+                
                 if((url?.contains("app://SearchMovie"))!) {
                     handler(.allow)
                     var searchKeyword: String? = nil
@@ -149,3 +148,4 @@ extension MainViewModel: WebNavigationDelegateType {
         }
     }
 }
+

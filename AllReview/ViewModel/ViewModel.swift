@@ -19,8 +19,7 @@ protocol WebNavigationDelegateType {
 class ViewModel: NSObject {
     
     var sceneCoordinator: SceneCoordinator?
-    
-    var userLoginSession = UserLoginSession.sharedInstance
+
     let request = OneLineReviewAPI.sharedInstance
     var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     var disposeBag = DisposeBag()
@@ -32,10 +31,6 @@ class ViewModel: NSObject {
     
     override init() {
         super.init()
-    }
-    
-    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: PublishSubject<URLRequest?>) {
-        self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
     }
     
     public func closeViewController() {

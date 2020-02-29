@@ -75,19 +75,19 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             .subscribe(onNext: self.viewModel.urlParseContext!)
             .disposed(by: disposeBag)
         
-        self.viewModel.mainURLRequest?.subscribe(onNext: { [weak self] request in
+        self.viewModel.mainURLRequest.subscribe(onNext: { [weak self] request in
             self?.webMainView.load(request)
         }, onError: { [weak self] (error) in
             self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
         }).disposed(by: self.disposeBag)
         
-        self.viewModel.rankURLRequest?.subscribe(onNext: { [weak self] request in
+        self.viewModel.rankURLRequest.subscribe(onNext: { [weak self] request in
             self?.webRankView.load(request)
         }, onError: { [weak self] (error) in
             self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
         }).disposed(by: self.disposeBag)
         
-        self.viewModel.myURLRequest?.subscribe(onNext: { [weak self] request in
+        self.viewModel.myURLRequest.subscribe(onNext: { [weak self] request in
             self?.webMyView.load(request)
         }, onError: { [weak self] (error) in
             self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
