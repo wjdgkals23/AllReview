@@ -16,7 +16,7 @@ protocol WebNavigationDelegateType {
     var urlParseContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)? { get }
 }
 
-class ViewModel: NSObject { // 너 없어질듯....ㅋㅋㅋ
+class ViewModel: NSObject {
     
     var sceneCoordinator: SceneCoordinator?
 
@@ -38,7 +38,7 @@ class ViewModel: NSObject { // 너 없어질듯....ㅋㅋㅋ
 
 protocol OneLineReviewViewModel {
     var sceneCoordinator: SceneCoordinator { get }
-    var disposeBag: DisposeBag { get } 
+    var disposeBag: DisposeBag { get }
 }
 
 extension OneLineReviewViewModel {
