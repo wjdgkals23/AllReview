@@ -14,42 +14,43 @@ import WebKit
 
 class SearchMovieViewModel: ViewModel, WKNavigationDelegate {
     
-    var keywordTextSubject: BehaviorSubject<String?>!
-    var searchBarSubject: BehaviorSubject<Bool>!
-    var searchButtonEnabledDriver: Driver<Bool>!
-    var keywordTextDriver: Driver<String?>!
+    // SearchViewModel은 검색어를 통해 웹뷰를 교체하는 기능을 한다.
+    // searchURLReqeust = 버튼이벤트감지(지속적으로 탐지) + 로그인 정보를 끌어온다(withLatestFrom)
     
-    var searchResultSubject: BehaviorSubject<URLRequest?> = BehaviorSubject(value: nil)
+    var keywordTextSubject: BehaviorSubject<String?>
+    var searchButtonEnabledDriver: Driver<Bool> // 글자가 1개 이상 있어야 확인가능하다!! ++ 검색결과가 없을 때를 Parse 해서 이쁘게 처리할 수 있지 않을까!?!?
+    var keywordTextDriver: Driver<String?>
+    
+    var searchResult: Observable<URLRequest>
+    var buttonTapped: PublishSubject<Void> = PublishSubject<Void>()
     
     var urlParseContext: ((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)?
     
     init(sceneCoordinator: SceneCoordinator, keyword: String?) {
-        super.init()
-        self.sceneCoordinator = sceneCoordinator
-        
         if keyword != nil {
             keywordTextSubject = BehaviorSubject(value: keyword?.decodeUrl())
-//            self.searchKeywordBindResultPage(.searchMovie, (keyword?.decodeUrl())!)
         } else {
             keywordTextSubject = BehaviorSubject(value: "")
         }
         
-        let searchButtonEnabledObservable:Observable<Bool> = keywordTextSubject.distinctUntilChanged().flatMap { (keyword) -> Observable<Bool> in
-            return Observable.create { (obs) -> Disposable in
-                if let keyWord = keyword {
-                    let searchButtonEnabled = keyWord.count > 0
-                    obs.onNext(searchButtonEnabled)
-                    return Disposables.create()
-                } else {
-                    obs.onError(OneLineReviewError.parsing(description: "KeyWordParse ERROR"))
-                    return Disposables.create()
-                }
+        let searchButtonEnabledObservable:Observable<Bool> = keywordTextSubject.distinctUntilChanged()
+            .map { str in
+                guard let string = str else { return false }
+                return string.count > 1
             }
-        }
+        
+        searchResult = Observable.combineLatest(UserLoginSession.sharedInstance.rxloginData.asObservable(), keywordTextSubject.asObservable())
+            .flatMap{ loginData, keyword in
+                OneLineReviewURL.rxMakeURLRequestObservable(.searchMovie, ["queryMovieName": keyword, "userId": loginData.data?._id])
+            }
+
+            
         
         keywordTextDriver = keywordTextSubject.asDriver(onErrorJustReturn: "")
         searchButtonEnabledDriver = searchButtonEnabledObservable.asDriver(onErrorJustReturn: false)
-    
+        
+        super.init()
+        self.sceneCoordinator = sceneCoordinator
     }
     
 //    public func searchKeywordBindResultPage(_ urlTarget:OneLineReview, _ keyWord:String) {

@@ -62,19 +62,6 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpRx() {
-
-        self.webMainView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParseContext!)
-            .disposed(by: disposeBag)
-        
-        self.webMyView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParseContext!)
-            .disposed(by: disposeBag)
-        
-        self.webRankView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParseContext!)
-            .disposed(by: disposeBag)
-        
         self.viewModel.mainURLRequest.subscribe(onNext: { [weak self] request in
             self?.webMainView.load(request)
         }, onError: { [weak self] (error) in
@@ -91,7 +78,7 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             self?.webMyView.load(request)
         }, onError: { [weak self] (error) in
             self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
-        }).disposed(by: self.disposeBag)
+        }).disposed(by: self.disposeBag) 
     
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
@@ -113,9 +100,9 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             self.containerView.addSubview(item)
         }
         
-        self.webMainView.navigationDelegate = self.viewModel
-        self.webMyView.navigationDelegate = self.viewModel
-        self.webRankView.navigationDelegate = self.viewModel
+        self.webMainView.navigationDelegate = self
+        self.webMyView.navigationDelegate = self
+        self.webRankView.navigationDelegate = self
         
         self.webMainView.isHidden = false
         self.webMyView.isHidden = true
@@ -169,4 +156,53 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
         self.showToast(message: "로그인/로그아웃/리뷰등록 만 남았다!", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil)
     }
     
+}
+
+extension MainViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url?.absoluteString
+        
+        if((url?.contains("https://www.teammiracle.be"))!) {
+            decisionHandler(.allow)
+            return
+        } else {
+            let index = url?.firstIndex(of: "?") ?? url?.endIndex
+            let temp = String((url?[index!...])!)
+            var queryDict:[String: String] = [:]
+            if temp != "" {
+                queryDict = temp.parseQueryString() // queryDict가 Parse를 못하는 상황이 있을수도!!
+            }
+            
+            if((url?.contains("app://SearchMovie"))!) {
+                decisionHandler(.allow)
+                var searchKeyword: String? = nil
+                if let ind = index, ind != url!.endIndex {
+                    searchKeyword = queryDict["movieNm"]
+                }
+                
+                let searchVM = SearchMovieViewModel(keyword: searchKeyword)
+                let searchScene = Scene.search(searchVM)
+                
+                self.viewModel.sceneCoordinator.transition(to: searchScene, using: .push, animated: false)
+            }
+            else if((url?.contains("app://ShareContent"))!) {
+                decisionHandler(.allow)
+                print(queryDict["url"]?.decodeUrl())
+            }
+            else if((url?.contains("app://ShareScreenshot"))!) {
+                decisionHandler(.allow)
+//                let capturedImage = self.takeScreenShot()
+                
+//                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+//                let modalVM = ImageModalViewModel(sceneCoordinator: coordinator, image: capturedImage)
+//                let modalScene = Scene.modal(modalVM)
+//                self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false).subscribe().disposed(by: self!.disposeBag)
+                
+            }
+            else {
+                decisionHandler(.allow)
+                return
+            }
+        }
+    }
 }

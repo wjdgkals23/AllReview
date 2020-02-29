@@ -77,12 +77,12 @@ class SearchMovieViewController: UIViewController, OneLineRevieViewControllerTyp
             .drive(self.searchButton.rx.isEnabled)
             .disposed(by: self.viewModel.disposeBag)
         
-        self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
-            guard let req = request else { return }
-            self.webSearchView.load(req)
-        }, onError: { (err) in
-            print("Error \(err.localizedDescription)")
-        }).disposed(by: self.viewModel.disposeBag)
+//        self.viewModel.searchResultSubject.asObservable().subscribe(onNext: { (request) in // DistinctChanged 를 못받는 이유는 URLRequest의 메인 host와 scheme이 변하지 않아서
+//            guard let req = request else { return }
+//            self.webSearchView.load(req)
+//        }, onError: { (err) in
+//            print("Error \(err.localizedDescription)")
+//        }).disposed(by: self.viewModel.disposeBag)
         
         self.webSearchView.rx.decidePolicyNavigationAction
             .subscribe(onNext: self.viewModel.urlParseContext!)

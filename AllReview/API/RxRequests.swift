@@ -20,7 +20,7 @@ typealias err = OneLineReviewError
 
 class OneLineReviewAPI {
     
-    static let sharedInstance = OneLineReviewAPI()
+    static let sharedInstance = OneLineReviewAPI() // API call은 SharedInstance가 맞을듯!!
 
     private var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     private var disaposable = DisposeBag()

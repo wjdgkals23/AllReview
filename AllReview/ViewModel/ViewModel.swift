@@ -16,18 +16,13 @@ protocol WebNavigationDelegateType {
     var urlParseContext:((WKWebView, WKNavigationAction, (WKNavigationActionPolicy) -> Void) -> Void)? { get }
 }
 
-class ViewModel: NSObject {
+class ViewModel: NSObject { // 너 없어질듯....ㅋㅋㅋ
     
     var sceneCoordinator: SceneCoordinator?
 
-    let request = OneLineReviewAPI.sharedInstance
-    var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     var disposeBag = DisposeBag()
-    var urlMaker = OneLineReviewURL()
 
     let errorHandleSubject = PublishSubject<String>()
-    
-    let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
     
     override init() {
         super.init()
@@ -39,4 +34,13 @@ class ViewModel: NSObject {
         }.disposed(by: self.disposeBag)
     }
     
+}
+
+protocol OneLineReviewViewModel {
+    var sceneCoordinator: SceneCoordinator { get }
+    var disposeBag: DisposeBag { get } 
+}
+
+extension OneLineReviewViewModel {
+
 }

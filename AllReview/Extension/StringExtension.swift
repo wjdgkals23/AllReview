@@ -10,7 +10,7 @@ import Foundation
 
 extension String {
     func parseQueryString() -> [String:String] {
-        var temp = self
+        var temp = self // struct 이라 괜찮
         temp.removeFirst()
         
         var returnDict = Dictionary<String,String>()
@@ -18,7 +18,7 @@ extension String {
         
         for item in tempArray {
             let fix = item.firstIndex(of: "=")
-            let beforeFix = item.index(before: fix!)
+            let beforeFix = item.index(before: fix!) // 위험?!?!
             let afterFix = item.index(after: fix!)
             let startIndex = item.startIndex
             let endIndex = item.endIndex
