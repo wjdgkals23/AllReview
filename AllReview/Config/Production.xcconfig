@@ -10,6 +10,7 @@
 // https://help.apple.com/xcode/#/dev745c5c974
 #include "Pods/Target Support Files/Pods-AllReview/Pods-AllReview.release (production).xcconfig"
 
+VIEW_URL = https:/$()/view.teammiracle.be
 ROOT_URL = https:/$()/www.teammiracle.be
 
 APP_NAME = OneLineReview

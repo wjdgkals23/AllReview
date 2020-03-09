@@ -13,6 +13,7 @@ public enum Environment {
     enum Keys {
       enum Plist {
         static let rootURL = "ROOT_URL"
+        static let viewURL = "VIEW_URL"
       }
     }
 
@@ -24,10 +25,17 @@ public enum Environment {
     }()
     
     static let rootURL: String = {
-        guard let rootURLstring = Environment.infoDict["ROOT_URL"] as? String else {
+        guard let rootURLString = Environment.infoDict["ROOT_URL"] as? String else {
             fatalError("Root URL not set in plist for this environment")
         }
-        return rootURLstring
+        return rootURLString
+    }()
+    
+    static let viewURL: String = {
+        guard let viewURLString = Environment.infoDict["VIEW_URL"] as? String else {
+            fatalError("View URL not set in plist for this environment")
+        }
+        return viewURLString
     }()
     
 }
