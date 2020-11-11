@@ -39,7 +39,8 @@ class AddNewReviewViewModel: ViewModel{
     private var movieId: String!
     
     init(sceneCoordinator: SceneCoordinator, initData: [String:String]?) {
-        super.init(sceneCoordinator: sceneCoordinator)
+        super.init()
+        self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
         
         _ = imageViewImageSubject.distinctUntilChanged()
             .throttle(.milliseconds(100), scheduler: MainScheduler.instance)
@@ -85,7 +86,7 @@ class AddNewReviewViewModel: ViewModel{
                 let mainNewVM = MainViewModel(sceneCoordinator: coordinator)
                 let mainNewScene = Scene.main(mainNewVM)
                 
-                self.sceneCoordinator.transition(to: mainNewScene, using: .root, animated: false)
+                self.sceneCoordinator?.transition(to: mainNewScene, using: .root, animated: false)
             default:
                 self.errorHandleSubject.onNext(userData.resultMsg)
             }
@@ -98,7 +99,7 @@ class AddNewReviewViewModel: ViewModel{
         let mainNewVM = MainViewModel(sceneCoordinator: coordinator)
         let mainNewScene = Scene.main(mainNewVM)
         
-        self.sceneCoordinator.transition(to: mainNewScene, using: .root, animated: false)
+        self.sceneCoordinator?.transition(to: mainNewScene, using: .root, animated: false)
     }
     
     

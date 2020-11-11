@@ -62,55 +62,24 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpRx() {
-
-        self.webMainView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParseContext!)
-            .disposed(by: disposeBag)
+        self.viewModel.mainURLRequest.subscribe(onNext: { [weak self] request in
+            self?.webMainView.load(request)
+        }, onError: { [weak self] (error) in
+            self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
+        }).disposed(by: self.disposeBag)
         
-        self.webMyView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParseContext!)
-            .disposed(by: disposeBag)
+        self.viewModel.rankURLRequest.subscribe(onNext: { [weak self] request in
+            self?.webRankView.load(request)
+        }, onError: { [weak self] (error) in
+            self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
+        }).disposed(by: self.disposeBag)
         
-        self.webRankView.rx.decidePolicyNavigationAction.asObservable()
-            .subscribe(onNext: self.viewModel.urlParseContext!)
-            .disposed(by: disposeBag)
-        
-        self.viewModel.mainViewRequestSubject.debug("@@ : mainViewRequestSubject").subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
-            self.webMainView.load(req)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.rankViewRequestSubject.debug("@@ : rankViewRequestSubject", trimOutput: true).subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
-            self.webRankView.load(req)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.myViewRequestSubject.debug("@@ : myViewRequestSubject").subscribe(onNext: { (request) in
-            guard let req = request else { return self.showToast(message: "메인화면 로드 실패", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil) }
-            self.webMyView.load(req)
-        }, onError: { (err) in
-            print("Err \(err)")
-        }).disposed(by: disposeBag)
-        
-        self.viewModel.loginDataBindFirstPage(.mainMainView, self.viewModel!.mainViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainRankView, self.viewModel!.rankViewRequestSubject)
-        self.viewModel.loginDataBindFirstPage(.mainMyView, self.viewModel!.myViewRequestSubject)
-        
-        self.viewModel.goToMyContentDetailViewSubject.subscribe(onNext: { [weak self] query in
-            if (!(self?.webMyView.isHidden)!) {
-                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.myViewRequestSubject)!))
-            } else if(!(self?.webMainView.isHidden)!) {
-                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.mainViewRequestSubject)!))
-            } else {
-                self?.viewModel.makePageURLRequest(.contentDetailView, query, ((self?.viewModel.rankViewRequestSubject)!))
-            }
-            }, onError: { [weak self] err in
-                self?.showToast(message: err.localizedDescription, font: UIFont.systemFont(ofSize: 17, weight: .semibold), completion: nil)
-        }).disposed(by: disposeBag)
+        self.viewModel.myURLRequest.subscribe(onNext: { [weak self] request in
+            self?.webMyView.load(request)
+        }, onError: { [weak self] (error) in
+            self?.showToast(message: error.localizedDescription, font: UIFont.systemFont(ofSize: 18, weight: .bold), completion: nil)
+        }).disposed(by: self.disposeBag) 
+    
         
         self.mainViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.mainViewButton) }.disposed(by: self.viewModel.disposeBag)
         self.rankViewButton.rx.tap.bind{ [weak self] in self?.statusSettingFunc(self!.rankViewButton) }.disposed(by: self.viewModel.disposeBag)
@@ -121,14 +90,9 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
     }
     
     func setUpWebView() {
-        let webMainViewWebConfigure = WKWebViewConfiguration()
-        let webRankViewWebConfigure = WKWebViewConfiguration()
-        let webMyViewWebConfigure = WKWebViewConfiguration()
-        
-        let cgRect = CGRect(x: 0, y: 0, width: 0, height: 0)
-        self.webMainView = WKWebView(frame: cgRect, configuration: webMainViewWebConfigure)
-        self.webRankView = WKWebView(frame: cgRect, configuration: webRankViewWebConfigure)
-        self.webMyView = WKWebView(frame: cgRect, configuration: webMyViewWebConfigure)
+        self.webMainView = WKWebView()
+        self.webRankView = WKWebView()
+        self.webMyView = WKWebView()
         
         self.viewList = [self.webMyView,self.webRankView,self.webMainView]
         
@@ -136,9 +100,9 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
             self.containerView.addSubview(item)
         }
         
-        self.webMainView.navigationDelegate = self.viewModel
-        self.webMyView.navigationDelegate = self.viewModel
-        self.webRankView.navigationDelegate = self.viewModel
+        self.webMainView.navigationDelegate = self
+        self.webMyView.navigationDelegate = self
+        self.webRankView.navigationDelegate = self
         
         self.webMainView.isHidden = false
         self.webMyView.isHidden = true
@@ -192,4 +156,53 @@ class MainViewController: UIViewController, OneLineRevieViewControllerType {
         self.showToast(message: "로그인/로그아웃/리뷰등록 만 남았다!", font: UIFont.systemFont(ofSize: 18, weight: .semibold), completion: nil)
     }
     
+}
+
+extension MainViewController: WKNavigationDelegate {
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        let url = navigationAction.request.url?.absoluteString
+        
+        if((url?.contains("https://www.teammiracle.be"))!) {
+            decisionHandler(.allow)
+            return
+        } else {
+            let index = url?.firstIndex(of: "?") ?? url?.endIndex
+            let temp = String((url?[index!...])!)
+            var queryDict:[String: String] = [:]
+            if temp != "" {
+                queryDict = temp.parseQueryString() // queryDict가 Parse를 못하는 상황이 있을수도!!
+            }
+            
+            if((url?.contains("app://SearchMovie"))!) {
+                decisionHandler(.allow)
+                var searchKeyword: String? = nil
+                if let ind = index, ind != url!.endIndex {
+                    searchKeyword = queryDict["movieNm"]
+                }
+                
+                let searchVM = SearchMovieViewModel(keyword: searchKeyword)
+                let searchScene = Scene.search(searchVM)
+                
+                self.viewModel.sceneCoordinator.transition(to: searchScene, using: .push, animated: false)
+            }
+            else if((url?.contains("app://ShareContent"))!) {
+                decisionHandler(.allow)
+                print(queryDict["url"]?.decodeUrl())
+            }
+            else if((url?.contains("app://ShareScreenshot"))!) {
+                decisionHandler(.allow)
+//                let capturedImage = self.takeScreenShot()
+                
+//                let coordinator = SceneCoordinator.init(window: UIApplication.shared.keyWindow!)
+//                let modalVM = ImageModalViewModel(sceneCoordinator: coordinator, image: capturedImage)
+//                let modalScene = Scene.modal(modalVM)
+//                self?.sceneCoordinator.transition(to: modalScene, using: .modal, animated: false).subscribe().disposed(by: self!.disposeBag)
+                
+            }
+            else {
+                decisionHandler(.allow)
+                return
+            }
+        }
+    }
 }

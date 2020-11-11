@@ -18,32 +18,29 @@ protocol WebNavigationDelegateType {
 
 class ViewModel: NSObject {
     
-    let sceneCoordinator: SceneCoordinator!
-    
-    var userLoginSession = UserLoginSession.sharedInstance
-    let request = OneLineReviewAPI.sharedInstance
-    var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
-    var disposeBag = DisposeBag()
-    var urlMaker = OneLineReviewURL()
+    var sceneCoordinator: SceneCoordinator?
 
-    let errorHandleSubject: PublishSubject<String> = PublishSubject<String>()
+    var disposeBag = DisposeBag()
+
+    let errorHandleSubject = PublishSubject<String>()
     
-    let goToNewViewControllerReviewSubject = PublishSubject<(String,[String:String?])>()
-    
-    
-    init(sceneCoordinator: SceneCoordinatorType) {
-        self.sceneCoordinator = sceneCoordinator as? SceneCoordinator
+    override init() {
         super.init()
     }
     
-    public func makePageURLRequest(_ urlTarget:OneLineReview, _ param:[String:String], _ target: PublishSubject<URLRequest?>) {
-        self.urlMaker.rxMakeURLRequestObservable(urlTarget, param).bind(to: target).disposed(by: disposeBag)
-    }
-    
     public func closeViewController() {
-        self.sceneCoordinator.close(animated: false).subscribe(onCompleted: nil) { (err) in
+        self.sceneCoordinator?.close(animated: false).subscribe(onCompleted: nil) { (err) in
             print(err.localizedDescription)
         }.disposed(by: self.disposeBag)
     }
     
+}
+
+protocol OneLineReviewViewModel {
+    var sceneCoordinator: SceneCoordinator { get }
+    var disposeBag: DisposeBag { get }
+}
+
+extension OneLineReviewViewModel {
+
 }

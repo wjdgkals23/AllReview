@@ -20,7 +20,7 @@ typealias err = OneLineReviewError
 
 class OneLineReviewAPI {
     
-    static let sharedInstance = OneLineReviewAPI()
+    static let sharedInstance = OneLineReviewAPI() // API call은 SharedInstance가 맞을듯!!
 
     private var backgroundScheduler = SerialDispatchQueueScheduler(qos: .default)
     private var disaposable = DisposeBag()
@@ -37,7 +37,7 @@ class OneLineReviewAPI {
     }
     
     public func testLogin(userData: UserLoginRequestData, completionHandler: @escaping (UserLoginSessionResponse?, OneLineReviewError?) -> Void) {
-        guard let request = self.urlMaker.makeURLRequest(.login, userData) else {
+        guard let request = OneLineReviewURL.makeURLRequest(.login, userData) else {
             completionHandler(nil, OneLineReviewError.makeurl(description: "MAKE LOGIN REQUEST ERROR"))
             return
         }
@@ -53,7 +53,7 @@ class OneLineReviewAPI {
     }
     
     public func uploadReviewData(uploadData: UserLoginRequestData, completionHandler: @escaping (UploadReviewResponse?, OneLineReviewError?) -> Void) {
-        guard let request = self.urlMaker.makeURLRequest(.contentAdd, uploadData) else {
+        guard let request = OneLineReviewURL.makeURLRequest(.contentAdd, uploadData) else {
             completionHandler(nil, OneLineReviewError.makeurl(description: "MAKE UPLOAD REQUEST ERROR"))
             return
         }

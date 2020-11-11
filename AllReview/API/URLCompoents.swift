@@ -18,39 +18,43 @@ enum OneLineReviewError: Error {
 enum OneLineReview: String {
     case login = "/member/login"
     case register = "/member/add"
-    case mainRankView = "/page/boxOfficePage"
-    case mainMainView = "/page/mainIndexPage"
-    case mainMyView = "/mainList/showMyPage"
-    case contentDetailView = "/mainList/showContentDetail"
-    case searchMovie = "/naverapi/searchedMovieList"
-    case showMembersContents = "/mainList/showMemberPage"
+    case mainRankView = "/page/BoxOfficePage"
+    case mainMainView = "/page/MainIndexPage"
+    case mainMyView = "/mainList/ShowMyPage"
+    case contentDetailView = "/mainList/ShowContentDetail"
+    case searchMovie = "/naverapi/SearchedMovieList"
+    case showMembersContents = "/mainList/ShowMemberPage"
     case contentAdd = "/content/ad"
 }
 
-class OneLineReviewURL { // 기본 url 셋팅
+struct OneLineReviewURL { // 기본 url 셋팅
     
-    private let encoder = JSONEncoder()
+    static private let encoder = JSONEncoder()
     
-    func makeRequest(_ url: URL) -> URLRequest {
+    static func makePostRequest(_ url: URL) -> URLRequest {
         var request = URLRequest(url: url)
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
         request.httpMethod = "POST"
         return request
     }
     
-    func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:Any]) -> Observable<URLRequest> {
-        return Observable.create { [unowned self] observer in
-            if let url = URL(string: Environment.rootURL + path.rawValue) {
-                var request = self.makeRequest(url)
-                do {
-                    let jsonData = try JSONSerialization.data(withJSONObject: userData, options: .fragmentsAllowed)
-                    request.httpBody = jsonData
-                    observer.on(.next(request))
-                    observer.on(.completed)
-                } catch {
-                    let error = err.makeurl(description: "rxMakeLoginURLComponents MAKE JSON ERR")
-                    observer.on(.error(error))
-                }
+    static func makeGetRequest(_ url: URL, _ parameters: [String:Any]) -> URLRequest {
+        var components = URLComponents(string: url.absoluteString)
+        components?.queryItems = parameters.map { (arg) -> URLQueryItem in
+            let (key, value) = arg
+            return URLQueryItem(name: key, value: value as? String)
+        }
+        components!.percentEncodedQuery = components?.percentEncodedQuery?.replacingOccurrences(of: "+", with: "%2B")
+        let request = URLRequest(url: (components?.url)!)
+        return request
+    }
+    
+    static func rxMakeURLRequestObservable(_ path: OneLineReview, _ userData: [String:Any]) -> Observable<URLRequest> {
+        return Observable.create { observer in
+            if let url = URL(string: Environment.viewURL + path.rawValue) {
+                var request = self.makeGetRequest(url, userData)
+                observer.on(.next(request))
+                observer.on(.completed)
                 return Disposables.create()
             } else {
                 let error = err.makeurl(description: "rxMakeLoginURLComponents MAKE ERR")
@@ -60,11 +64,11 @@ class OneLineReviewURL { // 기본 url 셋팅
         }
     }
     
-    func makeURLRequest(_ path: OneLineReview, _ userData: UserLoginRequestData) -> URLRequest? {
+    static func makeURLRequest(_ path: OneLineReview, _ userData: UserLoginRequestData) -> URLRequest? {
         if let url = URL(string: Environment.rootURL + path.rawValue) {
-            var request = self.makeRequest(url)
+            var request = self.makePostRequest(url)
             do {
-                let jsonData = try encoder.encode(userData)
+                let jsonData = try self.encoder.encode(userData)
                 request.httpBody = jsonData
                 return request
             } catch {
@@ -79,10 +83,10 @@ class OneLineReviewURL { // 기본 url 셋팅
         }
     }
     
-    func rxMakeUrlToRequest(_ url: String) -> Observable<URLRequest> {
+    static func rxMakeUrlToRequest(_ url: String) -> Observable<URLRequest> {
         return Observable.create { observer in
             if let url = URL(string: url) {
-                var request = self.makeRequest(url)
+                var request = self.makePostRequest(url)
                 request.httpMethod = "GET"
                 observer.on(.next(request))
             } else {

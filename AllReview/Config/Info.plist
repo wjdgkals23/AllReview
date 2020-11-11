@@ -74,6 +74,8 @@
 	<string>TEST</string>
 	<key>ROOT_URL</key>
 	<string>$(ROOT_URL)</string>
+	<key>VIEW_URL</key>
+	<string>$(VIEW_URL)</string>
 	<key>UIUserInterfaceStyle</key>
 	<string>Light</string>
 </dict>

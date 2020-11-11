@@ -16,7 +16,9 @@ enum SocialType:String {
     case kakao
 }
 
-class LoginViewModel: ViewModel {
+class LoginViewModel: OneLineReviewViewModel {
+    var sceneCoordinator: SceneCoordinator
+    var disposeBag: DisposeBag
     
     let didFailSignIn = PublishSubject<String>()
     
@@ -33,12 +35,14 @@ class LoginViewModel: ViewModel {
     
     let loginButtonEnabled: BehaviorRelay<Bool> = BehaviorRelay(value: false)
     
-    override init(sceneCoordinator: SceneCoordinatorType) {
-        super.init(sceneCoordinator: sceneCoordinator)
+    init(sceneCoordinator: SceneCoordinator) {
+        self.sceneCoordinator = sceneCoordinator
+        self.disposeBag = DisposeBag()
         
-        self.userLoginSession.rxloginData
+        UserLoginSession.sharedInstance.rxloginData
             .subscribe { [weak self] (userData) in
-                let mainVM = MainViewModel()
+                let sceneCoordinator = SceneCoordinator(window: UIApplication.shared.keyWindow!)
+                let mainVM = MainViewModel(sceneCoordinator: sceneCoordinator)
                 let mainScene = Scene.main(mainVM)
                 
                 self?.sceneCoordinator.transition(to: mainScene, using: .root, animated: false)
@@ -49,7 +53,7 @@ class LoginViewModel: ViewModel {
         }
         
         loginDataObs.subscribe(onNext: { (data) in
-            self.request.testLogin(userData: data) { [weak self] (userData, error) in
+            OneLineReviewAPI.sharedInstance.testLogin(userData: data) { [weak self] (userData, error) in
                 DispatchQueue.main.async {
                     if let error = error {
                         self?.didFailSignIn.onNext(error.localizedDescription)
@@ -58,7 +62,7 @@ class LoginViewModel: ViewModel {
                     }
                 }
             }
-        }).disposed(by: disposeBag)
+        }).disposed(by: self.disposeBag)
         
         memberEmail.distinctUntilChanged().map { email -> Bool in
             return email!.count > 1
